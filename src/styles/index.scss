@@ -1,0 +1,10 @@
+// Global styles
+@import './reset';
+@import './colors';
+
+.App {
+  max-width: 720px;
+  min-height: 100vh;
+  background-color: red;
+  margin: auto;
+}
