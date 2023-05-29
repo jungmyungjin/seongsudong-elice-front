@@ -2,11 +2,7 @@ import { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { closeConfirmModal } from 'reducers/modal';
 import styles from './confirmModal.module.scss';
-
-interface ModalProps {
-  modalMessage: string;
-  modalType: string;
-}
+import { ModalProps } from 'types/modal';
 
 function ConfirmModal({ modalMessage, modalType }: ModalProps) {
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
