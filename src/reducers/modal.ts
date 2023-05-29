@@ -16,7 +16,6 @@ const modalSlice = createSlice({
     },
     closeConfirmModal: state => {
       state.isConfirmModalOpen = false;
-      // state.reviewId = action.payload
     },
   },
 });

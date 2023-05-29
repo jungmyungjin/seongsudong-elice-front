@@ -1,28 +1,54 @@
 import { useRef } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { closeConfirmModal } from 'reducers/modal';
-import styles from './ConfirmModal.module.scss';
-import { ModalProps } from 'types/modal';
+import styles from './confirmModal.module.scss';
 
-function ConfirmModal({ modalName, modalContent }: ModalProps) {
+interface ModalProps {
+  modalMessage: string;
+  modalType: string;
+}
+
+function ConfirmModal({ modalMessage, modalType }: ModalProps) {
+  const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
 
-  // const closeModal = () => {
-  //   dispatch(closeConfirmModal());
+  const onClickBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (modalRef.current === e.target && isConfirmModalOpen)
+      dispatch(closeConfirmModal());
+  };
 
+  const handleCloseModal = () => {
+    dispatch(closeConfirmModal());
+  };
   return (
-    <div className={styles.modalContainer}>
-      <div className={styles.backdrop}></div>
-      <div className={styles.overlay}>
-        <div className={styles.modalTop}>
-          <div className={styles.modalTitle}>Notification</div>
+    <>
+      {isConfirmModalOpen && (
+        <div
+          ref={modalRef}
+          onClick={onClickBackdrop}
+          className={styles.backdrop}
+        >
+          <div className={styles.modalContainer}>
+            <div className={styles.overlay}>
+              <div className={styles.modalTop}>
+                <div className={styles.modalTitle}>{modalType}</div>
+              </div>
+              <div className={styles.modalMessage}>{modalMessage}</div>
+              <div className={styles.modalButtonContainer}>
+                <button
+                  className={styles.confirmBtn}
+                  onClick={handleCloseModal}
+                >
+                  취소
+                </button>
+                <button className={styles.confirmBtn}>확인</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className={styles.modalMessage}>{modalContent}</div>
-        <button className={styles.confirmBtn}>취소</button>
-        <button className={styles.confirmBtn}>확인</button>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
