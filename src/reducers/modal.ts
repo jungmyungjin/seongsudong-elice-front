@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ModalState } from '../types/modal';
+import { ModalState } from 'types/modal';
 
 export const initialState: ModalState = {
   isConfirmModalOpen: false,
