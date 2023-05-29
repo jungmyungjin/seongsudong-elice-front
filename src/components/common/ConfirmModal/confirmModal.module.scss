@@ -1,0 +1,110 @@
+.modalContainer {
+  animation: fadeIn 0.3s ease-in;
+  z-index: 1000;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.4);
+  z-index: 9;
+}
+
+.overlay {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 500px;
+  height: 300px;
+
+  background-color: white;
+  border-radius: 0.7rem;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+
+  z-index: 1000;
+  box-shadow: 0rem 0rem 0.7rem rgba(0, 0, 0, 0.3);
+}
+
+.modalTop {
+  width: 100%;
+  height: 60px;
+  background: linear-gradient(135deg, #e5bdc6 20%, #a8ebf0);
+  position: relative;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: row;
+
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  .modalTitle {
+    font-size: 26px;
+    font-weight: bold;
+    color: white;
+  }
+
+  .closeBtn {
+    position: absolute;
+    right: 2%;
+    top: 17%;
+
+    width: 40px;
+    height: 40px;
+    border-radius: 0.2rem;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.5s;
+    &:hover {
+      background: #e5bdc6;
+    }
+  }
+}
+
+.modalMessage {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0 45px 0;
+  font-size: 24px;
+}
+
+.confirmBtn {
+  margin: 10px 180px 10px 180px;
+  padding: 10px 0;
+
+  background-color: #e5bdc6;
+  border-radius: 0.5rem;
+  box-sizing: border-box;
+
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  transition: all 0.5s;
+  &:hover {
+    color: #80a1cc;
+    background-color: white;
+    border: 1px solid #80a1cc;
+  }
+}
