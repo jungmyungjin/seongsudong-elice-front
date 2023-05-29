@@ -38,7 +38,12 @@ function ConfirmModal({ modalMessage, modalType }: ModalProps) {
                 >
                   취소
                 </button>
-                <button className={styles.confirmBtn}>확인</button>
+                <button
+                  className={styles.confirmBtn}
+                  onClick={handleCloseModal}
+                >
+                  확인
+                </button>
               </div>
             </div>
           </div>
