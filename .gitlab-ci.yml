@@ -1,0 +1,13 @@
+image: node:latest
+
+stages:
+  - deploy
+
+deploy:
+  stage: deploy
+  script:
+    - npm install -g vercel
+    - vercel --token $VERCEL_TOKEN --confirm --prod
+  only:
+    - master
+    - dev
