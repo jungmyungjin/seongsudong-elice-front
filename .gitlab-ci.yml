@@ -11,3 +11,4 @@ deploy:
   only:
     - master
     - dev
+    - feature/#4/deploy
