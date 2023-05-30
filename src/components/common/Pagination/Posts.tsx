@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';  // axios는 HTTP 요청을 보내는 라이브러리입니다.
 import Pagination from './Pagination';
 import styles from './posts.module.scss';
-import {Link} from 'react-router-dom'
+import {Link} from 'react-router-dom';
 
 // Post 데이터의 타입을 정의합니다. Post는 id, title, body 세 가지 필드를 가집니다.
 interface Post {
@@ -47,10 +47,11 @@ const Posts: React.FC = () => {
       <ul className={styles['posts-list']}>
         {currentPosts.map(post => (  // 현재 보여줄 포스트를 순회하면서 각 포스트를 li 요소로 만듭니다.
           <li key={post.id}>
-            <div className={styles.eachData}>
-              <h3>{post.title}</h3>
+            <Link to={`/post/${post.id}`} className={styles.eachData}>  {/* 각 게시물을 클릭하면 해당 게시물의 상세 페이지로 이동합니다. */}
+              <p>{post.title}</p>
               <p>{post.id}</p>
-            </div>
+            </Link>
+            {/* </div> */}
           </li>
         ))}
       </ul>

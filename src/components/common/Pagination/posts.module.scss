@@ -13,37 +13,46 @@
 
 .box {
     width: 90%;
+    padding-bottom: 5px;
     margin: 20px auto 0 auto;
     box-shadow: inset 0px -1px 0px #E1E2E4;
 }
 
 p {
         font-family: 'NotoSansKR';
-        font-size: 12px;
+        font-size: 16px;
         font-weight: bold;
     }
 
 .eachData {
+    display: flex;
     width: 93%;
-    margin: 10px auto;
+    // margin-top: 5px;
+    // margin-left: auto;
+    // margin-right: auto;
+    margin: 5px auto;
     border: 1px solid black;
     border-radius: 4px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: white;
 
-    h3 {
-        margin: 10px;
-        font-weight: bold;
-    }
+    // h3 {
+    //     margin: 10px;
+    //     font-weight: bold;
+    // }
     p {
         margin: 10px;
+        font-size: 14px;
+        color: black;
     }
 }
 
 .totalData {
     line-height: 18px;
     color: #151618;
+    font-size: 14px;
     
 }
 
@@ -51,7 +60,7 @@ p {
     list-style: none;
     
     li {
-        margin-bottom: 3rem;
+        margin-bottom: 30px;
     }
     
 }
