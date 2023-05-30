@@ -1,7 +1,7 @@
 /**
  * @returns {string} "2023년 5월 31일 (수요일) 오전 12:26" 형식으로 현재 시간 내보내줌
  */
-export function convertDate(): string {
+export function convertDate(now?: Date): string {
   const today = new Date();
 
   const year = today.getFullYear();

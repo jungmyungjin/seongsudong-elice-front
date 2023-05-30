@@ -1,21 +1,29 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './chatMessage.module.scss';
+
+import { convertDate } from 'utils/convertDate';
 
 interface ChatMessageProps {
   // key: number;
   chatFromMe: boolean; // true
   chatMessage: string;
-  chatTime: string; // time
   fromName?: string; // 내가 보낸 메세지면 이름이 없어도 됨
 }
 function ChatMessage({
   // key,
   chatFromMe,
   chatMessage,
-  chatTime,
   fromName,
 }: ChatMessageProps) {
   const [isOnline, setIsOnline] = useState(true);
+  const [date, setDate] = useState<string>('');
+  const now = new Date();
+  const time = `${date.split(' ')[4]} ${date.split(' ')[5]}`; // 오전 1:11
+
+  useEffect(() => {
+    setDate(convertDate(now));
+  }, [date]);
+
   return (
     <>
       <div
@@ -52,7 +60,7 @@ function ChatMessage({
               chatFromMe ? styles.chatTimeFromMe : styles.chatTimeFromOther
             }
           >
-            {chatTime}
+            {time}
           </div>
         </div>
       </div>

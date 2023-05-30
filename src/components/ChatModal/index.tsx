@@ -16,7 +16,7 @@ function ChatModal() {
   const [otherMsg, setOtherMsg] = useState<string[]>([]);
   const [chatMsg, setChatMsg] = useState<string[]>([]);
   const [date, setDate] = useState<string>('');
-  const time = `${date.split(' ')[4]} ${date.split(' ')[5]}`; // 오전 1:11
+  const now = new Date();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -32,7 +32,7 @@ function ChatModal() {
   }, [myMsg, otherMsg]);
 
   useEffect(() => {
-    setDate(convertDate());
+    setDate(convertDate(now));
   }, []);
 
   useEffect(() => {
@@ -84,17 +84,11 @@ function ChatModal() {
                 key={i}
                 chatFromMe={false}
                 chatMessage={otherMsg[i]}
-                chatTime={time}
                 fromName='성수동 소방관'
               />
             ))}
             {myMsg.map((msg, i) => (
-              <ChatMessage
-                key={i}
-                chatFromMe={true}
-                chatMessage={myMsg[i]}
-                chatTime={time}
-              />
+              <ChatMessage key={i} chatFromMe={true} chatMessage={myMsg[i]} />
             ))}
           </div>
         </div>
