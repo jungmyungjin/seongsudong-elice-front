@@ -1,66 +1,114 @@
-.posts-container {
-    width: 100%;
-    height: 100%;
-    background-color: #F0F1F3;
-    display: flex;
-    flex-direction: column;
-
-    h1 {
-        margin-left: 30.8px;
-        font-size: 30px;
-    }
-}
-
-.box {
-    width: 90%;
-    padding-bottom: 5px;
-    margin: 20px auto 0 auto;
-    box-shadow: inset 0px -1px 0px #E1E2E4;
-}
-
 p {
-        font-family: 'NotoSansKR';
-        font-size: 16px;
-        font-weight: bold;
-    }
-
-.eachData {
-    display: flex;
-    width: 93%;
-    // margin-top: 5px;
-    // margin-left: auto;
-    // margin-right: auto;
-    margin: 5px auto;
-    border: 1px solid black;
-    border-radius: 4px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: white;
-
-    // h3 {
-    //     margin: 10px;
-    //     font-weight: bold;
-    // }
-    p {
-        margin: 10px;
-        font-size: 14px;
-        color: black;
-    }
+  font-family: 'NotoSansKR';
+  font-size: 16px;
+  font-weight: bold;
 }
 
-.totalData {
+.posts-container {
+  width: 100%;
+  height: 100%;
+  background-color: #F0F1F3;
+  display: flex;
+  flex-direction: column;
+
+  h1 {
+    margin-left: 30.8px;
+    font-size: 30px;
+  }
+}
+
+.tabBox {
+  width: 90%;
+  padding-bottom: 5px;
+  margin: 20px auto 0 auto;
+  box-shadow: inset 0px -1px 0px #E1E2E4;
+  display: flex;
+  align-items: center;
+
+  .freePost {
+    margin-right: 5px;
+    line-height: 18px;
+    font-size: 14px;
+    color: black;
+  }
+}
+
+.createBtn {
+  width: 1px;
+  height:1px;
+  margin-left: 90%;
+}
+
+.inputDiv {
+  position: relative;
+  width: 90%; // 검색창의 너비를 설정합니다. 필요한 경우 이 값을 조정하세요.    
+  margin: 30px auto 0 auto;
+
+  .searchGlass {
+    position: absolute;
+    top: 20px;  // 부모 요소의 중앙에 배치합니다.
+    left: 10px;  // 부모 요소의 왼쪽에서 10px 떨어진 위치에 배치합니다.
+    transform: translateY(-50%);  // 자신의 크기에 따라 수직 위치를 조정합니다.
+    z-index: 10;  // 검색 입력 필드 위에 뜨도록 z-index를 설정합니다.
+    width: 20px;
+    height: 20px;
+    }
+  
+  .searchTitle {
+    width: 100%;  // 부모 요소의 너비를 꽉 채웁니다.
+    height: 40px;  // 검색창의 높이를 설정합니다. 필요한 경우 이 값을 조정하세요.
+    padding-left: 40px;  // 돋보기 아이콘을 덮지 않도록 왼쪽 패딩을 추가합니다.
+    position: absolute;
+    top: 0;  // 부모 요소의 맨 위에 배치합니다.
+    left: 0;  // 부모 요소의 맨 왼쪽에 배치합니다.
+    border: 1.5px solid #C9CACC;
+    border-radius: 4px;
+  }
+}
+  
+
+.lengthBox {
+  width: 90%;
+  padding-bottom: 5px;
+  margin: 70px auto 0 auto;
+  box-shadow: inset 0px -1px 0px #E1E2E4;
+
+  p {
     line-height: 18px;
     color: #151618;
     font-size: 14px;
+  }
+}
+
+
+
+.eachData {
+  display: flex;
+  width: 93%;
+  margin: 0 auto;
+  border: 1px solid white;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+  box-shadow: 3px 3px 3px lightgray;
+
+  p {
+    margin: 10px;
+    font-size: 14px;
+    color: black;
+  }
+}
+
+
+
+.posts-list {
+  list-style: none;
+    
+  li {
+    margin-bottom: 20px;
+  }
     
 }
 
-.posts-list {
-    list-style: none;
-    
-    li {
-        margin-bottom: 30px;
-    }
-    
-}
