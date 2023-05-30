@@ -1,0 +1,71 @@
+@import '../../../styles/colors';
+
+.LayoutProfile {
+  background-color: $MAIN_PURPLE;
+  position: relative;
+  height: 140px;
+  display: flex;
+  flex-direction: column;
+}
+
+.ButtonBar {
+  width: inherit;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  .ButtonX {
+    height: 20px;
+  }
+  .ButtonLogout {
+    height: 18px;
+  }
+}
+
+// 로그인 된 유저 Style
+.Profile {
+  display: flex;
+  align-items: center;
+  flex-grow: 1;
+  padding: 10px;
+}
+
+.ProfileImage {
+  background-image: url('../../../../public/images/rabbit_profile.png'); // 너무 경로가 길어서 추후 수정하고 싶음
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.ProfileInfo {
+  display: flex;
+  flex-direction: column;
+  span {
+    margin: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: x-large;
+    margin: -2px 0;
+  }
+}
+
+// 로그인 안된 유저 Style
+.ToLogInButton {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  span {
+    color: white;
+    font-size: x-large;
+    margin-left: 10px;
+    font-family: 'EliceDigitalBaeum-Bd';
+  }
+  img {
+    width: 26px;
+    margin-left: 10px;
+    padding-top: 4px;
+  }
+}
