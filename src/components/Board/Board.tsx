@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import classNames from 'classnames';
 import Pagination from '../common/Pagination/Pagination';
 import styles from './posts.module.scss';
 import {Link} from 'react-router-dom';
@@ -18,6 +19,7 @@ const Posts: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');  // 검색어를 저장하는 상태 변수
+  const [selectedTab, setSelectedTab] = useState('자유');
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -46,8 +48,13 @@ const Posts: React.FC = () => {
 
   return (
     <div className={styles['posts-container']}>
-      <h1>게시판</h1>
       <div className={styles.tabBox}>
+        <Link to="/" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '자유'})} onClick={() => setSelectedTab('자유')}>
+          <p>자유</p>
+        </Link>
+        <Link to="/" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '공지'})} onClick={() => setSelectedTab('공지')}>
+          <p>공지</p>
+        </Link>
         <Link to="/create" className={styles.createBtn}>
           <PostBtn />
         </Link>
