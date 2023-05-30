@@ -7,7 +7,12 @@
   max-width: 720px;
   min-width: 335px;
   min-height: 100vh;
-  background-color: gainsboro;
+  background-color: white;
   margin: auto;
   position: relative;
+  box-sizing: border-box;
+  * {
+    max-width: 100%;
+    word-wrap: break-word;
+  }
 }

@@ -12,8 +12,14 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: 'EliceDigitalBaeum-Bd';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
+body {
+  background-color: rgb(232, 232, 232);
+}
 /* 폰트 */
 html,
 body,

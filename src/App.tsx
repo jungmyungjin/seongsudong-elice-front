@@ -3,6 +3,7 @@ import './styles/index.scss';
 
 import Main from './pages/Main';
 import Header from './components/common/Header';
+import FloatingButton from 'components/common/FloatingButton';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
           <Route path='/' element={<Main />} />
         </Routes>
       </BrowserRouter>
+      <FloatingButton />
     </div>
   );
 }
