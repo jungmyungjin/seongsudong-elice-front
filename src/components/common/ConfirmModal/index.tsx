@@ -3,8 +3,9 @@ import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { closeConfirmModal } from 'reducers/modal';
 import styles from './confirmModal.module.scss';
 import { ModalProps } from 'types/modal';
+import { ReactComponent as AlertCircle } from 'assets/AlertCircle.svg';
 
-function ConfirmModal({ modalMessage, modalType }: ModalProps) {
+function ConfirmModal({ modalMessage }: ModalProps) {
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -28,7 +29,9 @@ function ConfirmModal({ modalMessage, modalType }: ModalProps) {
           <div className={styles.modalContainer}>
             <div className={styles.overlay}>
               <div className={styles.modalTop}>
-                <div className={styles.modalTitle}>{modalType}</div>
+                <div className={styles.modalTitle}>
+                  <AlertCircle />
+                </div>
               </div>
               <div className={styles.modalMessage}>{modalMessage}</div>
               <div className={styles.modalButtonContainer}>
