@@ -1,44 +1,9 @@
-@import 'src/styles/mixins';
 @import '/src/styles/colors';
 
-@include mobile {
-  .floatingButtonContainer {
-    position: fixed;
-    right: 8%;
-    bottom: 10%;
-  }
-}
-
-@include tablet {
-  .floatingButtonContainer {
-    position: fixed;
-    right: 15%;
-    bottom: 10%;
-  }
-}
-
-@include bigTablet {
-  .floatingButtonContainer {
-    position: fixed;
-    right: 20%;
-    bottom: 10%;
-  }
-}
-
-@include middleDesktop {
-  .floatingButtonContainer {
-    position: fixed;
-    right: 26%;
-    bottom: 10%;
-  }
-}
-
-@include desktop {
-  .floatingButtonContainer {
-    position: fixed;
-    right: 33%;
-    bottom: 10%;
-  }
+.floatingButtonContainer {
+  position: absolute;
+  right: 10%;
+  bottom: 10%;
 }
 
 .floatingButton {
