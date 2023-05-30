@@ -1,5 +1,6 @@
 export interface ModalState {
   isConfirmModalOpen: boolean;
+  isFullModalOpen: boolean;
   isChatModalOpen: boolean;
   isMyRevervationModalOpen: boolean;
 }
@@ -11,4 +12,10 @@ export interface ModalState {
 export interface ModalProps {
   modalMessage: string;
   modalController?: () => void;
+}
+
+export interface FullModalProps {
+  title: string;
+  children: React.ReactNode;
+  modalHandler: () => void;
 }

@@ -3,6 +3,7 @@ import { ModalState } from 'types/modal';
 
 export const initialState: ModalState = {
   isConfirmModalOpen: false,
+  isFullModalOpen: false,
   isChatModalOpen: false,
   isMyRevervationModalOpen: false,
 };
@@ -16,6 +17,18 @@ const modalSlice = createSlice({
     },
     closeConfirmModal: state => {
       state.isConfirmModalOpen = false;
+    },
+    openFullModal: state => {
+      state.isFullModalOpen = true;
+    },
+    closeFullModal: state => {
+      state.isFullModalOpen = false;
+    },
+    openChatModal: state => {
+      state.isChatModalOpen = true;
+    },
+    closeChatModal: state => {
+      state.isChatModalOpen = false;
     },
   },
 });

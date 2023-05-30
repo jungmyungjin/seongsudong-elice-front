@@ -1,7 +1,4 @@
 import React, { useEffect } from 'react';
-import styles from './main.module.scss';
-import Input from 'components/common/Input';
-import { utils } from 'utils/utils';
 import ConfirmModal from 'components/common/ConfirmModal';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { openConfirmModal } from 'reducers/modal';
