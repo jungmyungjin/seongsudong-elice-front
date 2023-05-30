@@ -12,7 +12,7 @@
 @include tablet {
   .floatingButtonContainer {
     position: fixed;
-    right: 15%;
+    right: 13%;
     bottom: 10%;
   }
 }
@@ -20,7 +20,7 @@
 @include bigTablet {
   .floatingButtonContainer {
     position: fixed;
-    right: 20%;
+    right: 18%;
     bottom: 10%;
   }
 }
@@ -28,7 +28,7 @@
 @include middleDesktop {
   .floatingButtonContainer {
     position: fixed;
-    right: 26%;
+    right: 24%;
     bottom: 10%;
   }
 }
@@ -36,7 +36,7 @@
 @include desktop {
   .floatingButtonContainer {
     position: fixed;
-    right: 33%;
+    right: 32%;
     bottom: 10%;
   }
 }

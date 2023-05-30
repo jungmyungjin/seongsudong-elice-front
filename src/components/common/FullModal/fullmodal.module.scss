@@ -11,8 +11,8 @@
 
 .container {
   background-color: #fff;
-  width: 100%; //980px;
-  height: 100%; //580px;\
+  width: 100%;
+  height: 100%;
   box-shadow: 0rem 0rem 0.7rem #00000029;
   display: flex;
   position: relative;
@@ -40,6 +40,6 @@
   }
   .body {
     width: 100%;
-    height: 100%;
+    height: calc(100% - 4rem);
   }
 }
