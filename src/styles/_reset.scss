@@ -12,6 +12,9 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: 'EliceDigitalBaeum-Bd';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
