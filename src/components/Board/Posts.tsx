@@ -1,7 +1,7 @@
 // 필요한 모듈과 컴포넌트를 가져옵니다.
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';  // axios는 HTTP 요청을 보내는 라이브러리입니다.
-import Pagination from './Pagination';
+import Pagination from '../common/Pagination/Pagination';
 import styles from './posts.module.scss';
 import {Link} from 'react-router-dom';
 
