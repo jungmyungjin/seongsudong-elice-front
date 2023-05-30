@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './pagination.scss';
+import styles from './pagination.module.scss';
 
 interface PaginationProps {
   postsPerPage: number;
@@ -44,20 +44,20 @@ const Pagination: React.FC<PaginationProps> = ({
   };
 
   return (
-    <nav className="pagination">
-      <button onClick={handlePrevClick} disabled={currentPage === 1}>{"<"}</button>
-      <ul className="pagination-list">
+    <nav className={styles['pagination']}>
+      <button className={styles['button']} onClick={handlePrevClick} disabled={currentPage === 1}>{"<"}</button>
+      <ul className={styles['pagination-list']}>
         {visiblePageNumbers.map(number => (
           <li
             key={number}
-            className={number === currentPage ? 'active' : ''}
+            className={`${number === currentPage ? styles['active'] : ''}`}
             onClick={() => paginate(number)}
           >
             {number}
           </li>
         ))}
       </ul>
-      <button onClick={handleNextClick} disabled={currentPage === totalPages}>{">"}</button>
+      <button className={styles['button']} onClick={handleNextClick} disabled={currentPage === totalPages}>{">"}</button>
     </nav>
   );
 };
