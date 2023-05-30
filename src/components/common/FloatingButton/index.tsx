@@ -3,9 +3,17 @@ import styles from './floatingButton.module.scss';
 
 function FloatingButton() {
   return (
-    <>
-      <div className={styles.test}>플로팅 버튼입니다.</div>
-    </>
+    <div className={styles.floatingButtonContainer}>
+      <button className={styles.floatingButton}>
+        <div className={styles.rabbitIcon}>
+          <img
+            src='images/rabbit.png'
+            alt='rabbit-icon'
+            className={styles.rabbitImage}
+          />
+        </div>
+      </button>
+    </div>
   );
 }
 

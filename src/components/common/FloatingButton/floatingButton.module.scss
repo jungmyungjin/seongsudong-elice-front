@@ -1,3 +1,57 @@
-.test {
-  color: aqua;
+@import '../../../styles/mixins';
+
+@include mobile {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 8%;
+    bottom: 10%;
+  }
+}
+
+@include tablet {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 15%;
+    bottom: 10%;
+  }
+}
+
+@include bigTablet {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 20%;
+    bottom: 10%;
+  }
+}
+
+@include middleDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 26%;
+    bottom: 10%;
+  }
+}
+
+@include desktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 33%;
+    bottom: 12%;
+  }
+}
+
+.floatingButton {
+  width: 130px;
+  height: 45px;
+
+  background-color: rgb(255, 255, 255);
+  border-radius: 50px;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  filter: drop-shadow(0px 0px 7px rgba(77, 77, 77, 0.3));
+
+  z-index: 100;
 }
