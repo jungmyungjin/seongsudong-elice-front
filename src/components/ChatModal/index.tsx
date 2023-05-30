@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import FullModal from '../common/FullModal';
 import AdminProfile from './AdminProfile';
@@ -18,10 +18,18 @@ function ChatModal() {
   const [date, setDate] = useState<string>('');
   const time = `${date.split(' ')[4]} ${date.split(' ')[5]}`; // 오전 1:11
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   console.log(myMsg);
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(e.target.value);
   }
+  useEffect(() => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTop =
+        scrollContainerRef.current.scrollHeight;
+    }
+  }, [myMsg, otherMsg]);
 
   useEffect(() => {
     setDate(convertDate());
@@ -37,12 +45,12 @@ function ChatModal() {
       count++;
 
       if (count === 3) {
-        clearInterval(interval); // count가 3이 되면 interval 종료
+        clearInterval(interval);
       }
     }, 3000);
 
     return () => {
-      clearInterval(interval); // 컴포넌트 언마운트 시 interval 정리
+      clearInterval(interval);
     };
   }, []);
 
@@ -67,12 +75,13 @@ function ChatModal() {
   return (
     <FullModal title='1:1 문의 채팅방' modalType='chat'>
       <div className={styles.chatModalContainer}>
-        <div className={styles.scrollContainer}>
+        <div className={styles.scrollContainer} ref={scrollContainerRef}>
           {!isAdmin && <AdminProfile isOnline={isOnline} />}
           <div className={styles.nowDate}>{date}</div>
           <div className={styles.chatListContainer}>
             {otherMsg.map((msg, i) => (
               <ChatMessage
+                key={i}
                 chatFromMe={false}
                 chatMessage={otherMsg[i]}
                 chatTime={time}
@@ -81,6 +90,7 @@ function ChatModal() {
             ))}
             {myMsg.map((msg, i) => (
               <ChatMessage
+                key={i}
                 chatFromMe={true}
                 chatMessage={myMsg[i]}
                 chatTime={time}
