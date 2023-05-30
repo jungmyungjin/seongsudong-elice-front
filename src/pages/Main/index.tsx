@@ -20,10 +20,7 @@ export default function Main() {
         <Input />
         <FloatingButton />
         {isConfirmModalOpen && (
-          <ConfirmModal
-            modalMessage='게시물을 삭제하시겠습니까?'
-            modalType='알림'
-          />
+          <ConfirmModal modalMessage='게시물을 삭제하시겠습니까?' />
         )}
         <div className={styles.test}></div>
       </div>
