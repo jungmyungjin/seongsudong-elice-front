@@ -4,7 +4,6 @@ import './styles/index.scss';
 import Main from './pages/Main';
 import Header from './components/common/Header';
 import FloatingButton from 'components/common/FloatingButton';
-
 function App() {
   return (
     <div className='App'>
