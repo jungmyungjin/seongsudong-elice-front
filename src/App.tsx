@@ -2,8 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/index.scss';
 
 import Main from './pages/Main';
-import Header from './components/common/Header';
 import FloatingButton from 'components/common/FloatingButton';
+import Header from './components/common/Header';
 
 function App() {
   return (
