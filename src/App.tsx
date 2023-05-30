@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './styles/index.scss';
 
 import Main from './pages/Main';
+import FloatingButton from 'components/common/FloatingButton';
 import Admin from 'pages/Admin/Admin';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
           <Route path='/admin' element={<Admin />} />
         </Routes>
       </BrowserRouter>
+      <FloatingButton />
     </div>
   );
 }
