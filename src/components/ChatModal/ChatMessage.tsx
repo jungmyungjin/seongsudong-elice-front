@@ -26,44 +26,27 @@ function ChatMessage({
 
   return (
     <>
-      <div
-        className={
-          chatFromMe
-            ? styles.chatMessageContainerFromMe
-            : styles.chatMessageContainerFromOther
-        }
-      >
-        {!chatFromMe ? (
-          <div className={styles.profile}>
-            <div className={styles.chatProfileImgContainer}>
-              <img src='/images/rabbit.png' alt='profile' />
-            </div>
-            <div className={styles.chatName}>{fromName}</div>
-          </div>
-        ) : (
-          ''
-        )}
-        <div
-          className={
-            chatFromMe
-              ? styles.chatMessageContentFromMe
-              : styles.chatMessageContentFromOther
-          }
-        >
-          <div
-            className={chatFromMe ? styles.chatFromMe : styles.chatFromOther}
-          >
-            <div className={styles.ChatMessage}>{chatMessage}</div>
-          </div>
-          <div
-            className={
-              chatFromMe ? styles.chatTimeFromMe : styles.chatTimeFromOther
-            }
-          >
-            {time}
+      {chatFromMe ? (
+        <div className={styles.containerFromMe}>
+          <div className={styles.contentContainerFromMe}>
+            <div className={styles.chatFromMe}>{chatMessage}</div>
+            <div className={styles.chatTimeFromMe}>{time}</div>
           </div>
         </div>
-      </div>
+      ) : (
+        <div className={styles.containerFromOther}>
+          <div className={styles.imgContainer}>
+            <img src='/images/rabbit.png' alt='profile' />
+          </div>
+          <div className={styles.contentContainerFromOther}>
+            <div className={styles.chatName}>{fromName}</div>
+            <div className={styles.contentFromOther}>
+              <div className={styles.chatFromOther}>{chatMessage}</div>
+              <div className={styles.chatTimeFromOther}>{time}</div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
