@@ -3,6 +3,7 @@ import styles from './HeaderSlideMenu.module.scss';
 import Profile from './Profile';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store/configureStore';
+import { useNavigate } from 'react-router-dom';
 
 /**
  * 메뉴 버튼 눌렀을 시 나오는 슬라이드 메뉴 입니다.
@@ -10,6 +11,11 @@ import { RootState } from 'store/configureStore';
  */
 const HeaderSlideMenu = (): React.ReactElement => {
   const isOpen = useSelector((state: RootState) => state.menu.isOpen);
+  let navigate = useNavigate();
+
+  const handleClick = (path: string) => {
+    navigate(path);
+  };
 
   return (
     <div
@@ -17,11 +23,36 @@ const HeaderSlideMenu = (): React.ReactElement => {
     >
       <Profile />
       <ul>
-        <li>예약하기</li>
-        <li>공지사항</li>
-        <li>자유게시판</li>
-        <li>찾아오시는 길</li>
-        <li>관리자 1:1 문의</li>
+        <li>
+          <button onClick={() => handleClick('/mypage')}>
+            <span>마이페이지</span>
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleClick('/')}>
+            <span>예약하기</span>
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleClick('/')}>
+            <span>공지사항</span>
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleClick('/')}>
+            <span>자유게시판</span>
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleClick('/')}>
+            <span>찾아오시는 길</span>
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleClick('/')}>
+            <span>관리자 1:1 문의</span>
+          </button>
+        </li>
       </ul>
     </div>
   );
