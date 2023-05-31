@@ -11,11 +11,10 @@
 .scrollContainer {
   overflow: auto;
   flex-grow: 1;
+  padding: 20px;
 }
 .chatListContainer {
-  overflow-y: auto;
-  padding: 20px;
-  flex-grow: 1;
+  height: auto;
 }
 
 .chatInputContainer {
