@@ -8,6 +8,7 @@ import Main from './pages/Main';
 import FloatingButton from 'components/common/FloatingButton';
 import Admin from 'pages/Admin/Admin';
 import Header from './components/common/Header';
+import MyPage from 'pages/MyPage';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path='/post/:id' element={<PostsDetail />} />
           <Route path='/post/create' element={<CreatePost />} />
           <Route path='/reservation' element={<Reservation />} />
+          <Route path='/mypage' element={<MyPage />} />
         </Routes>
       </BrowserRouter>
       <FloatingButton />
