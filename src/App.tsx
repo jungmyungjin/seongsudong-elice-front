@@ -13,7 +13,6 @@ function App() {
     <div className='App'>
       <BrowserRouter>
         <Header />
-        <main className='main'>
           <Routes>
             <Route path='/' element={<Main />} />
             <Route path='/admin' element={<Admin />} />
@@ -21,7 +20,6 @@ function App() {
             <Route path="/post/:id" element={<PostsDetail />} />
             <Route path="/post/create" element={<CreatePost />} />
           </Routes>
-        </main>
       </BrowserRouter>
       <FloatingButton />
     </div>

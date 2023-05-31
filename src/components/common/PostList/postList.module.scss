@@ -6,12 +6,12 @@
   list-style: none;
       
   li {
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   
     .eachData {
       display: flex;
       width: 93%;
-      margin: 0 auto;
+      margin: 0 auto ;
       border: 1px solid white;
       border-radius: 4px;
       display: flex;
@@ -21,6 +21,7 @@
       box-shadow: 3px 3px 3px lightgray;
         
       p {
+        overflow:hidden;
         margin: 11px;
         font-size: 14px;
         color: black;
