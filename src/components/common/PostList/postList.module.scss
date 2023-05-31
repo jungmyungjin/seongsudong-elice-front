@@ -1,0 +1,31 @@
+.posts-list {
+  display: block;
+  white-space: nowrap;
+  overflow:hidden;
+  text-overflow: ellipsis;
+  list-style: none;
+      
+  li {
+    margin-bottom: 20px;
+  
+    .eachData {
+      display: flex;
+      width: 93%;
+      margin: 0 auto;
+      border: 1px solid white;
+      border-radius: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: white;
+      box-shadow: 3px 3px 3px lightgray;
+        
+      p {
+        margin: 11px;
+        font-size: 14px;
+        color: black;
+        }
+      }
+    }
+}
+  
