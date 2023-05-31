@@ -3,6 +3,7 @@ import './styles/index.scss';
 
 import Main from './pages/Main';
 import FloatingButton from 'components/common/FloatingButton';
+import Admin from 'pages/Admin/Admin';
 import Header from './components/common/Header';
 
 function App() {
@@ -10,9 +11,12 @@ function App() {
     <div className='App'>
       <BrowserRouter>
         <Header />
-        <Routes>
-          <Route path='/' element={<Main />} />
-        </Routes>
+        <main className='main'>
+          <Routes>
+            <Route path='/' element={<Main />} />
+            <Route path='/admin' element={<Admin />} />
+          </Routes>
+        </main>
       </BrowserRouter>
       <FloatingButton />
     </div>
