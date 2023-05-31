@@ -1,0 +1,28 @@
+@import '../../../styles/colors';
+
+header {
+  background-color: white;
+  display: flex;
+  align-items: center;
+  height: 80px;
+  box-shadow: 0rem 0rem 0.7rem #00000029;
+}
+
+.LayoutNav {
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  img {
+    height: 30px;
+    cursor: pointer;
+  }
+}
+
+.SlideMenu {
+  position: absolute;
+  height: 100%;
+  width: 300px;
+  right: 0px;
+  top: 0px;
+  background-color: #ffffff;
+}
