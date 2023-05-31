@@ -1,7 +1,6 @@
 import React from 'react';
 
 import CustomLink from 'components/common/Link';
-import { ReactComponent as Logo } from 'assets/Logo.svg';
 import styles from './Admin.module.scss';
 
 const menuArr = [
@@ -31,10 +30,7 @@ const menuArr = [
 function Admin() {
   return (
     <div>
-      <div className={styles.logo_div}>
-        {/* 텍스트로 변경하자!! */}
-        <Logo />
-      </div>
+      <h1 className={styles.h1}>관리자 페이지</h1>
 
       {menuArr.map(item => (
         <CustomLink
