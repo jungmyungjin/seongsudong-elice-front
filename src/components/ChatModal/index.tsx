@@ -7,20 +7,23 @@ import ChatMessage from './ChatMessage';
 
 import { convertDate } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
+interface Message {
+  chatFromMe: boolean;
+  chatMessage: string;
+  fromName?: string;
+}
 
 function ChatModal() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
   const [isOnline, setIsOnline] = useState<boolean>(true); // 임의 ~> 채팅 페이지에 머물러 있을 때 vs 로그인 했을 때 vs 사이트 창에 머물러 있을 때  기준 정해야함
   const [inputValue, setInputValue] = useState<string>('');
-  const [myMsg, setMyMsg] = useState<string[]>([]);
-  const [otherMsg, setOtherMsg] = useState<string[]>([]);
-  const [chatMsg, setChatMsg] = useState<string[]>([]);
+  const [chatMsg, setChatMsg] = useState<Message[]>([]);
   const [date, setDate] = useState<string>('');
   const now = new Date();
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  console.log(myMsg);
+  // console.log(myMsg);
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(e.target.value);
   }
@@ -29,7 +32,7 @@ function ChatModal() {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-  }, [myMsg, otherMsg]);
+  }, [chatMsg]);
 
   useEffect(() => {
     setDate(convertDate(now));
@@ -38,10 +41,12 @@ function ChatModal() {
   useEffect(() => {
     let count = 0;
     const interval = setInterval(() => {
-      setOtherMsg(prevOtherMsg => {
-        const newOtherMessage = [...prevOtherMsg, '무엇을 도와드릴까욧?'];
-        return newOtherMessage;
-      });
+      const newOtherChat = {
+        chatFromMe: false,
+        chatMessage: '무엇을 도와드릴까욧?',
+        fromName: '성수동 소방관',
+      };
+      setChatMsg(prevChatMsg => [...prevChatMsg, newOtherChat]);
       count++;
 
       if (count === 3) {
@@ -56,11 +61,12 @@ function ChatModal() {
 
   function handleSend() {
     if (inputValue.trim() !== '') {
-      setMyMsg(() => {
-        const newMyMessage = [...myMsg];
-        newMyMessage.push(inputValue);
-        return newMyMessage;
-      });
+      const newMyChat = {
+        chatFromMe: true,
+        chatMessage: inputValue,
+      };
+      setChatMsg(prevChatMsg => [...prevChatMsg, newMyChat]);
+
       setInputValue('');
     }
   }
@@ -79,16 +85,13 @@ function ChatModal() {
           {!isAdmin && <AdminProfile isOnline={isOnline} />}
           <div className={styles.nowDate}>{date}</div>
           <div className={styles.chatListContainer}>
-            {otherMsg.map((msg, i) => (
+            {chatMsg.map((msg, i) => (
               <ChatMessage
                 key={i}
-                chatFromMe={false}
-                chatMessage={otherMsg[i]}
-                fromName='성수동 소방관'
+                chatFromMe={msg.chatFromMe}
+                chatMessage={msg.chatMessage}
+                fromName={msg.fromName}
               />
-            ))}
-            {myMsg.map((msg, i) => (
-              <ChatMessage key={i} chatFromMe={true} chatMessage={myMsg[i]} />
             ))}
           </div>
         </div>
