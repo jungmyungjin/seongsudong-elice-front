@@ -5,7 +5,7 @@
   .floatingButtonContainer {
     position: fixed;
     right: 8%;
-    bottom: 8%;
+    bottom: 6%;
   }
 }
 
@@ -13,7 +13,7 @@
   .floatingButtonContainer {
     position: fixed;
     right: 13%;
-    bottom: 8%;
+    bottom: 6%;
   }
 }
 
@@ -21,7 +21,7 @@
   .floatingButtonContainer {
     position: fixed;
     right: 18%;
-    bottom: 8%;
+    bottom: 6%;
   }
 }
 
@@ -29,7 +29,7 @@
   .floatingButtonContainer {
     position: fixed;
     right: 25%;
-    bottom: 8%;
+    bottom: 6%;
   }
 }
 
@@ -37,7 +37,16 @@
   .floatingButtonContainer {
     position: fixed;
     right: 32%;
-    bottom: 8%;
+    bottom: 6%;
+  }
+}
+
+/* 임의로 설정해놓긴 했는데, 내 모니터에선 확인 불가능*/
+@include bigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 38%;
+    bottom: 6%;
   }
 }
 

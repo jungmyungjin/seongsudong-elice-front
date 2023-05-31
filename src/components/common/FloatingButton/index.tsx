@@ -24,7 +24,7 @@ function FloatingButton() {
         <button className={styles.floatingButton} onClick={handleOpenChatModal}>
           <div className={styles.floatingButtonText}>문의하기</div>
           <div className={styles.rabbitIcon}>
-            <img src='images/rabbit.png' alt='rabbit-icon' />
+            <img src='/images/rabbit.png' alt='rabbit-icon' />
           </div>
         </button>
       </div>
