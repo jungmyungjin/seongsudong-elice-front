@@ -1,7 +1,8 @@
-import styles from './SeatLayout.module.scss';
+import styles from './ReservationOptions.module.scss';
 
 interface SeatLayoutProps {
-  onSeatClick?: (value: string) => void;
+  className?: string;
+  clickEvent?: (value: string) => void;
 }
 
 function drawPersonalSeatLayout(
@@ -17,7 +18,7 @@ function drawPersonalSeatLayout(
       seats.push(
         <div
           key={keyValue}
-          className={`${styles.visible} ${styles.personalSeat}`}
+          className={styles.visible}
           onClick={event =>
             onClick?.(`개인석-${event.currentTarget.textContent}` || '')
           }
@@ -99,23 +100,64 @@ function drawGraduateSeatLayout(
   return seats;
 }
 
-export default function SeatLayout({ onSeatClick }: SeatLayoutProps) {
+export function PersonalSeatLayout({ className, clickEvent }: SeatLayoutProps) {
   return (
-    <div className={styles.container}>
-      <div>{drawPersonalSeatLayout(1, onSeatClick)}</div>
-      <div>{drawPersonalSeatLayout(7, onSeatClick)}</div>
-      <div>{drawPersonalSeatLayout(13, onSeatClick)}</div>
-      <div>{drawPersonalSeatLayout(19, onSeatClick)}</div>
-      <div>{drawPersonalSeatLayout(25, onSeatClick)}</div>
-      <div className={styles.group}>{drawGroupSeatLayout(31, onSeatClick)}</div>
-      <div className={styles.group}>{drawGroupSeatLayout(37, onSeatClick)}</div>
-      <div className={styles.group}>{drawGroupSeatLayout(43, onSeatClick)}</div>
-      <div className={styles.group}>{drawGroupSeatLayout(49, onSeatClick)}</div>
-      <div>{drawGraduateSeatLayout(55, onSeatClick)}</div>
-      <div>{drawGraduateSeatLayout(59, onSeatClick)}</div>
-      <div className={styles.group}>{drawGroupSeatLayout(63, onSeatClick)}</div>
-      <div className={styles.group}>{drawGroupSeatLayout(69, onSeatClick)}</div>
-      <div className={styles.group}>{drawGroupSeatLayout(75, onSeatClick)}</div>
-    </div>
+    <>
+      <div className={className}>{drawPersonalSeatLayout(1, clickEvent)}</div>
+      <div className={className}>{drawPersonalSeatLayout(7, clickEvent)}</div>
+      <div className={className}>{drawPersonalSeatLayout(13, clickEvent)}</div>
+      <div className={className}>{drawPersonalSeatLayout(19, clickEvent)}</div>
+      <div className={className}>{drawPersonalSeatLayout(25, clickEvent)}</div>
+    </>
+  );
+}
+
+export function FirstGroupSeatLayout({
+  className,
+  clickEvent,
+}: SeatLayoutProps) {
+  return (
+    <>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(31, clickEvent)}
+      </div>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(37, clickEvent)}
+      </div>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(43, clickEvent)}
+      </div>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(49, clickEvent)}
+      </div>
+    </>
+  );
+}
+
+export function GraduateSeatLayout({ className, clickEvent }: SeatLayoutProps) {
+  return (
+    <>
+      <div className={className}>{drawGraduateSeatLayout(55, clickEvent)}</div>
+      <div className={className}>{drawGraduateSeatLayout(59, clickEvent)}</div>
+    </>
+  );
+}
+
+export function SecondGroupSeatLayout({
+  className,
+  clickEvent,
+}: SeatLayoutProps) {
+  return (
+    <>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(63, clickEvent)}
+      </div>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(69, clickEvent)}
+      </div>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(75, clickEvent)}
+      </div>
+    </>
   );
 }

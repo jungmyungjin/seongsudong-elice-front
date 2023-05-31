@@ -1,7 +1,7 @@
 @import '/src/styles/colors';
 
-.container > * {
-  margin: 0 1rem;
+.container {
+  padding: 0 20px;
 }
 
 .title {
@@ -119,6 +119,40 @@
   }
 }
 
+.seatContainer {
+  border: 3px solid #7573b9;
+  border-radius: 5px;
+  background-color: #f7f3ff;
+
+  & > div {
+    width: 90%;
+    margin-left: auto;
+    margin-top: 5%;
+    border: 1px solid #7573b9;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    position: relative;
+  }
+
+  & > div:last-child {
+    margin-bottom: 5%;
+  }
+}
+
+.seatContainer > .possible > .visible {
+  background-color: #f6c1ff;
+}
+
+.impossible > .visible {
+  background-color: #b3b3b3;
+}
+
+.group .possible:last-child > .visible,
+.group .possible:nth-last-child(2) > .visible {
+  background-color: #bfb5ff;
+}
+
 .visitor {
   margin: 1rem 0;
 }
@@ -133,11 +167,44 @@ input {
   background-color: $MAIN_PURPLE;
   position: sticky;
   bottom: 0;
-  height: 60px;
+  height: 70px;
   font-size: 30px;
   letter-spacing: 8px;
   color: white;
+  position: fixed;
+  width: 720px;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.visible,
+.invisible {
+  height: 50px;
+  width: calc(1 / 6 * 100%);
+  border: 2px solid #7573b9;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.group {
+  height: 100px;
+}
+
+.groupSeat {
+  height: 100px;
+  width: calc(1 / 5 * 100%);
+  // background-color: #f6c1ff;
+
+  &:nth-last-child(2),
+  &:last-child {
+    height: 50px;
+    // background-color: rgb(255, 250, 193);
+  }
+
+  &:last-child {
+    position: relative;
+    transform: translateY(-50px);
+    height: 50px;
+  }
 }
