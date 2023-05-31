@@ -51,17 +51,17 @@ const Posts: React.FC = () => {
   return (
     <div className={styles['posts-container']}>
       <div className={styles.tabBox}>
-        <Link to="/" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '자유'})} onClick={() => setSelectedTab('자유')}>
+        <Link to="/post" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '자유'})} onClick={() => setSelectedTab('자유')}>
           <p>자유</p>
         </Link>
-        <Link to="/" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '공지'})} onClick={() => setSelectedTab('공지')}>
+        <Link to="/post" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '공지'})} onClick={() => setSelectedTab('공지')}>
           <p>공지</p>
         </Link>
-        <Link to="/create" className={styles.createBtn}>
+        <Link to="/post/create" className={styles.createBtn}>
           <PostBtn />
         </Link>
       </div>
-      {/* 검색 입력 필드를 추가합니다. */}
+      {/* 검색 컴포넌트 불러옴. */}
       <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className={styles.lengthBox}>
         <p>전체 {filteredPosts.length}개</p>
