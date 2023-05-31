@@ -46,5 +46,13 @@
     height: 60px;
     font-size: 18px;
     margin-bottom: 30px;
+    transition: all 0.4s ease-in-out;
+    &:hover {
+      background-color: $MAIN_PURPLE;
+      color: white;
+      svg {
+        stroke: white;
+      }
+    }
   }
 }
