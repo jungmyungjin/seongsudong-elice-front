@@ -15,6 +15,31 @@ interface CreateTypeSelectorProps {
   onSelect: (value: string) => void;
 }
 
+// 가짜 데이터
+const fakeUserData = {
+  name: '김철수',
+  reservation: [
+    {
+      reservation_date: '2023.05.29',
+      start_time: '10:00',
+      seat_number: '개인석-2',
+      status: '예약완료',
+    },
+    {
+      reservation_date: '2023.05.29',
+      start_time: '14:00',
+      seat_number: '개인석-2',
+      status: '예약완료',
+    },
+  ],
+};
+const fakeSeatData = {
+  seat_number: ['개인석-1', '개인석-3', '개인석-4', '개인석-5', '개인석-6'],
+  available: true,
+  reservation_date: '2023.05.29',
+  start_time: '10:00',
+};
+
 const CreateTypeSelector: React.FC<CreateTypeSelectorProps> = ({
   typeList,
   onSelect,
@@ -63,8 +88,18 @@ const ReservationOptions: React.FC = () => {
     seatTypeList[0].value,
   );
 
+  const [selectedTime, setSelectedTime] = useState(TimeList[0].value);
+
   const handleSeatTypeSelect = (value: string) => {
     setSelectedSeatType(value);
+  };
+
+  const handleTimeSelect = (value: string) => {
+    setSelectedTime(value);
+    alert(value);
+    if (value === '10:00~14:00') {
+      fakeSeatData.start_time = '10:00';
+    }
   };
 
   const handleEventClick = (value: string) => {
@@ -193,7 +228,7 @@ const ReservationOptions: React.FC = () => {
       );
     } else if (selectedSeatType === '미팅룸') {
       return (
-        <>
+        <div>
           <CreateTypeSelector
             typeList={[
               { value: '미팅룸 A (최대 6인)' },
@@ -204,8 +239,12 @@ const ReservationOptions: React.FC = () => {
             }}
           />
           <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
-          <input type='text' placeholder='필수입력*' />
-        </>
+          <input
+            className={styles.visitorInput}
+            type='text'
+            placeholder='필수입력*'
+          />
+        </div>
       );
     } else {
       return null;
@@ -218,7 +257,7 @@ const ReservationOptions: React.FC = () => {
         typeList={seatTypeList}
         onSelect={handleSeatTypeSelect}
       />
-      <CreateTypeSelector typeList={TimeList} onSelect={() => {}} />
+      <CreateTypeSelector typeList={TimeList} onSelect={handleTimeSelect} />
       {showSeatKind()}
     </div>
   );
