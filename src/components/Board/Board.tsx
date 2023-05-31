@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import classNames from 'classnames';
-import Pagination from '../common/Pagination/Pagination';
-import styles from './posts.module.scss';
+import Pagination from '../common/Pagination';
+import PostList from '../common/PostList';
+import SearchBox from '../common/SearchBox';
+import styles from './board.module.scss';
 import {Link} from 'react-router-dom';
 import { ReactComponent as PostBtn } from 'assets/Create.svg';
-import { ReactComponent as Search } from 'assets/Search.svg';
+
 
 interface Post {
   id: number;
@@ -60,29 +62,12 @@ const Posts: React.FC = () => {
         </Link>
       </div>
       {/* 검색 입력 필드를 추가합니다. */}
-      <div className={styles.inputDiv}>
-        <Search className={styles.searchGlass} />
-        <input
-            className={styles.searchTitle}
-            type="text"
-            placeholder="제목으로 검색해주세요."
-            value={searchTerm}
-            onChange={e => setSearchTerm(e.target.value)}
-          />
-      </div>
+      <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       <div className={styles.lengthBox}>
         <p>전체 {filteredPosts.length}개</p>
       </div>
-      <ul className={styles['posts-list']}>
-        {currentPosts.map(post => (
-          <li key={post.id}>
-            <Link to={`/post/${post.id}`} className={styles.eachData}>
-              <p>{post.title}</p>
-              <p>{post.id}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      {/* PostList 컴포넌트 불러옴 */}
+      <PostList posts={currentPosts}/>
       <Pagination
         postsPerPage={postsPerPage}
         totalPosts={filteredPosts.length}
