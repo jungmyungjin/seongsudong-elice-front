@@ -11,10 +11,12 @@ function App() {
     <div className='App'>
       <BrowserRouter>
         <Header />
-        <Routes>
-          <Route path='/' element={<Main />} />
-          <Route path='/admin' element={<Admin />} />
-        </Routes>
+        <main className='main'>
+          <Routes>
+            <Route path='/' element={<Main />} />
+            <Route path='/admin' element={<Admin />} />
+          </Routes>
+        </main>
       </BrowserRouter>
       <FloatingButton />
     </div>

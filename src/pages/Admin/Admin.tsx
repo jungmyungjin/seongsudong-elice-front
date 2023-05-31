@@ -32,6 +32,7 @@ function Admin() {
   return (
     <div>
       <div className={styles.logo_div}>
+        {/* 텍스트로 변경하자!! */}
         <Logo />
       </div>
 
