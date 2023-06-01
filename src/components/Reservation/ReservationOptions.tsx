@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import styles from './ReservationOptions.module.scss';
-import SeatLayout from 'components/Reservation/SeatLayout';
-
+import {
+  PersonalSeatLayout,
+  FirstGroupSeatLayout,
+  GraduateSeatLayout,
+  SecondGroupSeatLayout,
+} from 'components/Reservation/SeatLayout';
 interface typeInfo {
   value: string;
 }
@@ -10,6 +14,31 @@ interface CreateTypeSelectorProps {
   typeList: typeInfo[];
   onSelect: (value: string) => void;
 }
+
+// 가짜 데이터
+const fakeUserData = {
+  name: '김철수',
+  reservation: [
+    {
+      reservation_date: '2023.05.29',
+      start_time: '10:00',
+      seat_number: '개인석-2',
+      status: '예약완료',
+    },
+    {
+      reservation_date: '2023.05.29',
+      start_time: '14:00',
+      seat_number: '개인석-2',
+      status: '예약완료',
+    },
+  ],
+};
+const fakeSeatData = {
+  seat_number: ['개인석-1', '개인석-3', '개인석-4', '개인석-5', '개인석-6'],
+  available: true,
+  reservation_date: '2023.05.29',
+  start_time: '10:00',
+};
 
 const CreateTypeSelector: React.FC<CreateTypeSelectorProps> = ({
   typeList,
@@ -59,8 +88,18 @@ const ReservationOptions: React.FC = () => {
     seatTypeList[0].value,
   );
 
+  const [selectedTime, setSelectedTime] = useState(TimeList[0].value);
+
   const handleSeatTypeSelect = (value: string) => {
     setSelectedSeatType(value);
+  };
+
+  const handleTimeSelect = (value: string) => {
+    setSelectedTime(value);
+    alert(value);
+    if (value === '10:00~14:00') {
+      fakeSeatData.start_time = '10:00';
+    }
   };
 
   const handleEventClick = (value: string) => {
@@ -85,7 +124,24 @@ const ReservationOptions: React.FC = () => {
               <div className={styles.kindText}>이용가능</div>
             </div>
           </div>
-          <SeatLayout onSeatClick={handleEventClick} />
+          <div className={styles.seatContainer}>
+            <PersonalSeatLayout
+              className={`${styles.possible}`}
+              clickEvent={handleEventClick}
+            />
+            <FirstGroupSeatLayout
+              className={`${styles.impossible}`}
+              clickEvent={handleEventClick}
+            />
+            <GraduateSeatLayout
+              className={`${styles.impossible}`}
+              clickEvent={handleEventClick}
+            />
+            <SecondGroupSeatLayout
+              className={`${styles.impossible}`}
+              clickEvent={handleEventClick}
+            />
+          </div>
         </>
       );
     } else if (selectedSeatType === '팀플석') {
@@ -109,7 +165,24 @@ const ReservationOptions: React.FC = () => {
               <div className={styles.kindText}>이용가능 (2인석)</div>
             </div>
           </div>
-          <SeatLayout onSeatClick={handleEventClick} />
+          <div className={styles.seatContainer}>
+            <PersonalSeatLayout
+              className={styles.impossible}
+              clickEvent={handleEventClick}
+            />
+            <FirstGroupSeatLayout
+              className={styles.possible}
+              clickEvent={handleEventClick}
+            />
+            <GraduateSeatLayout
+              className={styles.impossible}
+              clickEvent={handleEventClick}
+            />
+            <SecondGroupSeatLayout
+              className={styles.possible}
+              clickEvent={handleEventClick}
+            />
+          </div>
         </>
       );
     } else if (selectedSeatType === '수료기수석') {
@@ -133,24 +206,45 @@ const ReservationOptions: React.FC = () => {
               <div className={styles.kindText}>이용가능 (2인석)</div>
             </div>
           </div>
-          <SeatLayout onSeatClick={handleEventClick} />
+          <div className={styles.seatContainer}>
+            <PersonalSeatLayout
+              className={styles.impossible}
+              clickEvent={handleEventClick}
+            />
+            <FirstGroupSeatLayout
+              className={styles.impossible}
+              clickEvent={handleEventClick}
+            />
+            <GraduateSeatLayout
+              className={styles.possible}
+              clickEvent={handleEventClick}
+            />
+            <SecondGroupSeatLayout
+              className={styles.impossible}
+              clickEvent={handleEventClick}
+            />
+          </div>
         </>
       );
     } else if (selectedSeatType === '미팅룸') {
       return (
-        <>
+        <div>
           <CreateTypeSelector
             typeList={[
               { value: '미팅룸 A (최대 6인)' },
               { value: '미팅룸 B (최대 10인)' },
             ]}
             onSelect={(value: string) => {
-              alert(value);
+              console.log(value);
             }}
           />
           <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
-          <input type='text' placeholder='필수입력*' />
-        </>
+          <input
+            className={styles.visitorInput}
+            type='text'
+            placeholder='필수입력*'
+          />
+        </div>
       );
     } else {
       return null;
@@ -163,7 +257,7 @@ const ReservationOptions: React.FC = () => {
         typeList={seatTypeList}
         onSelect={handleSeatTypeSelect}
       />
-      <CreateTypeSelector typeList={TimeList} onSelect={() => {}} />
+      <CreateTypeSelector typeList={TimeList} onSelect={handleTimeSelect} />
       {showSeatKind()}
     </div>
   );

@@ -6,27 +6,32 @@
   top: 0px;
   background-color: #ffffff;
   transition: ease-in-out all 0.3s; /* 필요에 따라 조절 */
-}
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-li {
-  /* 필요한 스타일 조정 추가 */
-  height: 56px;
-  font-size: medium;
-  padding-left: 14px;
-  display: flex;
-  align-items: center;
-  background-color: white;
-  border-bottom: #e4e4e4 solid;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    height: 56px;
+    font-size: medium;
+    padding-left: 14px;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border-bottom: #e4e4e4 solid;
+  }
+  span {
+    font-family: 'EliceDigitalBaeum-Bd';
+    font-size: medium;
+    font-weight: 100;
+  }
 }
 
 /* SlideMenu가 열릴 때에 대한 스타일 */
 .SlideMenu.open {
   right: 0;
   opacity: 1;
+  z-index: 3;
 }
 
 /* SlideMenu가 닫힐 때에 대한 스타일 */

@@ -1,0 +1,26 @@
+.inputDiv {
+  position: relative;
+  width: 90%; // 검색창의 너비를 설정합니다. 필요한 경우 이 값을 조정하세요.    
+  margin: 20px auto 0 auto;
+  
+  .searchGlass {
+    position: absolute;
+    top: 20px;  // 부모 요소의 중앙에 배치합니다.
+    left: 10px;  // 부모 요소의 왼쪽에서 10px 떨어진 위치에 배치합니다.
+    transform: translateY(-50%);  // 자신의 크기에 따라 수직 위치를 조정합니다.
+    z-index: 10;  // 검색 입력 필드 위에 뜨도록 z-index를 설정합니다.
+    width: 20px;
+    height: 20px;
+    }
+    
+  .searchTitle {
+    width: 100%;  // 부모 요소의 너비를 꽉 채웁니다.
+    height: 40px;  // 검색창의 높이를 설정합니다. 필요한 경우 이 값을 조정하세요.
+    padding-left: 40px;  // 돋보기 아이콘을 덮지 않도록 왼쪽 패딩을 추가합니다.
+    position: absolute;
+    top: 0;  // 부모 요소의 맨 위에 배치합니다.
+    left: 0;  // 부모 요소의 맨 왼쪽에 배치합니다.
+    border: 1.5px solid #C9CACC;
+    border-radius: 4px;
+    }
+}
