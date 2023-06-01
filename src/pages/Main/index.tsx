@@ -21,7 +21,7 @@ const Main = (): React.ReactElement => {
         예약하기
       </button>
       <div className={styles.freeBoard}>
-        <button onClick={() => handleClick('/post')}>자유 게시판</button>
+        <button onClick={() => handleClick('/post/free')}>자유 게시판</button>
       </div>
     </div>
   );

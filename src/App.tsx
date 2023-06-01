@@ -3,6 +3,7 @@ import './styles/index.scss';
 import Board from './components/Board/Board';
 import PostsDetail from './components/Board/PostsDetail';
 import CreatePost from './components/Board/CreatePost';
+import PostUpdate from './components/Board/PostUpdate';
 import Reservation from 'components/Reservation';
 import Main from './pages/Main';
 import FloatingButton from 'components/common/FloatingButton';
@@ -20,9 +21,10 @@ function App() {
         <Routes>
           <Route path='/' element={<Main />} />
           <Route path='/admin' element={<Admin />} />
-          <Route path='/post' element={<Board />} />
-          <Route path='/post/:id' element={<PostsDetail />} />
-          <Route path='/post/create' element={<CreatePost />} />
+          <Route path='/post/free' element={<Board />} />
+          <Route path='/post/free/:id' element={<PostsDetail />} />
+          <Route path='/post/free/create' element={<CreatePost />} />
+          <Route path='/post/free/editPost/:id' element={<PostUpdate />} />
           <Route path='/reservation' element={<Reservation />} />
           <Route path='/mypage' element={<MyPage />} />
           <Route path='/mypage/mypost' element={<MyPost />} />

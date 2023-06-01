@@ -1,0 +1,60 @@
+.postDetail {
+  .title {
+    p {
+        margin: 30px 10px 20px 30px;
+        font-size: 30px;
+    }
+}
+
+  .postInfo {
+    p {
+      margin-left: 30px;
+      color: #CAC4D0;
+    }
+  }
+
+  .description {
+    p {
+      margin: 90px 27px 20px 20px;
+      font-size: 20px;
+    }
+  }
+
+  .underLine {
+    width: 100%;
+    padding-bottom: 5px;
+    margin: 20px auto 0 auto;
+    box-shadow: inset 0px -1px 0px #E1E2E4;
+    
+    p {
+      margin: 100px 0 0 20px;
+    }
+  }
+
+  .updateAndDeleteBtn {
+    display: flex;
+    justify-content: flex-end;
+    margin: 200px 15px 0 0;
+    text-align: center;
+
+    .updateBtn {
+        width: 45px;
+        height: 30px;
+        background-color: #682BE0;
+        font-size: 15px;
+        color: white;
+        border-radius: 4px;
+    }
+
+    .deleteBtn {
+        margin-right: 20px;
+        width: 45px;
+        height: 30px;
+        background-color: #682BE0;
+        font-size: 15px;
+        color: white;
+        border-radius: 4px;
+    }
+  }
+}
+

@@ -51,13 +51,13 @@ const Posts: React.FC = () => {
   return (
     <div className={styles['posts-container']}>
       <div className={styles.tabBox}>
-        <Link to="/post" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '자유'})} onClick={() => setSelectedTab('자유')}>
+        <Link to="/post/free" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '자유'})} onClick={() => setSelectedTab('자유')}>
           <p>자유</p>
         </Link>
-        <Link to="/post" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '공지'})} onClick={() => setSelectedTab('공지')}>
+        <Link to="/post/free" className={classNames(styles.freePost, {[styles.selected]: selectedTab === '공지'})} onClick={() => setSelectedTab('공지')}>
           <p>공지</p>
         </Link>
-        <Link to="/post/create" className={styles.createBtn}>
+        <Link to="/post/free/create" className={styles.createBtn}>
           <PostBtn />
         </Link>
       </div>
