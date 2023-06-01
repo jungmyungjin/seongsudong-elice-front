@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Pagination from 'components/common/Pagination';
 import SearchBox from 'components/common/SearchBox';
-import MyPostList from './MyPostList';
+import PostList from 'components/common/PostList';
 
 import styles from './myPost.module.scss';
 
@@ -49,7 +49,7 @@ function MyPost() {
       <div className={styles.lengthBox}>
         <p>전체 {filteredPosts.length}개</p>
       </div>
-      <MyPostList posts={currentPosts} />
+      <PostList posts={currentPosts} />
       <Pagination
         postsPerPage={postsPerPage}
         totalPosts={filteredPosts.length}
