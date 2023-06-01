@@ -15,8 +15,8 @@ function MyPost() {
   const { myPost } = useAppSelector(state => state.myPost);
   const [filteredPosts, setFilteredPosts] = useState<myPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(7);
   const [searchTerm, setSearchTerm] = useState('');
+  const postsPerPage = 7;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
