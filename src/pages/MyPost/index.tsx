@@ -7,11 +7,9 @@ import PostList from 'components/common/PostList';
 import styles from './myPost.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
-import { ImyPost, myPost } from 'types/myPost';
+import { myPost } from 'types/myPost';
 
-/** 더미데이터 액션 */
-import { createAction } from '@reduxjs/toolkit';
-import posts from './dummy.json';
+import { loadMyPost } from 'actions/myPost';
 
 function MyPost() {
   const { myPost } = useAppSelector(state => state.myPost);
@@ -19,12 +17,10 @@ function MyPost() {
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(7);
   const [searchTerm, setSearchTerm] = useState('');
-
-  const setMyPostList = createAction<ImyPost['myPost']>('post/setMyPostList');
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(setMyPostList(posts));
+    dispatch(loadMyPost());
   }, []);
 
   useEffect(() => {
