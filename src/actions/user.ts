@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-axios.defaults.baseURL = 'http://52.78.251.23:8080';
+axios.defaults.baseURL = 'http://localhost:3000';
 
 export const loadMyInfo = createAsyncThunk('/user/loadMyInfo', async () => {
   try {

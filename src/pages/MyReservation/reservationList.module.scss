@@ -1,0 +1,48 @@
+.reservationList {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+
+  .reservationContainer {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin: 0 auto;
+    border: 1px solid white;
+    border-radius: 4px;
+
+    margin-bottom: 5px;
+
+    padding: 10px;
+    background-color: white;
+    box-shadow: 3px 3px 3px lightgray;
+
+    cursor: pointer;
+    .eachReservation {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      p {
+        overflow: hidden;
+      }
+      .date {
+        font-size: 12px;
+        color: #999999;
+      }
+      .timeAndSeat {
+        margin-top: 3px;
+        font-size: 17px;
+      }
+    }
+    .icon {
+      display: flex;
+      align-items: center;
+      svg {
+        stroke-width: 3px;
+      }
+    }
+  }
+}
