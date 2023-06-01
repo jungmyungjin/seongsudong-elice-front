@@ -85,13 +85,18 @@ const PostDetail: React.FC = () => {
         <p>{post.title}</p>
       </div>
       <div className={styles.postInfo}>
-        <p>{post.name} | {convertStringToDate(post.created_at)} | 조회수 : {post.views}</p>
+        <p>
+          {post.name} | {convertStringToDate(post.created_at)} | 조회수 :{' '}
+          {post.views}
+        </p>
       </div>
       <div className={styles.description}>
         <p>{post.description}</p>
       </div>
       <div className={styles.updateAndDeleteBtn}>
-        <button className={styles.updateBtn} onClick={handleEdit}>수정</button>
+        <button className={styles.updateBtn} onClick={handleEdit}>
+          수정
+        </button>
         <button className={styles.deleteBtn}>삭제</button>
       </div>
       {/* 댓글 부분 */}

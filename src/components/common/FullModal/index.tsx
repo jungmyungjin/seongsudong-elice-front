@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
+import { useAppDispatch } from 'hooks/useRedux';
 import { closeChatModal, closeMyReservationModal } from 'reducers/modal';
 
 import styles from './fullmodal.module.scss';

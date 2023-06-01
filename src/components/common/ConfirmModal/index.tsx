@@ -1,11 +1,11 @@
-import { useRef } from 'react';
+import { MouseEvent, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { closeConfirmModal } from 'reducers/modal';
 import styles from './confirmModal.module.scss';
 import { ModalProps } from 'types/modal';
 import { ReactComponent as AlertCircle } from 'assets/AlertCircle.svg';
 
-function ConfirmModal({ modalMessage }: ModalProps) {
+function ConfirmModal({ modalMessage, modalController }: ModalProps) {
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -18,6 +18,7 @@ function ConfirmModal({ modalMessage }: ModalProps) {
   const handleCloseModal = () => {
     dispatch(closeConfirmModal());
   };
+
   return (
     <>
       {isConfirmModalOpen && (
@@ -41,10 +42,7 @@ function ConfirmModal({ modalMessage }: ModalProps) {
                 >
                   취소
                 </button>
-                <button
-                  className={styles.confirmBtn}
-                  onClick={handleCloseModal}
-                >
+                <button className={styles.confirmBtn} onClick={modalController}>
                   확인
                 </button>
               </div>
