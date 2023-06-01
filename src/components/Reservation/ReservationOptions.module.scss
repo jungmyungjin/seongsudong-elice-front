@@ -143,6 +143,7 @@
 
 .seatContainer > .possible > .visible {
   background-color: #f6c1ff;
+  cursor: pointer;
 }
 
 .impossible > .visible {
@@ -167,7 +168,6 @@
 
 .submitButton {
   background-color: $MAIN_PURPLE;
-  position: sticky;
   bottom: 0;
   height: 70px;
   font-size: 30px;

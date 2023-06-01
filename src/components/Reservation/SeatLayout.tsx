@@ -1,7 +1,7 @@
 import styles from './ReservationOptions.module.scss';
 
 interface SeatLayoutProps {
-  className?: string;
+  className: string;
   clickEvent?: (value: string) => void;
 }
 
@@ -19,9 +19,7 @@ function drawPersonalSeatLayout(
         <div
           key={keyValue}
           className={styles.visible}
-          onClick={event =>
-            onClick?.(`개인석-${event.currentTarget.textContent}` || '')
-          }
+          onClick={event => onClick?.(event.currentTarget.textContent || '')}
         >
           {keyValue}
         </div>,
@@ -45,9 +43,7 @@ function drawGroupSeatLayout(
       <div
         key={keyValue}
         className={`${styles.visible} ${styles.groupSeat}`}
-        onClick={event =>
-          onClick?.(`팀플석-${event.currentTarget.textContent}` || '')
-        }
+        onClick={event => onClick?.(event.currentTarget.textContent || '')}
       >
         {keyValue}
       </div>,
@@ -59,9 +55,7 @@ function drawGroupSeatLayout(
       <div
         key={keyValue}
         className={`${styles.visible} ${styles.groupSeat}`}
-        onClick={event =>
-          onClick?.(`팀플석-${event.currentTarget.textContent}` || '')
-        }
+        onClick={event => onClick?.(event.currentTarget.textContent || '')}
       >
         {keyValue}
       </div>,
@@ -85,9 +79,7 @@ function drawGraduateSeatLayout(
         <div
           key={keyValue}
           className={`${styles.visible} ${styles.graduateSeat}`}
-          onClick={event =>
-            onClick?.(`수료기수석-${event.currentTarget.textContent}` || '')
-          }
+          onClick={event => onClick?.(event.currentTarget.textContent || '')}
         >
           {keyValue}
         </div>,

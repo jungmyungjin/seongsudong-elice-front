@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import RenderReservation from './ReservationOptions';
 import styles from './ReservationOptions.module.scss';
 import { ReactComponent as Check } from '../../assets/Check.svg';
+import { ReservationProvider, ReservationContext } from './ReservationProvider';
 
 interface CheckboxProps {
   label: string;
@@ -10,11 +11,24 @@ interface CheckboxProps {
 }
 
 const Reservation: React.FC = () => {
+  // const [date, setDate] = useState('');
+  // const [startTime, setStartTime] = useState('');
+  // const [endTime, setEndTime] = useState('');
+  // const [seatType, setSeatType] = useState('');
+  // const [seat, setSeat] = useState('');
+
+  const { reservationInfo, updateReservationInfo } =
+    useContext(ReservationContext);
+
+  useEffect(() => {
+    console.log(reservationInfo.date);
+  }, [reservationInfo.date]);
+
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
-    const month = String(today.getMonth() + 1).padStart(2, '0');
-    return `${year}.${month}`;
+    // const month = String(today.getMonth() + 1).padStart(2, '0');
+    return `${year}`;
   };
 
   const getWeekDates = () => {
@@ -26,10 +40,10 @@ const Reservation: React.FC = () => {
     for (let i = 0; i < 5; i++) {
       const date = new Date(startDate);
       date.setDate(date.getDate() + i);
-      const month = String(date.getMonth() + 1);
-      const day = String(date.getDate());
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
       const dayOfWeek = ['월', '화', '수', '목', '금'][date.getDay()];
-      dates.push(`${month}.${day}(${dayOfWeek})`);
+      dates.push(`${getCurrentDate()}.${month}.${day}(${dayOfWeek})`);
     }
     return dates;
   };
@@ -58,13 +72,19 @@ const Reservation: React.FC = () => {
   const DateDisplay: React.FC = () => {
     const currentDate = getCurrentDate();
     const weekDates = getWeekDates();
+    const updatedReservationInfo = {
+      ...reservationInfo,
+      date: weekDates[0].split('(')[0].replace(/\./g, '-'),
+    };
+    updateReservationInfo(updatedReservationInfo);
+    console.log(updatedReservationInfo);
 
     return (
       <div className={styles.dateContainer}>
         <div className={styles.currentDate}>{currentDate}</div>
         <div className={styles.date}>
           {weekDates.map((date, index) => (
-            <div key={index}>{date}</div>
+            <div key={index}>{date.slice(5)}</div>
           ))}
         </div>
       </div>
@@ -78,7 +98,12 @@ const Reservation: React.FC = () => {
       setSelectedCheckbox(day);
       const weekDates = getWeekDates();
       const index = ['월', '화', '수', '목', '금'].indexOf(day);
-      alert(`${weekDates[index]}을 선택하셨습니다.`);
+      const updatedReservationInfo = {
+        ...reservationInfo,
+        date: weekDates[index].split('(')[0].replace(/\./g, '-'),
+      };
+      updateReservationInfo(updatedReservationInfo);
+      console.log(updatedReservationInfo);
     };
 
     return (
@@ -96,15 +121,14 @@ const Reservation: React.FC = () => {
   };
 
   return (
-    <>
+    <ReservationProvider>
       <div className={styles.container}>
         <div className={styles.title}>좌석 예약</div>
         <DateDisplay />
         <CheckboxContainer />
         <RenderReservation />
       </div>
-      <div className={styles.submitButton}>예약하기</div>
-    </>
+    </ReservationProvider>
   );
 };
 
