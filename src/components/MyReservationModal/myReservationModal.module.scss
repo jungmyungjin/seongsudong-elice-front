@@ -1,0 +1,65 @@
+.container {
+  padding: 20px 20px 0 20px;
+  display: flex;
+  flex-direction: column;
+
+  .seatLayoutContainer {
+    display: flex;
+    justify-content: center;
+    height: auto;
+    background-color: beige;
+  }
+
+  .contentsContainer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+
+    font-size: 15px;
+
+    .dateContainer {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 20px;
+
+      border-bottom: solid 1px #999999;
+      padding-bottom: 10px;
+      p:nth-child(1) {
+        color: #999999;
+        width: 110px;
+      }
+    }
+
+    .seatContainer {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 20px;
+
+      border-bottom: solid 1px #999999;
+      padding-bottom: 10px;
+      p:nth-child(1) {
+        color: #999999;
+        width: 110px;
+      }
+    }
+
+    .visitorsContainer {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: 20px;
+      border-bottom: solid 1px #999999;
+      padding-bottom: 10px;
+      p:nth-child(1) {
+        color: #999999;
+        width: 110px;
+      }
+    }
+  }
+
+  .buttonContainer {
+    margin-top: 20px;
+    button:nth-child(1) {
+      margin-bottom: 20px;
+    }
+  }
+}

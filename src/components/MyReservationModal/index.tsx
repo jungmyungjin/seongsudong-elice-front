@@ -1,27 +1,67 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { useAppSelector } from 'hooks/useRedux';
+import React, { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
+
+import { closeMyReservationModal } from 'reducers/modal';
 
 import FullModal from '../common/FullModal';
+import KakaoShareButton from 'components/KakaoShareButton';
+import CancelReservationBtn from 'components/CancelReservationBtn';
+
 import styles from './myReservationModal.module.scss';
 
 function MyReservationModal() {
   const myReservationDetail = useAppSelector(
     state => state.myReservation.myReservationDetail,
   );
+  const dispatch = useAppDispatch();
+
+  const zoneType = myReservationDetail.seat.split(' ')[0];
+  const visitors = myReservationDetail.visitors;
+  const dateAndTime = myReservationDetail.date + ' ' + myReservationDetail.time;
+  const seat = myReservationDetail.seat;
+
+  useEffect(() => {
+    return () => {
+      dispatch(closeMyReservationModal());
+    };
+  }, [dispatch]);
 
   return (
-    <div className={styles.container}>
-      <FullModal title='예약 상세 조회' modalType='reservation'>
-        <div>예약 상세 조회 모달입니다</div>
-        <div>
-          <p>예약 ID: {myReservationDetail.id}</p>
-          <p>날짜: {myReservationDetail.date}</p>
-          <p>시간: {myReservationDetail.time}</p>
-          <p>좌석: {myReservationDetail.seat}</p>
-          <p>방문자: {myReservationDetail.visitors}</p>
-        </div>
-      </FullModal>
-    </div>
+    <FullModal title='예약 상세 조회' modalType='reservation'>
+      <div className={styles.container}>
+        <section className={styles.seatLayoutContainer}>
+          {zoneType !== '미팅룸' ? (
+            <>여기는 프로그래밍존 UI를 놓으시면 됩니다.</>
+          ) : (
+            <>여기는 미팅룸 UI를 놓으시면 됩니다.</>
+          )}
+        </section>
+
+        <section className={styles.contentsContainer}>
+          <div className={styles.dateContainer}>
+            <p>예약 내용</p>
+            <p>{dateAndTime}</p>
+          </div>
+
+          <div className={styles.seatContainer}>
+            <p>예약 좌석</p>
+            <p>{seat}</p>
+          </div>
+
+          {visitors.length > 0 ? (
+            <div className={styles.visitorsContainer}>
+              <p>모든 방문자</p>
+              <p>{myReservationDetail.visitors}</p>
+            </div>
+          ) : null}
+        </section>
+
+        <section className={styles.buttonContainer}>
+          <KakaoShareButton />
+          <CancelReservationBtn />
+        </section>
+      </div>
+    </FullModal>
   );
 }
 

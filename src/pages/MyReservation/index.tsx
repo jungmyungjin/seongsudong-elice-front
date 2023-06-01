@@ -32,9 +32,11 @@ function MyReservationPage() {
   );
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  /** 더미 액션 작업 => 추후에 지워야함 */
   const setMyReservation = createAction<MyReservation[]>(
     'myReservation/setMyReservation',
   );
+  /** 더미 액션 작업 => 추후에 지워야함 */
   const setMyReservationDetail = createAction<MyReservation>(
     'myReservation/setMyReservationDetail',
   );
