@@ -19,20 +19,17 @@ const Posts: React.FC = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
       const response = await axios.get(
-        'https://jsonplaceholder.typicode.com/posts',
+        `http://localhost:5000/api/posts?category=${category}`
       );
-      const data = response.data.map((post: Post) => {
-        return {
-          ...post,
-          created_at: '2023-05-30T16:06:53.000Z',
-          views: 3,
-        };
-      });
-      setPosts(data);
+      // 선택된 탭에 따라 게시물을 필터링합니다.
+      console.log(response.data);
+      setPosts(response.data);
     };
     fetchPosts();
-  }, []);
+  }, [selectedTab]); // selectedTab 상태 변경시 데이터를 다시 불러옵니다.
+  
 
   // 검색어가 바뀌거나 포스트가 바뀌었을 때 필터링된 포스트를 업데이트합니다.
   useEffect(() => {

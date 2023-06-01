@@ -7,8 +7,14 @@ export interface IPost {
 
 export interface Post {
   id: number;
-  name: string;
+  category: string;
+  title: string;
+  images: string;
+  description: string;
   created_at: string;
   views: number;
-  title: string;
+  email: string;
+  name: string;
+  generation: string;
+  isAdmin: number;
 }

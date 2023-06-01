@@ -8,8 +8,14 @@ export interface ImyPost {
 
 export interface myPost {
   id: number;
-  name: string;
+  category: string;
+  title: string;
+  images: string;
+  description: string;
   created_at: string;
   views: number;
-  title: string;
+  email: string;
+  name: string;
+  generation: string;
+  isAdmin: number;
 }
