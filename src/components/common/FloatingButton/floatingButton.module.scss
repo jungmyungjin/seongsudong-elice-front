@@ -45,7 +45,7 @@
 @include bigDesktop {
   .floatingButtonContainer {
     position: fixed;
-    right: 32%;
+    right: 34%;
     bottom: 6%;
   }
 }
@@ -66,7 +66,7 @@
   cursor: pointer;
   filter: drop-shadow(0px 0px 7px rgba(77, 77, 77, 0.3));
 
-  z-index: 100;
+  z-index: 2;
 
   .floatingButtonText {
     position: absolute;
