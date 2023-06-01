@@ -10,6 +10,8 @@ import FloatingButton from 'components/common/FloatingButton';
 import Admin from 'pages/Admin/Admin';
 import Header from './components/common/Header';
 import MyPage from 'pages/MyPage';
+import MyPost from 'pages/MyPost';
+import MyReservation from 'pages/MyReservation';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path='/post/free/editPost/:id' element={<PostUpdate />} />
           <Route path='/reservation' element={<Reservation />} />
           <Route path='/mypage' element={<MyPage />} />
+          <Route path='/mypage/mypost' element={<MyPost />} />
+          <Route path='/mypage/myreservation' element={<MyReservation />} />
         </Routes>
       </BrowserRouter>
       <FloatingButton />
