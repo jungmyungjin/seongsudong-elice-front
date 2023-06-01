@@ -20,9 +20,7 @@ const Reservation: React.FC = () => {
   const { reservationInfo, updateReservationInfo } =
     useContext(ReservationContext);
 
-  useEffect(() => {
-    console.log(reservationInfo.date);
-  }, [reservationInfo.date]);
+  useEffect(() => {}, [reservationInfo.date]);
 
   const getCurrentDate = () => {
     const today = new Date();

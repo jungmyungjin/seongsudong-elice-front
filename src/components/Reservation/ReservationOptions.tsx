@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { ReservationContext } from './ReservationProvider';
+import { ReservationContext, ReservationInfo } from './ReservationProvider';
 import styles from './ReservationOptions.module.scss';
 import {
   PersonalSeatLayout,
@@ -7,7 +7,6 @@ import {
   GraduateSeatLayout,
   SecondGroupSeatLayout,
 } from 'components/Reservation/SeatLayout';
-import handleOpenModal from '../common/ConfirmModal';
 
 interface CreateTypeSelectorProps {
   typeList: string[];
@@ -55,17 +54,26 @@ const CreateTimeSelector: React.FC<CreateTimeSelectorProps> = ({
 
   const { reservationInfo, updateReservationInfo } =
     useContext(ReservationContext);
+  const updateReservation = (updatedInfo: Partial<ReservationInfo>) => {
+    const updatedReservationInfo = {
+      ...reservationInfo,
+      ...updatedInfo,
+    };
+    updateReservationInfo(updatedReservationInfo);
+  };
   useEffect(() => {
     const selectedTimes = typeList.filter((_, index) => isClicked[index]);
     const startTime = selectedTimes
       .map(time => time.substring(0, 2))
       .join(', ');
 
-    const updatedReservationInfo = {
-      ...reservationInfo,
-      startTime: startTime,
-    };
-    updateReservationInfo(updatedReservationInfo);
+    updateReservation({ startTime: startTime });
+
+    // const updatedReservationInfo = {
+    //   ...reservationInfo,
+    //   startTime: startTime,
+    // };
+    // updateReservationInfo(updatedReservationInfo);
   }, [isClicked]);
 
   const handleClick = (index: number) => {
@@ -94,20 +102,46 @@ const CreateTimeSelector: React.FC<CreateTimeSelectorProps> = ({
 const ReservationOptions: React.FC = () => {
   const seatTypeList: string[] = ['개인석', '팀플석', '수료기수석', '미팅룸'];
   const TimeList = ['10:00~14:00', '14:00~18:00', '18:00~22:00'];
+  const [visitors, setVisitors] = useState('');
 
   const { reservationInfo, updateReservationInfo } =
     useContext(ReservationContext);
+  const updateReservation = (updatedInfo: Partial<ReservationInfo>) => {
+    const updatedReservationInfo = {
+      ...reservationInfo,
+      ...updatedInfo,
+    };
+    updateReservationInfo(updatedReservationInfo);
+  };
+
+  // axios.get('api', {
+  //   headers: {
+  //     date: reservationInfo.date,
+  //     startTime: reservationInfo.startTime,
+  //   },
+  // })
+  //   .then(response => {
+  //
+  //   })
+  //   .catch(error => {
+  //     // 에러 처리
+  //   });
+  // 날짜, 시간 서버에 보내서 예약된 좌석 받아오기
+  // const { reserved, updateReserved } = useContext(ReservationContext);
+  // updateReserved(예약된 좌석 정보);
 
   useEffect(() => {
     if (!reservationInfo.seatType) {
-      const updatedReservationInfo = {
-        ...reservationInfo,
-        seatType: '개인석',
-        startTime: '10',
-        seat: 'A',
-      };
-      updateReservationInfo(updatedReservationInfo);
+      updateReservation({ seatType: '개인석', startTime: '10', seat: 'A' });
+      // const updatedReservationInfo = {
+      //   ...reservationInfo,
+      //   seatType: '개인석',
+      //   startTime: '10',
+      //   seat: 'A',
+      // };
+      // updateReservationInfo(updatedReservationInfo);
     }
+    console.log('다른 파일 좌석 컴포넌트 렌더링');
     console.log(reservationInfo);
   }, [
     reservationInfo.seatType,
@@ -117,20 +151,21 @@ const ReservationOptions: React.FC = () => {
   ]);
 
   const handleSeatTypeSelect = (value: string) => {
-    const updatedReservationInfo = {
-      ...reservationInfo,
-      seatType: value,
-    };
-    updateReservationInfo(updatedReservationInfo);
+    updateReservation({ seatType: value });
+    // const updatedReservationInfo = {
+    //   ...reservationInfo,
+    //   seatType: value,
+    // };
+    // updateReservationInfo(updatedReservationInfo);
   };
 
   const handleEventClick = (value: string) => {
-    const updatedReservationInfo = {
-      ...reservationInfo,
-      seat: value,
-    };
-    updateReservationInfo(updatedReservationInfo);
-    console.log(reservationInfo.seat);
+    updateReservation({ seat: value });
+    // const updatedReservationInfo = {
+    //   ...reservationInfo,
+    //   seat: value,
+    // };
+    // updateReservationInfo(updatedReservationInfo);
   };
 
   const showSeatKind = () => {
@@ -153,12 +188,12 @@ const ReservationOptions: React.FC = () => {
           </div>
           <div className={styles.seatContainer}>
             <PersonalSeatLayout
-              className={`${styles.possible}`}
+              className={styles.possible}
               clickEvent={handleEventClick}
             />
-            <FirstGroupSeatLayout className={`${styles.impossible}`} />
-            <GraduateSeatLayout className={`${styles.impossible}`} />
-            <SecondGroupSeatLayout className={`${styles.impossible}`} />
+            <FirstGroupSeatLayout className={styles.impossible} />
+            <GraduateSeatLayout className={styles.impossible} />
+            <SecondGroupSeatLayout className={styles.impossible} />
           </div>
         </>
       );
@@ -235,16 +270,25 @@ const ReservationOptions: React.FC = () => {
           <CreateTypeSelector
             typeList={['미팅룸A (최대 6인)', '미팅룸B (최대 10인)']}
             onSelect={(value: string) => {
-              const updatedReservationInfo = {
-                ...reservationInfo,
-                seat: value.charAt(3),
-              };
-              updateReservationInfo(updatedReservationInfo);
+              updateReservation({ seat: value.charAt(3) });
+              // const updatedReservationInfo = {
+              //   ...reservationInfo,
+              //   seat: value.charAt(3),
+              // };
+              // updateReservationInfo(updatedReservationInfo);
             }}
           />
           <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
           <input
             className={styles.visitorInput}
+            onChange={e => {
+              updateReservation({ visitors: e.target.value });
+              // const updatedReservationInfo = {
+              //   ...reservationInfo,
+              //   visitors: e.target.value,
+              // };
+              // updateReservationInfo(updatedReservationInfo);
+            }}
             type='text'
             placeholder='필수입력*'
           />
