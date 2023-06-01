@@ -3,13 +3,18 @@ export interface ImyPost {
   loadMyPostLoading: boolean;
   loadMyPostDone: boolean;
   loadMyPostError: null | string;
-  // hasMoreMyPost: boolean;
 }
 
 export interface myPost {
   id: number;
-  name: string;
+  category: string;
+  title: string;
+  images: string;
+  description: string;
   created_at: string;
   views: number;
-  title: string;
+  email: string;
+  name: string;
+  generation: string;
+  isAdmin: number;
 }
