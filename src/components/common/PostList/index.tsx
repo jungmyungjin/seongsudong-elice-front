@@ -1,30 +1,42 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './postList.module.scss';
+import { ReactComponent as Eye } from 'assets/Eye.svg';
 
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-}
+import { Post } from 'types/post';
 
-interface PostListProps {
+interface Props {
   posts: Post[];
 }
 
-const PostList: React.FC<PostListProps> = ({ posts }) => {
+function PostList({ posts }: Props) {
+  const convertStringToDate = (date: string) => {
+    const value = date.split('T')[0];
+    return value;
+  };
   return (
-    <ul className={styles['posts-list']}>
-      {posts.map(post => (
-        <li key={post.id}>
-          <Link to={`/post/free/${post.id}`} className={styles.eachData}>
-            <p>{post.title}</p>
-            <p>{post.id}</p>
+    <div className={styles.postList}>
+      {posts.map((post, _) => (
+        <div className={styles.eachPost} key={post.id}>
+          <Link to={`/post/${post.id}`}>
+            <div className={styles.postInfo}>
+              <div className={styles.nameAndDate}>
+                <p className={styles.name}>{post.name}</p>
+                <p className={styles.date}>
+                  {convertStringToDate(post.created_at)}
+                </p>
+              </div>
+              <div className={styles.viewsContainer}>
+                <Eye />
+                <p className={styles.views}>{post.views}</p>
+              </div>
+            </div>
+            <p className={styles.title}>{post.title}</p>
           </Link>
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
-};
+}
 
 export default PostList;
