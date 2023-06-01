@@ -30,8 +30,8 @@ function App() {
           <Route path='/mypage/mypost' element={<MyPost />} />
           <Route path='/mypage/myreservation' element={<MyReservation />} />
         </Routes>
+        <FloatingButton />
       </BrowserRouter>
-      <FloatingButton />
     </div>
   );
 }
