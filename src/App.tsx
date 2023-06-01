@@ -4,6 +4,8 @@ import './styles/index.scss';
 import Main from './pages/Main';
 import FloatingButton from 'components/common/FloatingButton';
 import Admin from 'pages/Admin/Admin';
+import AdminBooking from 'pages/Admin/AdminBooking';
+import AdminBookingRacer from 'pages/Admin/AdminBookingRacer';
 import Header from './components/common/Header';
 
 function App() {
@@ -11,13 +13,15 @@ function App() {
     <div className='App'>
       <BrowserRouter>
         <Header />
-        <main className='main'>
-          <Routes>
-            <Route path='/' element={<Main />} />
-            <Route path='/admin' element={<Admin />} />
-          </Routes>
-        </main>
+
+        <Routes>
+          <Route path='/' element={<Main />} />
+          <Route path='/admin' element={<Admin />} />
+          <Route path='/admin/booking' element={<AdminBooking />} />
+          <Route path='/admin/booking/racer' element={<AdminBookingRacer />} />
+        </Routes>
       </BrowserRouter>
+
       <FloatingButton />
     </div>
   );
