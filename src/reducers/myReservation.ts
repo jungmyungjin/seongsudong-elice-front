@@ -1,11 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ImyReservation } from 'types/myReservation';
+import { ImyReservation, MyReservation } from 'types/myReservation';
 
 export const initialState: ImyReservation = {
   myReservation: [],
   loadMyReservationLoading: false,
   loadMyReservationDone: false,
   loadMyReservationError: null,
+  myReservationDetail: {
+    id: 0,
+    date: '',
+    time: '',
+    seat: '',
+    visitors: '',
+  },
+  loadMyReservationDetailLoading: false,
+  loadMyReservationDetailDone: false,
+  loadMyReservationDetailError: null,
 };
 
 const myReservationSlice = createSlice({
@@ -18,6 +28,10 @@ const myReservationSlice = createSlice({
     ) => {
       state.myReservation = action.payload;
     },
+    setMyReservationDetail: (state, action: PayloadAction<MyReservation>) => {
+      state.myReservationDetail = action.payload;
+    },
+
     // extraReducers: builder =>
     //   builder
     //     .addCase(loadMyReservation.pending, state => {

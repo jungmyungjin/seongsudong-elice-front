@@ -7,8 +7,10 @@ import styles from './myReservation.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { MyReservation } from 'types/myReservation';
 
+/** 더미 액션 작업 => 추후에 지워야함 */
 import { createAction } from '@reduxjs/toolkit';
 import reservations from './reservationDummy.json';
+
 import ReservationList from './ReservationList';
 
 function MyReservationPage() {

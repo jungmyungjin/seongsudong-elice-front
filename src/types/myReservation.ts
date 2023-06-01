@@ -3,6 +3,10 @@ export interface ImyReservation {
   loadMyReservationLoading: boolean;
   loadMyReservationDone: boolean;
   loadMyReservationError: null | string;
+  myReservationDetail: MyReservation;
+  loadMyReservationDetailLoading: boolean;
+  loadMyReservationDetailDone: boolean;
+  loadMyReservationDetailError: null | string;
 }
 
 export interface MyReservation {
