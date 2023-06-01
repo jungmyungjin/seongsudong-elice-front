@@ -1,0 +1,30 @@
+@import '../../styles/colors';
+.calcelButton {
+  width: 100%;
+  height: 55px;
+  padding: 5px 40px 5px 40px;
+  background-color: $MAIN_PURPLE;
+
+  border-radius: 15px;
+  // border: solid 2px $MAIN_PURPLE;
+  box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+
+  .text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    color: white;
+    font-size: 20px;
+  }
+
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    border: solid 2px $MAIN_PURPLE;
+    background-color: white;
+    .text {
+      color: $MAIN_PURPLE;
+    }
+  }
+}
