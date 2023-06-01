@@ -18,7 +18,7 @@ function PostList({ posts }: Props) {
     <div className={styles.postList}>
       {posts.map((post, _) => (
         <div className={styles.eachPost} key={post.id}>
-          <Link to={`/post/${post.id}`}>
+          <Link to={`/post/free/${post.id}`}>
             <div className={styles.postInfo}>
               <div className={styles.nameAndDate}>
                 <p className={styles.name}>{post.name}</p>
