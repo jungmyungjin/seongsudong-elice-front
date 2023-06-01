@@ -5,8 +5,16 @@ import styles from './postsDetail.module.scss';
 
 interface Post {
   id: number;
+  category: string;
   title: string;
-  body: string;
+  images: string;
+  description: string;
+  created_at: string;
+  views: number;
+  email: string;
+  name: string;
+  generation: string;
+  isAdmin: number;
 }
 
 const PostDetail: React.FC = () => {
@@ -16,8 +24,9 @@ const PostDetail: React.FC = () => {
 
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
-      setPost(response.data);
+      const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+      setPost(response.data.postData);
+      // console.log(response.data.postData);
     };
 
     fetchPost();
@@ -32,16 +41,21 @@ const PostDetail: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+  const convertStringToDate = (date: string) => {
+    const value = date.split('T')[0];
+    return value;
+  };
+
   return (
     <div className={styles.postDetail}>
       <div className={styles.title}>
         <p>{post.title}</p>
       </div>
       <div className={styles.postInfo}>
-        <p>홍길동 | 2023-05-25 | 조회수 : 30</p>
+        <p>{post.name} | {convertStringToDate(post.created_at)} | 조회수 : {post.views}</p>
       </div>
       <div className={styles.description}>
-        <p>{post.body}</p>
+        <p>{post.description}</p>
       </div>
       <div className={styles.updateAndDeleteBtn}>
         <button className={styles.updateBtn} onClick={handleEdit}>수정</button>
