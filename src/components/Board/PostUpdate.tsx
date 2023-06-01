@@ -52,7 +52,7 @@ const EditPost: React.FC = () => {
 
     await axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, formData);
 
-    navigate(`/post/${id}`); // 수정 후 게시물 상세 페이지로 이동
+    navigate(`/post/free/${id}`); // 수정 후 게시물 상세 페이지로 이동
   };
 
   if (!post) {

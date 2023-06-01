@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './postsDetail.module.scss';
-import FloatingButton from 'components/common/FloatingButton';
 
 interface Post {
   id: number;
@@ -26,7 +25,7 @@ const PostDetail: React.FC = () => {
 
   // 수정 버튼 클릭 시 수정 페이지로 이동
   const handleEdit = () => {
-    navigate(`/post/editPost/${id}`);
+    navigate(`/post/free/editPost/${id}`);
   };
 
   if (!post) {

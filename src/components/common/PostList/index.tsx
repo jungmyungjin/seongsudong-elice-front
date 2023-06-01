@@ -17,7 +17,7 @@ const PostList: React.FC<PostListProps> = ({ posts }) => {
     <ul className={styles['posts-list']}>
       {posts.map(post => (
         <li key={post.id}>
-          <Link to={`/post/${post.id}`} className={styles.eachData}>
+          <Link to={`/post/free/${post.id}`} className={styles.eachData}>
             <p>{post.title}</p>
             <p>{post.id}</p>
           </Link>
