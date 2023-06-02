@@ -10,8 +10,31 @@ interface SeatOptionInterface {
 }
 
 function SeatOption(props: SeatOptionInterface) {
-  const zoneArr = ['프로그래밍', '미팅'];
-  // const zoneArr = ['개인석',"팀플석(4인)", "팀플석(2인)", '미팅'];
+  // const zoneArr = ['프로그래밍', '미팅'];
+  // const zoneArr = ['개인석', '팀플석(4인)', '팀플석(2인)', '미팅룸'];
+
+  const zoneArr = [
+    {
+      zoneName: '-공간 선택-',
+      zoneValue: '',
+    },
+    {
+      zoneName: '개인석',
+      zoneValue: '개인석',
+    },
+    {
+      zoneName: '팀플석(4인)',
+      zoneValue: '팀플석(4인)',
+    },
+    {
+      zoneName: '팀플석(2인)',
+      zoneValue: '팀플석(2인)',
+    },
+    {
+      zoneName: '미팅룸',
+      zoneValue: '미팅룸',
+    },
+  ];
 
   return (
     <div className={styles.optionDiv}>
@@ -23,10 +46,17 @@ function SeatOption(props: SeatOptionInterface) {
           onChange={props.zoneChangeHandler}
           className={styles.select}
         >
-          <option value='default'>-공간 선택-</option>
-          {zoneArr.map((zone, index) => (
+          {/* <option value='default'>-공간 선택-</option> */}
+
+          {/* {zoneArr.map((zone, index) => (
             <option value={zone} key={index}>
               {zone}
+            </option>
+          ))} */}
+
+          {zoneArr.map((data, index) => (
+            <option value={data.zoneValue} key={index}>
+              {data.zoneName}
             </option>
           ))}
         </select>

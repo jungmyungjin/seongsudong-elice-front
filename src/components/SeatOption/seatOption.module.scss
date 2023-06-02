@@ -5,12 +5,14 @@
 .selectDiv {
   display: flex;
   width: 100%;
+  height: 50px;
   justify-content: space-between;
   align-items: center;
 }
 
 .select {
   width: 40%;
+  height: 100%;
   border: 2px solid #7573b9;
   border-radius: 10px;
   padding: 10px;
@@ -26,10 +28,10 @@
 
 .input {
   width: 59%;
+  height: 100%;
   border: 2px solid #7573b9;
   border-radius: 10px;
   padding: 10px;
-  cursor: pointer;
 }
 
 .input:focus {
