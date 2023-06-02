@@ -7,6 +7,8 @@ import FullModal from '../common/FullModal';
 import KakaoShareButton from 'components/KakaoShareButton';
 import CancelReservationBtn from 'components/CancelReservationBtn';
 
+import { ProgrammingZone, MeetingRoom } from './SeatLayout';
+
 import styles from './myReservationModal.module.scss';
 
 function MyReservationModal() {
@@ -31,9 +33,13 @@ function MyReservationModal() {
       <div className={styles.container}>
         <section className={styles.seatLayoutContainer}>
           {zoneType !== '미팅룸' ? (
-            <>여기는 프로그래밍존 UI를 놓으시면 됩니다.</>
+            <>
+              <ProgrammingZone myReservation='1' />
+            </>
           ) : (
-            <>여기는 미팅룸 UI를 놓으시면 됩니다.</>
+            <>
+              <MeetingRoom myReservation='A' />
+            </>
           )}
         </section>
 
