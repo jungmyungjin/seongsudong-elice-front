@@ -9,7 +9,7 @@ export interface myPost {
   id: number;
   category: string;
   title: string;
-  images: string;
+  images: string[];
   description: string;
   created_at: string;
   views: number;
