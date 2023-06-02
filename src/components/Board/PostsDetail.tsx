@@ -9,7 +9,7 @@ interface Post {
   id: number;
   category: string;
   title: string;
-  images: string;
+  images: string[];
   description: string;
   created_at: string;
   views: number;
@@ -35,15 +35,15 @@ const PostDetail: React.FC = () => {
   const [comments, setComments] = useState<Comment[]>([]);
   const navigate = useNavigate(); // useNavigate hook을 가져옵니다.
 
-  //더미 데이터 테스트
-  useEffect(() => {
-    const fetchPost = () => {
-      const response = postsData.find((post: Post) => post.id === Number(id));
-      setPost(response || null);
-    };
+  // //더미 데이터 테스트
+  // useEffect(() => {
+  //   const fetchPost = () => {
+  //     const response = postsData.find((post: Post) => post.id === Number(id));
+  //     setPost(response || null);
+  //   };
 
-    fetchPost();
-  }, [id]);
+  //   fetchPost();
+  // }, [id]);
 
   // 댓글 더미데이터
   useEffect(() => {
@@ -56,14 +56,14 @@ const PostDetail: React.FC = () => {
   }, [id]);
 
   // api 테스트
-  // useEffect(() => {
-  //   const fetchPost = async () => {
-  //     const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
-  //     setPost(response.data.postData);
-  //   };
+  useEffect(() => {
+    const fetchPost = async () => {
+      const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+      setPost(response.data.postData);
+    };
 
-  //   fetchPost();
-  // }, [id]);
+    fetchPost();
+  }, [id]);
 
   // 수정 버튼 클릭 시 수정 페이지로 이동
   const handleEdit = () => {
@@ -89,9 +89,15 @@ const PostDetail: React.FC = () => {
           {post.name} | {convertStringToDate(post.created_at)} | 조회수 :{' '}
           {post.views}
         </p>
+      {/* <div><img src={`http://localhost:5000/${post.images}`} /></div> */}
       </div>
       <div className={styles.description}>
         <p>{post.description}</p>
+      </div>
+      <div className={styles.imgPosition}>
+        {post.images.map((image:any, index:any) => (
+          <img key={index} src={`http://localhost:5000/${image}`} alt={`post-${index}`} />
+        ))}
       </div>
       <div className={styles.updateAndDeleteBtn}>
         <button className={styles.updateBtn} onClick={handleEdit}>
