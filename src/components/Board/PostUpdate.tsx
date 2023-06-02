@@ -17,9 +17,9 @@ const EditPost: React.FC = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState<File | null>(null);
+  const [image, setImage] = useState<FileList | null>(null);
   const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null); 
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onFileButtonClick = () => {
     fileInputRef.current?.click();
@@ -40,12 +40,12 @@ const EditPost: React.FC = () => {
   //       console.error('Post not found');
   //       return;
   //     }
-      
+
   //     setPost(response);
   //     setTitle(response.title);
   //     setDescription(response.description);
   //   };
-    
+
   //   fetchPost();
   // }, [id]);
 
@@ -70,18 +70,15 @@ const EditPost: React.FC = () => {
   //   if (image) {
   //     formData.append('image', image);
   //   }
-    
+
   //   let storedData = localStorage.getItem('dummyData');
   //   const parsedData = JSON.parse(storedData!);
   //   const postIndex = parsedData.findIndex((post: Post) => post.id === Number(id));
   //   parsedData[postIndex] = { ...parsedData[postIndex], title: title, description: description };
   //   localStorage.setItem('dummyData', JSON.stringify(parsedData));
-    
+
   //   navigate(`/post/free/${id}`);
   // };
-
-
-
 
   // api 테스트
   useEffect(() => {
@@ -104,25 +101,31 @@ const EditPost: React.FC = () => {
   };
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setImage(event.target.files ? event.target.files[0] : null);
+    setImage(event.target.files ? event.target.files : null);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    console.log(title, description, image);
+
     // FormData를 사용하여 업로드된 이미지 파일과 수정된 제목 및 본문을 서버에 전송
     const formData = new FormData();
     formData.append('title', title);
     formData.append('description', description);
+
     if (image) {
-      formData.append('file', image);
+      for (let i = 0; i < image.length; i++) {
+        formData.append('file', image[i]);
+      }
     }
 
-    await axios.put(`http://localhost:5000/api/posts/${id}`, formData, {
+    await axios.patch(`http://localhost:5000/api/posts/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-      }
+      },
     });
+
     navigate(`/post/free/${id}`); // 수정 후 게시물 상세 페이지로 이동
   };
 
@@ -137,18 +140,34 @@ const EditPost: React.FC = () => {
   return (
     <form onSubmit={handleSubmit}>
       <div className={styles.updateBtn}>
-        <button type="button" onClick={handleBack}>
+        <button type='button' onClick={handleBack}>
           <Back />
         </button>
-        <button type="submit">
+        <button type='submit'>
           <p>제출</p>
         </button>
       </div>
-      <input type="text" className={styles.titleChange} value={title} onChange={handleTitleChange} />
-      <textarea className={styles.descriptionChange} value={description} onChange={handleBodyChange} />
+      <input
+        type='text'
+        className={styles.titleChange}
+        value={title}
+        onChange={handleTitleChange}
+      />
+      <textarea
+        className={styles.descriptionChange}
+        value={description}
+        onChange={handleBodyChange}
+      />
       <div className={styles.uploadIcon}>
-        <input type="file" ref={fileInputRef} onChange={handleImageChange} style={{ display: 'none' }} />
-        <button type="button" onClick={onFileButtonClick}>
+        <input
+          type='file'
+          ref={fileInputRef}
+          onChange={handleImageChange}
+          style={{ display: 'none' }}
+          multiple
+          accept='.png, .jpeg'
+        />
+        <button type='button' onClick={onFileButtonClick}>
           <UploadIcon />
         </button>
       </div>
