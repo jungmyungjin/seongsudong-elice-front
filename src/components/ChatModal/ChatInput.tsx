@@ -2,19 +2,14 @@ import React from 'react';
 import styles from './chatInput.module.scss';
 import { ReactComponent as Send } from 'assets/Send.svg';
 
-interface ChatInputProps {
-  inputValue: string;
-  handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  handleClick: () => void;
-  handleEnter: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
-}
+import { IChatInput } from 'types/chat';
 
 function ChatInput({
   inputValue,
   handleInputChange,
   handleClick,
   handleEnter,
-}: ChatInputProps) {
+}: IChatInput) {
   return (
     <div className={styles.chatInputContainer}>
       <textarea
