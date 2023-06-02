@@ -1,23 +1,22 @@
 const { Kakao } = window;
 
-export const shareKakao = (description: string) => {
+interface buttonContents {
+  date: string;
+  time: string;
+  seat: string;
+  visitors: string;
+}
+
+export const shareKakao = (buttonContents: buttonContents) => {
   if (Kakao.isInitialized()) {
-    Kakao.Share.sendDefault({
-      objectType: 'text',
-      text: description,
-      link: {
-        mobileWebUrl: `${process.env.REACT_APP_DEPLOY_URL}`,
-        webUrl: `${process.env.REACT_APP_DEPLOY_URL}`,
+    Kakao.Share.sendCustom({
+      templateId: 94547,
+      templateArgs: {
+        date: `${buttonContents.date}`,
+        time: `${buttonContents.time}`,
+        seat: `${buttonContents.seat}`,
+        visitors: `${buttonContents.visitors}`,
       },
-      buttons: [
-        {
-          title: '새 예약하러 가기',
-          link: {
-            mobileWebUrl: `${process.env.REACT_APP_DEPLOY_URL}`,
-            webUrl: `${process.env.REACT_APP_DEPLOY_URL}`,
-          },
-        },
-      ],
     });
   }
 };

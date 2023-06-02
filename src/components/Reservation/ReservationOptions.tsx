@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { ReservationContext, ReservationInfo } from './ReservationProvider';
 import styles from './ReservationOptions.module.scss';
 import {
   PersonalSeatLayout,
@@ -6,64 +7,87 @@ import {
   GraduateSeatLayout,
   SecondGroupSeatLayout,
 } from 'components/Reservation/SeatLayout';
-interface typeInfo {
-  value: string;
-}
 
 interface CreateTypeSelectorProps {
-  typeList: typeInfo[];
+  typeList: string[];
   onSelect: (value: string) => void;
 }
 
-// 가짜 데이터
-const fakeUserData = {
-  name: '김철수',
-  reservation: [
-    {
-      reservation_date: '2023.05.29',
-      start_time: '10:00',
-      seat_number: '개인석-2',
-      status: '예약완료',
-    },
-    {
-      reservation_date: '2023.05.29',
-      start_time: '14:00',
-      seat_number: '개인석-2',
-      status: '예약완료',
-    },
-  ],
-};
-const fakeSeatData = {
-  seat_number: ['개인석-1', '개인석-3', '개인석-4', '개인석-5', '개인석-6'],
-  available: true,
-  reservation_date: '2023.05.29',
-  start_time: '10:00',
-};
+interface CreateTimeSelectorProps {
+  typeList: string[];
+}
 
 const CreateTypeSelector: React.FC<CreateTypeSelectorProps> = ({
   typeList,
   onSelect,
 }) => {
-  const [typeSelector, setTypeSelector] = useState(typeList[0].value);
+  const [selectedSeatTypeIndex, setSelectedSeatTypeIndex] = useState<number>(0);
 
-  const handleButtonClick = (value: string) => {
-    setTypeSelector(value);
-    onSelect(value);
+  return (
+    <div className={styles.typeContainer}>
+      {typeList.map((type, index) => (
+        <button
+          key={type}
+          className={
+            selectedSeatTypeIndex === index
+              ? styles.checkedType
+              : styles.unCheckedType
+          }
+          onClick={() => {
+            onSelect(type);
+            setSelectedSeatTypeIndex(index);
+          }}
+        >
+          {type}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+const CreateTimeSelector: React.FC<CreateTimeSelectorProps> = ({
+  typeList,
+}) => {
+  const [isClicked, setIsClicked] = useState<boolean[]>(
+    typeList.map((_, index) => index === 0),
+  );
+
+  const { reservationInfo, updateReservationInfo } =
+    useContext(ReservationContext);
+  const updateReservation = (updatedInfo: Partial<ReservationInfo>) => {
+    const updatedReservationInfo = {
+      ...reservationInfo,
+      ...updatedInfo,
+    };
+    updateReservationInfo(updatedReservationInfo);
+  };
+
+  useEffect(() => {
+    const selectedTimes = typeList.filter((_, index) => isClicked[index]);
+    const startTime = selectedTimes
+      .map(time => time.substring(0, 2))
+      .join(', ');
+
+    updateReservation({ startTime: startTime });
+  }, [isClicked]);
+
+  const handleClick = (index: number) => {
+    const updatedClickedState = [...isClicked];
+    updatedClickedState[index] = !updatedClickedState[index];
+    setIsClicked(updatedClickedState);
   };
 
   return (
     <div className={styles.typeContainer}>
-      {typeList.map(type => (
+      {typeList.map((type, index) => (
         <button
-          key={type.value}
+          key={type}
           className={
-            typeSelector === type.value
-              ? styles.checkedType
-              : styles.unCheckedType
+            isClicked[index] ? styles.checkedType : styles.unCheckedType
           }
-          onClick={() => handleButtonClick(type.value)}
+          onClick={() => handleClick(index)}
         >
-          {type.value}
+          {type}
         </button>
       ))}
     </div>
@@ -71,43 +95,84 @@ const CreateTypeSelector: React.FC<CreateTypeSelectorProps> = ({
 };
 
 const ReservationOptions: React.FC = () => {
-  const seatTypeList = [
-    { value: '개인석' },
-    { value: '팀플석' },
-    { value: '수료기수석' },
-    { value: '미팅룸' },
-  ];
+  const seatTypeList: string[] = ['개인석', '팀플석', '수료기수석', '미팅룸'];
+  const TimeList = ['10:00~14:00', '14:00~18:00', '18:00~22:00'];
 
-  const TimeList = [
-    { value: '10:00~14:00' },
-    { value: '14:00~18:00' },
-    { value: '18:00~22:00' },
-  ];
+  const { reservationInfo, updateReservationInfo } =
+    useContext(ReservationContext);
 
-  const [selectedSeatType, setSelectedSeatType] = useState(
-    seatTypeList[0].value,
-  );
-
-  const [selectedTime, setSelectedTime] = useState(TimeList[0].value);
-
-  const handleSeatTypeSelect = (value: string) => {
-    setSelectedSeatType(value);
+  const updateReservation = (updatedInfo: Partial<ReservationInfo>) => {
+    const updatedReservationInfo = {
+      ...reservationInfo,
+      ...updatedInfo,
+    };
+    updateReservationInfo(updatedReservationInfo);
   };
 
-  const handleTimeSelect = (value: string) => {
-    setSelectedTime(value);
-    alert(value);
-    if (value === '10:00~14:00') {
-      fakeSeatData.start_time = '10:00';
+  // axios.get('api', {
+  //   headers: {
+  //     date: reservationInfo.date,
+  //   },
+  // })
+  //   .then(response => {
+  //
+  //   })
+  //   .catch(error => {
+  //     // 에러 처리
+  //   });
+  // 날짜, 서버에 보내서 예약된 좌석 받아오기
+  // const { reserved, updateReserved } = useContext(ReservationContext);
+  // updateReserved(예약된 좌석 정보);
+  /* 받아오는 데이터 형식
+      {
+      "status": "success",
+      "seats": [
+        {
+          "seat_number": "A1",
+          "available_10to14": true,
+          "available_14to18": false,
+          "available_18to22": true
+        },
+        {
+          "seat_number": "A2",
+          "available_10to14": true,
+          "available_14to18": true,
+          "available_18to22": false
+        },
+        {
+          "seat_number": "A3",
+          "available_10to14": false,
+          "available_14to18": true,
+          "available_18to22": true
+        },
+        ...
+      ]
+    }
+   */
+
+  useEffect(() => {
+    console.log('다른 파일 좌석 컴포넌트 렌더링');
+    console.log(reservationInfo);
+  }, [
+    reservationInfo.seatType,
+    reservationInfo.startTime,
+    reservationInfo.seat,
+    updateReservationInfo,
+  ]);
+
+  const handleSeatTypeSelect = (value: string) => {
+    updateReservation({ seatType: value });
+    if (value === '미팅룸') {
+      updateReservation({ seatType: value, seat: 'A' });
     }
   };
 
   const handleEventClick = (value: string) => {
-    alert(value);
+    updateReservation({ seat: value });
   };
 
   const showSeatKind = () => {
-    if (selectedSeatType === '개인석') {
+    if (reservationInfo.seatType === '개인석') {
       return (
         <>
           <div className={styles.seatKindContainer}>
@@ -126,25 +191,16 @@ const ReservationOptions: React.FC = () => {
           </div>
           <div className={styles.seatContainer}>
             <PersonalSeatLayout
-              className={`${styles.possible}`}
+              className={styles.possible}
               clickEvent={handleEventClick}
             />
-            <FirstGroupSeatLayout
-              className={`${styles.impossible}`}
-              clickEvent={handleEventClick}
-            />
-            <GraduateSeatLayout
-              className={`${styles.impossible}`}
-              clickEvent={handleEventClick}
-            />
-            <SecondGroupSeatLayout
-              className={`${styles.impossible}`}
-              clickEvent={handleEventClick}
-            />
+            <FirstGroupSeatLayout className={styles.impossible} />
+            <GraduateSeatLayout className={styles.impossible} />
+            <SecondGroupSeatLayout className={styles.impossible} />
           </div>
         </>
       );
-    } else if (selectedSeatType === '팀플석') {
+    } else if (reservationInfo.seatType === '팀플석') {
       return (
         <>
           <div className={styles.seatKindContainer}>
@@ -166,18 +222,12 @@ const ReservationOptions: React.FC = () => {
             </div>
           </div>
           <div className={styles.seatContainer}>
-            <PersonalSeatLayout
-              className={styles.impossible}
-              clickEvent={handleEventClick}
-            />
+            <PersonalSeatLayout className={styles.impossible} />
             <FirstGroupSeatLayout
               className={styles.possible}
               clickEvent={handleEventClick}
             />
-            <GraduateSeatLayout
-              className={styles.impossible}
-              clickEvent={handleEventClick}
-            />
+            <GraduateSeatLayout className={styles.impossible} />
             <SecondGroupSeatLayout
               className={styles.possible}
               clickEvent={handleEventClick}
@@ -185,7 +235,7 @@ const ReservationOptions: React.FC = () => {
           </div>
         </>
       );
-    } else if (selectedSeatType === '수료기수석') {
+    } else if (reservationInfo.seatType === '수료기수석') {
       return (
         <>
           <div className={styles.seatKindContainer}>
@@ -207,43 +257,40 @@ const ReservationOptions: React.FC = () => {
             </div>
           </div>
           <div className={styles.seatContainer}>
-            <PersonalSeatLayout
-              className={styles.impossible}
-              clickEvent={handleEventClick}
-            />
-            <FirstGroupSeatLayout
-              className={styles.impossible}
-              clickEvent={handleEventClick}
-            />
+            <PersonalSeatLayout className={styles.impossible} />
+            <FirstGroupSeatLayout className={styles.impossible} />
             <GraduateSeatLayout
               className={styles.possible}
               clickEvent={handleEventClick}
             />
-            <SecondGroupSeatLayout
-              className={styles.impossible}
-              clickEvent={handleEventClick}
-            />
+            <SecondGroupSeatLayout className={styles.impossible} />
           </div>
         </>
       );
-    } else if (selectedSeatType === '미팅룸') {
+    } else if (reservationInfo.seatType === '미팅룸') {
       return (
         <div>
           <CreateTypeSelector
-            typeList={[
-              { value: '미팅룸 A (최대 6인)' },
-              { value: '미팅룸 B (최대 10인)' },
-            ]}
+            typeList={['미팅룸A (최대 6인)', '미팅룸B (최대 10인)']}
             onSelect={(value: string) => {
-              console.log(value);
+              updateReservation({ seat: value.charAt(3) });
             }}
           />
           <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
           <input
             className={styles.visitorInput}
+            onChange={e => {
+              updateReservation({ visitors: e.target.value });
+              // const updatedReservationInfo = {
+              //   ...reservationInfo,
+              //   visitors: e.target.value,
+              // };
+              // updateReservationInfo(updatedReservationInfo);
+            }}
             type='text'
             placeholder='필수입력*'
           />
+          <div className={styles.submitButton}>예약하기</div>
         </div>
       );
     } else {
@@ -257,7 +304,7 @@ const ReservationOptions: React.FC = () => {
         typeList={seatTypeList}
         onSelect={handleSeatTypeSelect}
       />
-      <CreateTypeSelector typeList={TimeList} onSelect={handleTimeSelect} />
+      <CreateTimeSelector typeList={TimeList} />
       {showSeatKind()}
     </div>
   );

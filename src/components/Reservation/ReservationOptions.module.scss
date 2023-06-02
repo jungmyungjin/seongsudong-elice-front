@@ -143,6 +143,7 @@
 
 .seatContainer > .possible > .visible {
   background-color: #f6c1ff;
+  cursor: pointer;
 }
 
 .impossible > .visible {
@@ -151,8 +152,13 @@
 
 .group.possible :last-child.visible,
 .group.possible :nth-last-child(2).visible,
-.graduate.possible :last-child.visible {
+.graduateSeat.possible :last-child.visible {
   background-color: #bfb5ff;
+}
+
+.seatContainer > .possible > .visible.alreadyReserved {
+  background-color: #b3b3b3;
+  cursor: initial;
 }
 
 .visitor {
@@ -160,14 +166,15 @@
 }
 
 .visitorInput {
-  height: 40px;
-  width: 90%;
+  height: 50px;
+  width: 100%;
   margin-bottom: 60%;
+  border-radius: 5px;
+  font-size: 1.2rem;
 }
 
 .submitButton {
   background-color: $MAIN_PURPLE;
-  position: sticky;
   bottom: 0;
   height: 70px;
   font-size: 30px;
@@ -177,6 +184,7 @@
   width: 720px;
   text-align: center;
   padding-top: 10px;
+  transform: translateX(-20px);
 }
 
 .visible,
