@@ -1,10 +1,6 @@
 import CustomLink from 'components/common/Link';
 import styles from './myPage.module.scss';
 
-import ConfirmModal from 'components/common/ConfirmModal';
-import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
-import { openConfirmModal, closeConfirmModal } from 'reducers/modal';
-
 const myPageMenu = [
   {
     id: 1,
@@ -24,8 +20,6 @@ const myPageMenu = [
 
 function MyPage() {
   // 원래는 useAppSelecter로 가져와야함
-  const { isConfirmModalOpen } = useAppSelector(state => state.modal);
-  const dispatch = useAppDispatch();
   interface MyPageProps {
     userName: string;
   }
@@ -34,22 +28,8 @@ function MyPage() {
     userName: '[SW]신하영',
   };
 
-  const handleOpenModal = (e: React.MouseEvent) => {
-    dispatch(openConfirmModal());
-  };
-
-  const modalController = () => {
-    dispatch(closeConfirmModal());
-  };
-
   return (
     <div className={styles.myPageContainer}>
-      {isConfirmModalOpen && (
-        <ConfirmModal
-          modalMessage='게시물을 삭제하시겠습니까?'
-          modalController={modalController}
-        />
-      )}
       <div className={styles.header}>
         <div className={styles.headerImage}>
           <img src='/images/rabbit_profile.png' alt='profile' />
@@ -67,7 +47,6 @@ function MyPage() {
           />
         ))}
       </div>
-      <button onClick={handleOpenModal}>모달 예시</button>
     </div>
   );
 }
