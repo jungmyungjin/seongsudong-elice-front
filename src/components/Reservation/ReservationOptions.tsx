@@ -1,12 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ReservationContext, ReservationInfo } from './ReservationProvider';
 import styles from './ReservationOptions.module.scss';
-import {
-  PersonalSeatLayout,
-  FirstGroupSeatLayout,
-  GraduateSeatLayout,
-  SecondGroupSeatLayout,
-} from 'components/Reservation/SeatLayout';
+import ShowSeatLayout from 'components/Reservation/SeatLayout';
 
 interface CreateTypeSelectorProps {
   typeList: string[];
@@ -17,7 +12,7 @@ interface CreateTimeSelectorProps {
   typeList: string[];
 }
 
-const CreateTypeSelector: React.FC<CreateTypeSelectorProps> = ({
+export const CreateTypeSelector: React.FC<CreateTypeSelectorProps> = ({
   typeList,
   onSelect,
 }) => {
@@ -109,47 +104,6 @@ const ReservationOptions: React.FC = () => {
     updateReservationInfo(updatedReservationInfo);
   };
 
-  // axios.get('api', {
-  //   headers: {
-  //     date: reservationInfo.date,
-  //   },
-  // })
-  //   .then(response => {
-  //
-  //   })
-  //   .catch(error => {
-  //     // 에러 처리
-  //   });
-  // 날짜, 서버에 보내서 예약된 좌석 받아오기
-  // const { reserved, updateReserved } = useContext(ReservationContext);
-  // updateReserved(예약된 좌석 정보);
-  /* 받아오는 데이터 형식
-      {
-      "status": "success",
-      "seats": [
-        {
-          "seat_number": "A1",
-          "available_10to14": true,
-          "available_14to18": false,
-          "available_18to22": true
-        },
-        {
-          "seat_number": "A2",
-          "available_10to14": true,
-          "available_14to18": true,
-          "available_18to22": false
-        },
-        {
-          "seat_number": "A3",
-          "available_10to14": false,
-          "available_14to18": true,
-          "available_18to22": true
-        },
-        ...
-      ]
-    }
-   */
-
   useEffect(() => {
     console.log('다른 파일 좌석 컴포넌트 렌더링');
     console.log(reservationInfo);
@@ -167,137 +121,6 @@ const ReservationOptions: React.FC = () => {
     }
   };
 
-  const handleEventClick = (value: string) => {
-    updateReservation({ seat: value });
-  };
-
-  const showSeatKind = () => {
-    if (reservationInfo.seatType === '개인석') {
-      return (
-        <>
-          <div className={styles.seatKindContainer}>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>다른좌석유형/이용불가</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>내예약</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>이용가능</div>
-            </div>
-          </div>
-          <div className={styles.seatContainer}>
-            <PersonalSeatLayout
-              className={styles.possible}
-              clickEvent={handleEventClick}
-            />
-            <FirstGroupSeatLayout className={styles.impossible} />
-            <GraduateSeatLayout className={styles.impossible} />
-            <SecondGroupSeatLayout className={styles.impossible} />
-          </div>
-        </>
-      );
-    } else if (reservationInfo.seatType === '팀플석') {
-      return (
-        <>
-          <div className={styles.seatKindContainer}>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>다른좌석유형/이용불가</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>내예약</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>이용가능 (4인석)</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>이용가능 (2인석)</div>
-            </div>
-          </div>
-          <div className={styles.seatContainer}>
-            <PersonalSeatLayout className={styles.impossible} />
-            <FirstGroupSeatLayout
-              className={styles.possible}
-              clickEvent={handleEventClick}
-            />
-            <GraduateSeatLayout className={styles.impossible} />
-            <SecondGroupSeatLayout
-              className={styles.possible}
-              clickEvent={handleEventClick}
-            />
-          </div>
-        </>
-      );
-    } else if (reservationInfo.seatType === '수료기수석') {
-      return (
-        <>
-          <div className={styles.seatKindContainer}>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>다른좌석유형/이용불가</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>내예약</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>이용가능 (개인석)</div>
-            </div>
-            <div>
-              <div className={styles.box}></div>
-              <div className={styles.kindText}>이용가능 (2인석)</div>
-            </div>
-          </div>
-          <div className={styles.seatContainer}>
-            <PersonalSeatLayout className={styles.impossible} />
-            <FirstGroupSeatLayout className={styles.impossible} />
-            <GraduateSeatLayout
-              className={styles.possible}
-              clickEvent={handleEventClick}
-            />
-            <SecondGroupSeatLayout className={styles.impossible} />
-          </div>
-        </>
-      );
-    } else if (reservationInfo.seatType === '미팅룸') {
-      return (
-        <div>
-          <CreateTypeSelector
-            typeList={['미팅룸A (최대 6인)', '미팅룸B (최대 10인)']}
-            onSelect={(value: string) => {
-              updateReservation({ seat: value.charAt(3) });
-            }}
-          />
-          <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
-          <input
-            className={styles.visitorInput}
-            onChange={e => {
-              updateReservation({ visitors: e.target.value });
-              // const updatedReservationInfo = {
-              //   ...reservationInfo,
-              //   visitors: e.target.value,
-              // };
-              // updateReservationInfo(updatedReservationInfo);
-            }}
-            type='text'
-            placeholder='필수입력*'
-          />
-          <div className={styles.submitButton}>예약하기</div>
-        </div>
-      );
-    } else {
-      return null;
-    }
-  };
-
   return (
     <div>
       <CreateTypeSelector
@@ -305,7 +128,7 @@ const ReservationOptions: React.FC = () => {
         onSelect={handleSeatTypeSelect}
       />
       <CreateTimeSelector typeList={TimeList} />
-      {showSeatKind()}
+      <ShowSeatLayout />
     </div>
   );
 };

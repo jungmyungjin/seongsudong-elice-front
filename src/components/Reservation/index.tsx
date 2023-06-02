@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import RenderReservation from './ReservationOptions';
+import ReservationOptions from './ReservationOptions';
 import styles from './ReservationOptions.module.scss';
 import { ReactComponent as Check } from '../../assets/Check.svg';
 import {
@@ -120,7 +120,7 @@ const Reservation: React.FC = () => {
         <div className={styles.title}>좌석 예약</div>
         <DateDisplay />
         <CheckboxContainer />
-        <RenderReservation />
+        <ReservationOptions />
       </div>
     </ReservationProvider>
   );
