@@ -16,7 +16,7 @@ function MyPost() {
   const [filteredPosts, setFilteredPosts] = useState<myPost[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
-  const postsPerPage = 7;
+  const postsPerPage = 10;
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -48,13 +48,17 @@ function MyPost() {
       {filteredPosts.length === 0 && (
         <div className={styles.noPost}>등록된 게시물이 없습니다.</div>
       )}
-      <PostList posts={currentPosts} />
-      <Pagination
-        postsPerPage={postsPerPage}
-        totalPosts={filteredPosts.length}
-        paginate={paginate}
-        currentPage={currentPage}
-      />
+      <div className={styles.postList}>
+        <PostList posts={currentPosts} />
+      </div>
+      {filteredPosts.length > 0 && (
+        <Pagination
+          postsPerPage={postsPerPage}
+          totalPosts={filteredPosts.length}
+          paginate={paginate}
+          currentPage={currentPage}
+        />
+      )}
     </div>
   );
 }

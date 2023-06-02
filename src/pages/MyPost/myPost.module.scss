@@ -1,7 +1,6 @@
 .postContainer {
-  overflow-y: auto;
   width: 100%;
-  height: 100vh;
+  height: 100%;
 
   background-color: #f0f1f3;
   display: flex;
@@ -22,6 +21,9 @@
     margin: 40% 0;
     font-size: 20px;
     color: #999999;
+  }
+  .postList {
+    min-height: 720px;
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
 import { closeMyReservationModal } from 'reducers/modal';
