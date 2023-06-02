@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { toggleMenu } from 'reducers/slideMenu';
+import { useNavigate } from 'react-router-dom';
 
 import styles from './profile.module.scss';
 import X from 'assets/X.svg';
@@ -29,9 +30,16 @@ const LoggedInProfile = (): React.ReactElement => {
  * @returns {React.ReactElement} JSX 형식의 엘리먼트를 반환합니다.
  */
 const ToLogIn = (): React.ReactElement => {
+  let navigate = useNavigate();
+
   return (
     <div className={styles.Profile}>
-      <button className={styles.ToLogInButton}>
+      <button
+        className={styles.ToLogInButton}
+        onClick={() => {
+          navigate('/login');
+        }}
+      >
         <span className={styles.ToLogInSpan}>로그인하러가기</span>{' '}
         <img className={styles.arrow} src={arrow} alt='->' />
       </button>
@@ -44,7 +52,7 @@ const ToLogIn = (): React.ReactElement => {
  * @returns {React.ReactElement} JSX 형식의 엘리먼트를 반환합니다.
  */
 const Profile = (): React.ReactElement => {
-  let isLogined = true;
+  let isLogined = false;
   const dispatch = useDispatch();
 
   return (
