@@ -17,12 +17,15 @@ const alreadyReservedSeat = [
   '10',
   '23',
   '31',
+  '32',
+  '33',
   '34',
   '35',
   '39',
   '47',
   '55',
   '56',
+  '57',
   '59',
   '61',
   '63',
@@ -37,8 +40,6 @@ const alreadyReservedSeat = [
   '79',
 ];
 
-// const alreadyReservedSeat = ['100', '200'];
-
 // axios.get('api', {
 //   headers: {
 //     date: reservationInfo.date,
@@ -50,7 +51,7 @@ const alreadyReservedSeat = [
 //   .catch(error => {
 //     // 에러 처리
 //   });
-// 날짜 서버에 보내서 예약된 좌석 받아오기
+// 날짜, 서버에 보내서 예약된 좌석 받아오기
 // const { reserved, updateReserved } = useContext(ReservationContext);
 // updateReserved(예약된 좌석 정보);
 /* 받아오는 데이터 형식
@@ -125,7 +126,27 @@ function drawGroupSeatLayout(
   const seats: JSX.Element[] = [];
   let keyValue = startSeatNumber;
 
-  for (let i = 1; i <= 2; i++) {
+  for (let i = 1; i <= 4; i++) {
+    const key = keyValue.toString();
+    const isImpossibleSeat = alreadyReservedSeat.includes(key);
+    // const isImpossibleSeat = !reserved.includes(key);
+    const className = isImpossibleSeat
+      ? `${styles.visible} ${styles.groupSeat} ${styles.alreadyReserved}`
+      : `${styles.visible} ${styles.groupSeat}`;
+    const event = !isImpossibleSeat
+      ? (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+          onClick?.(event.currentTarget.textContent || '')
+      : undefined;
+
+    seats.push(
+      <div key={key} className={className} onClick={event}>
+        {key}
+      </div>,
+    );
+    keyValue++;
+  }
+
+  for (let i = 5; i <= 6; i++) {
     const key = keyValue.toString();
     const isImpossibleSeat = alreadyReservedSeat.includes(key);
     // const isImpossibleSeat = !reserved.includes(key);
@@ -216,15 +237,14 @@ function FirstGroupSeatLayout({ className, clickEvent }: SeatLayoutProps) {
         {drawGroupSeatLayout(31, reserved, clickEvent)}
       </div>
       <div className={`${styles.group} ${className}`}>
-        {drawGroupSeatLayout(33, reserved, clickEvent)}
-      </div>
-      <div className={`${styles.group} ${className}`}>
-        {drawGroupSeatLayout(35, reserved, clickEvent)}
-      </div>
-      <div className={`${styles.group} ${className}`}>
         {drawGroupSeatLayout(37, reserved, clickEvent)}
       </div>
-      <div className={styles.entrance}>출입문</div>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(43, reserved, clickEvent)}
+      </div>
+      <div className={`${styles.group} ${className}`}>
+        {drawGroupSeatLayout(49, reserved, clickEvent)}
+      </div>
     </>
   );
 }
@@ -249,13 +269,13 @@ function SecondGroupSeatLayout({ className, clickEvent }: SeatLayoutProps) {
   return (
     <>
       <div className={`${styles.group} ${className}`}>
-        {drawGroupSeatLayout(54, reserved, clickEvent)}
+        {drawGroupSeatLayout(65, reserved, clickEvent)}
       </div>
       <div className={`${styles.group} ${className}`}>
-        {drawGroupSeatLayout(56, reserved, clickEvent)}
+        {drawGroupSeatLayout(71, reserved, clickEvent)}
       </div>
       <div className={`${styles.group} ${className}`}>
-        {drawGroupSeatLayout(58, reserved, clickEvent)}
+        {drawGroupSeatLayout(77, reserved, clickEvent)}
       </div>
     </>
   );
@@ -303,7 +323,6 @@ const ShowSeatLayout: React.FC = () => {
             <FirstGroupSeatLayout className={styles.impossible} />
             <GraduateSeatLayout className={styles.impossible} />
             <SecondGroupSeatLayout className={styles.impossible} />
-            <div className={styles.managerZone}>ManagerZone</div>
           </div>
         </>
       );
@@ -339,7 +358,6 @@ const ShowSeatLayout: React.FC = () => {
               className={styles.possible}
               clickEvent={handleClickEvent}
             />
-            <div className={styles.managerZone}>ManagerZone</div>
           </div>
         </>
       );
@@ -372,7 +390,6 @@ const ShowSeatLayout: React.FC = () => {
               clickEvent={handleClickEvent}
             />
             <SecondGroupSeatLayout className={styles.impossible} />
-            <div className={styles.managerZone}>ManagerZone</div>
           </div>
         </>
       );
