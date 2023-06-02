@@ -12,6 +12,7 @@ import Header from './components/common/Header';
 import MyPage from 'pages/MyPage';
 import MyPost from 'pages/MyPost';
 import MyReservation from 'pages/MyReservation';
+import Login from 'pages/Login';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
           <Route path='/mypage' element={<MyPage />} />
           <Route path='/mypage/mypost' element={<MyPost />} />
           <Route path='/mypage/myreservation' element={<MyReservation />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
         <FloatingButton />
       </BrowserRouter>
