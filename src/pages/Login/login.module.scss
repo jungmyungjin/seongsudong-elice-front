@@ -1,0 +1,61 @@
+@import 'styles/colors';
+
+.LoginLayout {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > div {
+    width: 80%;
+  }
+}
+
+.LoginImg {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 500px;
+
+  img {
+    width: 25vh;
+  }
+  span {
+    color: $MAIN_PURPLE;
+    font-size: 14px;
+    font-weight: bolder;
+  }
+  div {
+    margin: 26px 0px;
+  }
+}
+
+.LoginButton {
+  width: 100%;
+  padding: 10px;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  justify-self: end;
+  align-self: self-end;
+
+  border: solid 1px $MAIN_PURPLE;
+  color: $MAIN_PURPLE;
+  background-color: white;
+  box-shadow: 0rem 0.4rem 0.5rem #0000003d;
+  div {
+    display: flex;
+  }
+  img {
+    display: inline;
+    width: 20px;
+    margin-right: 10px;
+  }
+  span {
+    color: $MAIN_PURPLE;
+  }
+}
