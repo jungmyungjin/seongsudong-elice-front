@@ -18,6 +18,7 @@ const Posts: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState(''); // 검색어를 저장하는 상태 변수
   const [selectedTab, setSelectedTab] = useState('자유');
 
+
   //더미 데이터 테스트
   useEffect(() => {
     const fetchPosts = async () => {
@@ -28,7 +29,7 @@ const Posts: React.FC = () => {
     };
     fetchPosts();
   }, [selectedTab]);
-
+  
   // api 테스트
   // useEffect(() => {
   //   const fetchPosts = async () => {
@@ -42,6 +43,7 @@ const Posts: React.FC = () => {
   //   };
   //   fetchPosts();
   // }, [selectedTab]); // selectedTab 상태 변경시 데이터를 다시 불러옵니다.
+  
 
   // 검색어가 바뀌거나 포스트가 바뀌었을 때 필터링된 포스트를 업데이트합니다.
   useEffect(() => {
