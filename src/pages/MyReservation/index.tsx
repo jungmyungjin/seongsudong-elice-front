@@ -20,7 +20,7 @@ function MyReservationPage() {
   const { myReservation } = useAppSelector(state => state.myReservation);
   const { isMyRevervationModalOpen } = useAppSelector(state => state.modal);
   const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 7;
+  const postsPerPage = 10;
   const dispatch = useAppDispatch();
 
   /* 페이지네이션 */
@@ -63,14 +63,15 @@ function MyReservationPage() {
         <div className={styles.lengthBox}>
           <p>전체 {myReservation.length}개</p>
         </div>
-        {currentReservation.map((item, _) => (
-          <ReservationList
-            key={item.id}
-            reservation={item}
-            onClick={() => handleOpenReservationModal(item.id)}
-          />
-        ))}
-
+        <div className={styles.listBox}>
+          {currentReservation.map((item, _) => (
+            <ReservationList
+              key={item.id}
+              reservation={item}
+              onClick={() => handleOpenReservationModal(item.id)}
+            />
+          ))}
+        </div>
         <Pagination
           postsPerPage={postsPerPage}
           totalPosts={myReservation.length}

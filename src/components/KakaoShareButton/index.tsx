@@ -13,7 +13,6 @@ function KakaoShareButton() {
     state => state.myReservation.myReservationDetail,
   );
 
-  const zoneType = myReservationDetail.seat.split(' ')[0];
   const visitors = myReservationDetail.visitors;
   const date = myReservationDetail.date;
   const time = myReservationDetail.time;
@@ -29,8 +28,6 @@ function KakaoShareButton() {
     if (!Kakao.isInitialized()) {
       Kakao.init(process.env.REACT_APP_KAKAO_KEY);
     }
-    console.log(Kakao.isInitialized());
-    console.log(Kakao);
   }, []);
 
   return (
