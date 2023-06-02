@@ -89,15 +89,15 @@ const PostDetail: React.FC = () => {
           {post.name} | {convertStringToDate(post.created_at)} | 조회수 :{' '}
           {post.views}
         </p>
-      <div>
-      {post.images.map((image:any, index:any) => (
-          <img key={index} src={`http://localhost:5000/${image}`} alt={`post-${index}`} />
-        ))}
-      </div>
       {/* <div><img src={`http://localhost:5000/${post.images}`} /></div> */}
       </div>
       <div className={styles.description}>
         <p>{post.description}</p>
+      </div>
+      <div className={styles.imgPosition}>
+        {post.images.map((image:any, index:any) => (
+          <img key={index} src={`http://localhost:5000/${image}`} alt={`post-${index}`} />
+        ))}
       </div>
       <div className={styles.updateAndDeleteBtn}>
         <button className={styles.updateBtn} onClick={handleEdit}>

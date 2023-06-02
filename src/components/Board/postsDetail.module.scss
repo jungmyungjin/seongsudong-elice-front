@@ -99,6 +99,17 @@
   }
 }
 
+.imgPosition {
+  margin-top: 100px;
+  img {
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
 .commentProfileImage {
   width: 50px;  // 원하는 이미지의 크기로 조절하세요.
   height: 50px; // 원하는 이미지의 크기로 조절하세요.
