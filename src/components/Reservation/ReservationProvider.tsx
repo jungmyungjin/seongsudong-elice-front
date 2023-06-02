@@ -31,6 +31,20 @@ const initialReservationInfo: ReservationInfo = {
   subscriber: '',
 };
 
+const getWeeklyMondayDate = () => {
+  const today = new Date();
+  const day = today.getDay();
+  const startDate = new Date(today);
+  startDate.setDate(startDate.getDate() - day + 1);
+
+  const year = startDate.getFullYear();
+  const month = (startDate.getMonth() + 1).toString().padStart(2, '0');
+  const date = startDate.getDate().toString().padStart(2, '0');
+
+  const formattedDate = `${year}-${month}-${date}`;
+  return formattedDate;
+};
+
 export const ReservationContext = createContext<ReservationContextType>({
   reservationInfo: initialReservationInfo,
   updateReservationInfo: () => {},
@@ -41,13 +55,19 @@ export const ReservationContext = createContext<ReservationContextType>({
 export const ReservationProvider: React.FC<ReservationProviderProps> = ({
   children,
 }) => {
-  const [reservationInfo, setReservationInfo] = useState<ReservationInfo>(
-    initialReservationInfo,
-  );
+  const [reservationInfo, setReservationInfo] = useState<ReservationInfo>({
+    ...initialReservationInfo,
+    date: getWeeklyMondayDate(),
+    startTime: '10',
+    seatType: '개인석',
+  });
   const [reserved, setReserved] = useState<string[]>([]);
 
-  const updateReservationInfo = (info: ReservationInfo) => {
-    setReservationInfo(info);
+  const updateReservationInfo = (info: Partial<ReservationInfo>) => {
+    setReservationInfo(prevInfo => ({
+      ...prevInfo,
+      ...info,
+    }));
   };
 
   const updateReserved = (seat: string) => {

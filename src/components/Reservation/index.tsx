@@ -1,8 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import RenderReservation from './ReservationOptions';
 import styles from './ReservationOptions.module.scss';
 import { ReactComponent as Check } from '../../assets/Check.svg';
-import { ReservationProvider, ReservationContext } from './ReservationProvider';
+import {
+  ReservationProvider,
+  ReservationContext,
+  ReservationInfo,
+} from './ReservationProvider';
 
 interface CheckboxProps {
   label: string;
@@ -11,17 +15,6 @@ interface CheckboxProps {
 }
 
 const Reservation: React.FC = () => {
-  // const [date, setDate] = useState('');
-  // const [startTime, setStartTime] = useState('');
-  // const [endTime, setEndTime] = useState('');
-  // const [seatType, setSeatType] = useState('');
-  // const [seat, setSeat] = useState('');
-
-  const { reservationInfo, updateReservationInfo } =
-    useContext(ReservationContext);
-
-  useEffect(() => {}, [reservationInfo.date]);
-
   const getCurrentDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -70,12 +63,6 @@ const Reservation: React.FC = () => {
   const DateDisplay: React.FC = () => {
     const currentDate = getCurrentDate();
     const weekDates = getWeekDates();
-    const updatedReservationInfo = {
-      ...reservationInfo,
-      date: weekDates[0].split('(')[0].replace(/\./g, '-'),
-    };
-    updateReservationInfo(updatedReservationInfo);
-    console.log(updatedReservationInfo);
 
     return (
       <div className={styles.dateContainer}>
@@ -92,16 +79,25 @@ const Reservation: React.FC = () => {
   const CheckboxContainer: React.FC = () => {
     const [selectedCheckbox, setSelectedCheckbox] = useState('월');
 
+    const { reservationInfo, updateReservationInfo } =
+      useContext(ReservationContext);
+
     const handleCheckboxChange = (day: string) => {
       setSelectedCheckbox(day);
       const weekDates = getWeekDates();
       const index = ['월', '화', '수', '목', '금'].indexOf(day);
+
+      updateReservation({
+        date: weekDates[index].split('(')[0].replace(/\./g, '-'),
+      });
+    };
+
+    const updateReservation = (updatedInfo: Partial<ReservationInfo>) => {
       const updatedReservationInfo = {
         ...reservationInfo,
-        date: weekDates[index].split('(')[0].replace(/\./g, '-'),
+        ...updatedInfo,
       };
       updateReservationInfo(updatedReservationInfo);
-      console.log(updatedReservationInfo);
     };
 
     return (
