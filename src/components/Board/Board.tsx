@@ -90,7 +90,9 @@ const Posts: React.FC = () => {
         <p>전체 {filteredPosts.length}개</p>
       </div>
       {/* PostList 컴포넌트 불러옴 */}
-      <PostList posts={currentPosts} />
+      <div className={styles.postList}>
+        <PostList posts={currentPosts} />
+      </div>
       <Pagination
         postsPerPage={postsPerPage}
         totalPosts={filteredPosts.length}
