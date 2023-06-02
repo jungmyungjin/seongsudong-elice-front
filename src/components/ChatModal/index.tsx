@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
 import FullModal from '../common/FullModal';
 import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
-import { IChatMessage } from 'types/chat';
+import { addChat } from 'reducers/chat';
 
 import { convertDate } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
@@ -15,9 +16,15 @@ function ChatModal() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
   const [isOnline, setIsOnline] = useState<boolean>(true); // 임의 ~> 채팅 페이지에 머물러 있을 때 vs 로그인 했을 때 vs 사이트 창에 머물러 있을 때  기준 정해야함
   const [inputValue, setInputValue] = useState<string>('');
-  const [chatMsg, setChatMsg] = useState<IChatMessage[]>([]);
   const [date, setDate] = useState<string>('');
+
+  /** 채팅 각 하나의 시간 */
   const now = new Date();
+  const nowDate = convertDate(now);
+  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
+
+  const dispatch = useAppDispatch();
+  const chatMsg = useAppSelector(state => state.chat.chatList);
 
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
@@ -50,8 +57,10 @@ function ChatModal() {
         chatMessage: '무엇을 도와드릴까욧?',
         fromName: '성수동 소방관',
         isOnline: true,
+        sentTime: time,
       };
-      setChatMsg(prevChatMsg => [...prevChatMsg, newOtherChat]);
+
+      dispatch(addChat(newOtherChat));
       count++;
 
       if (count === 5) {
@@ -69,8 +78,9 @@ function ChatModal() {
       const newMyChat = {
         chatFromMe: true,
         chatMessage: inputValue,
+        sentTime: time,
       };
-      setChatMsg(prevChatMsg => [...prevChatMsg, newMyChat]);
+      dispatch(addChat(newMyChat));
 
       setInputValue('');
     }
@@ -97,6 +107,7 @@ function ChatModal() {
                 chatMessage={msg.chatMessage}
                 fromName={msg.fromName}
                 isOnline={msg.isOnline}
+                sentTime={msg.sentTime}
               />
             ))}
           </div>

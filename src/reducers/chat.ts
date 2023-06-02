@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IChat } from 'types/chat';
+import { IChat, IChatMessage } from 'types/chat';
 
 export const initialState: IChat = {
   chatList: [],
@@ -12,28 +12,11 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    addChat(state, action: PayloadAction<IChat['chatList']>) {
-      state.chatList = action.payload;
+    addChat(state, action: PayloadAction<IChatMessage>) {
+      state.chatList.push(action.payload);
     },
   },
-  // extraReducers: builder =>
-  //   builder
-  //     .addCase(loadChatList.pending, state => {
-  //       state.loadChatListLoading = true;
-  //       state.loadChatListDone = false;
-  //       state.loadChatListError = null;
-  //     })
-  //     .addCase(loadChatList.fulfilled, (state, action) => {
-  //       state.ChatList = action.payload;
-  //       state.loadChatListLoading = false;
-  //       state.loadChatListDone = true;
-  //       state.loadChatListError = null;
-  //     })
-  //     .addCase(loadChatList.rejected, (state, action) => {
-  //       state.loadChatListLoading = false;
-  //       state.loadChatListDone = false;
-  //       state.loadChatListError = action.error.message || null;
-  //     }),
 });
 
+export const { addChat } = chatSlice.actions;
 export default chatSlice;

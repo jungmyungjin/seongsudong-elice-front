@@ -1,29 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import styles from './chatMessage.module.scss';
 import { IChatMessage } from 'types/chat';
-import { convertDate } from 'utils/convertDate';
 
 function ChatMessage({
   chatFromMe,
   chatMessage,
   fromName,
   isOnline,
+  sentTime,
 }: IChatMessage) {
-  const [date, setDate] = useState<string>('');
-  const now = new Date();
-  const time = `${date.split(' ')[4]} ${date.split(' ')[5]}`; // 오전 1:11
-
-  useEffect(() => {
-    setDate(convertDate(now));
-  }, [date]);
-
   return (
     <>
       {chatFromMe ? (
         <div className={styles.containerFromMe}>
           <div className={styles.contentContainerFromMe}>
             <div className={styles.chatFromMe}>{chatMessage}</div>
-            <div className={styles.chatTimeFromMe}>{time}</div>
+            <div className={styles.chatTimeFromMe}>{sentTime}</div>
           </div>
         </div>
       ) : (
@@ -36,7 +27,7 @@ function ChatMessage({
             <div className={styles.chatName}>{fromName}</div>
             <div className={styles.contentFromOther}>
               <div className={styles.chatFromOther}>{chatMessage}</div>
-              <div className={styles.chatTimeFromOther}>{time}</div>
+              <div className={styles.chatTimeFromOther}>{sentTime}</div>
             </div>
           </div>
         </div>

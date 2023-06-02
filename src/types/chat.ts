@@ -8,6 +8,7 @@ export interface IChat {
 export interface IChatMessage {
   chatFromMe: boolean; // true 임시 고정
   chatMessage: string;
+  sentTime: string;
   isOnline?: boolean; // 내가 보낸 메세지 온라인 표시 안해도 됨
   fromName?: string; // 내가 보낸 메세지면 이름이 없어도 됨
 }
