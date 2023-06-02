@@ -45,6 +45,9 @@ function MyPost() {
       <div className={styles.lengthBox}>
         <p>전체 {filteredPosts.length}개</p>
       </div>
+      {filteredPosts.length === 0 && (
+        <div className={styles.noPost}>등록된 게시물이 없습니다.</div>
+      )}
       <PostList posts={currentPosts} />
       <Pagination
         postsPerPage={postsPerPage}
