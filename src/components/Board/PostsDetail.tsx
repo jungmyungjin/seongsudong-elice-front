@@ -106,7 +106,7 @@ const PostDetail: React.FC = () => {
       <div className={styles.comments}>
         {comments.map((comment) => (
           <div key={comment.id} className={styles.perComment}>
-            <img src="/assets/rabbit_profile.png" className={styles.commentProfileImage} />
+            <img src="/images/rabbit_profile.png" className={styles.commentProfileImage} />
             <div className={styles.commentSet}>
               <div className={styles.commentInfo}>
                 <p>[{comment.generation}] {comment.name}</p>
