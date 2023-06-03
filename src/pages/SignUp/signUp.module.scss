@@ -1,0 +1,76 @@
+@import 'styles/colors';
+
+.signUpLayout {
+  padding: 6vh 4vh;
+}
+
+.greeting {
+  height: 26vh;
+  font-family: 'EliceDigitalBaeum-Bd';
+  .title {
+    color: $MAIN_PURPLE;
+    font-size: 6vh;
+  }
+  .subTitle {
+    color: $BRIGHT_GRAY;
+
+    margin: 2vh 0px;
+    font-size: 2.5vh;
+  }
+}
+
+.inputField {
+  position: relative;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nameField {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  width: 20vh;
+  height: 6vh;
+  font-size: 2.3vh;
+  span {
+    color: $MAIN_PURPLE;
+    margin-bottom: 10px;
+  }
+  input {
+    border: 0px;
+    font-size: 2.8vh;
+    border-bottom: 2px solid $BRIGHT_GRAY;
+  }
+}
+
+.courseField {
+  position: absolute;
+  width: inherit;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14vh;
+  > div {
+    margin-right: 5vh;
+  }
+  z-index: 1;
+}
+
+.resultBtns {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  font-size: 2.2vh;
+
+  :hover {
+    background-color: $MAIN_PURPLE;
+  }
+  > button {
+    background-color: $BRIGHT_GRAY;
+    color: white;
+    border-radius: 8px;
+    height: 5.4vh;
+    width: 14vh;
+    margin: 10px;
+  }
+}
