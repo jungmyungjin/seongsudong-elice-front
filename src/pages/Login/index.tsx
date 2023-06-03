@@ -10,10 +10,12 @@ const Login = (): React.ReactElement => {
   const loginBtnHandle = async () => {
     const backendAddress = 'http://localhost:5000';
     const api = `${backendAddress}/`; // 백엔드 api 주소
-
     try {
+      console.log('이동하지');
       const res = await axios.get(api);
-      if (res.status === 200) {
+      if (true) {
+        navigate('/signUp');
+      } else if (res.status === 200) {
         // 회원가입 된 사용자 => 페이지를 메인으로 리디릭션 혹은 라우팅
         navigate('/');
       } else if (res.status === 204) {
