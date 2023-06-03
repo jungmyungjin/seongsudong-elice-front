@@ -1,0 +1,54 @@
+.buttonContainer {
+  margin: 25px auto 0 auto;
+  padding: 0 40px 0 15px;
+  display: flex;
+  justify-content: space-between;
+  background-color: #682BE030;
+
+  button {
+    margin: 10px 0 10px 15px;
+    font-size: 20px;
+  }
+  
+  .clearBtn {
+    font-size: 20px;
+  }
+}
+
+
+  .titleInput {
+    width: 100%;
+    border: 1px solid white;
+    box-shadow: inset 0px -1px 0px #E1E2E4;
+    padding: 15px 0 100px 15px;
+    font-size: 20px;
+    &::placeholder {
+      color: #E1E2E4;
+    }
+  }
+
+  .bodyInput {
+    width: 100%;
+    border: 1px solid white;
+    padding: 15px 0 200px 15px;
+    font-size: 20px;
+    &::placeholder {
+      color: #E1E2E4;
+    }
+  }
+
+.errorInput {
+  border:3px solid red; /* 에러가 발생했을 때 입력 필드의 테두리 색상을 변경합니다. */
+}
+
+.errorMessage {
+  color: red; /* 에러 메시지를 빨간색으로 표시합니다. */
+  font-size: 0.8em; /* 에러 메시지의 폰트 크기를 작게 조정합니다. */
+  margin-top: 0.5em; /* 에러 메시지 위에 약간의 마진을 추가합니다. */
+}
+
+
+  .fileUpload {
+    padding-top: 15px;
+    padding-left: 30px;
+  }

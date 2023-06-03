@@ -7,18 +7,27 @@
   font-style: normal;
 }
 
-/* 폰트 초기화 */
-* {
+/* box-sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   font-family: 'EliceDigitalBaeum-Bd';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* 폰 화면 사이징 */
+body {
+  background-color: rgb(232, 232, 232);
+}
+/* 폰트 */
 html,
 body,
 #root {
   height: 100%;
+  font-family: 'EliceDigitalBaeum-Bd';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 여백 초기화 */
@@ -108,9 +117,6 @@ video {
   font: inherit;
   font-size: 100%;
   vertical-align: baseline;
-  font-family: 'EliceDigitalBaeum-Bd';
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 /* a 링크 초기화 */
@@ -126,6 +132,7 @@ button {
   background: none;
   border: 0;
   cursor: pointer;
+  padding: 0;
 }
 
 table {

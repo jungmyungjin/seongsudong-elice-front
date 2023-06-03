@@ -1,3 +1,100 @@
-.test {
-  color: aqua;
+@import 'src/styles/mixins';
+@import '/src/styles/colors';
+
+@include mobile {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 8%;
+    bottom: 6%;
+  }
+}
+
+@include tablet {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 13%;
+    bottom: 6%;
+  }
+}
+
+@include bigTablet {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 18%;
+    bottom: 6%;
+  }
+}
+
+@include middleDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 25%;
+    bottom: 6%;
+  }
+}
+
+@include desktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 32%;
+    bottom: 6%;
+  }
+}
+
+/* 임의로 설정해놓긴 했는데, 내 모니터에선 확인 불가능*/
+@include bigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 34%;
+    bottom: 6%;
+  }
+}
+
+.floatingButton {
+  position: relative;
+
+  width: 140px;
+  height: 60px;
+
+  background-color: rgb(255, 255, 255);
+  border-radius: 50px;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  cursor: pointer;
+  filter: drop-shadow(0px 0px 7px rgba(77, 77, 77, 0.3));
+
+  z-index: 2;
+
+  .floatingButtonText {
+    position: absolute;
+    left: 9%;
+    top: 25%;
+
+    color: black;
+    font-size: 17px;
+  }
+
+  .rabbitIcon {
+    position: absolute;
+    right: 0;
+    top: 0;
+
+    height: 60px;
+    width: 60px;
+
+    background-color: $MAIN_PURPLE;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      height: 48px;
+      width: 48px;
+    }
+  }
 }
