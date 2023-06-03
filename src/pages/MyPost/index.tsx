@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { usePaginate } from 'hooks/usePaginate';
 
 import Pagination from 'components/common/Pagination';
 import SearchBox from 'components/common/SearchBox';
@@ -13,9 +14,8 @@ import { loadMyPost } from 'actions/myPost';
 
 function MyPost() {
   const { myPost } = useAppSelector(state => state.myPost);
-  const [filteredPosts, setFilteredPosts] = useState<myPost[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
+  const [filteredPosts, setFilteredPosts] = useState<myPost[]>([]);
   const postsPerPage = 10;
   const dispatch = useAppDispatch();
 
@@ -29,14 +29,13 @@ function MyPost() {
         post.title.toLowerCase().includes(searchTerm.toLowerCase()),
       ),
     );
-    setCurrentPage(1);
+    goToPage(1);
   }, [myPost, searchTerm]);
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const { currentItems, currentPage, goToPage } = usePaginate(
+    filteredPosts,
+    postsPerPage,
+  );
 
   return (
     <div className={styles.postContainer}>
@@ -49,13 +48,13 @@ function MyPost() {
         <div className={styles.noPost}>등록된 게시물이 없습니다.</div>
       )}
       <div className={styles.postList}>
-        <PostList posts={currentPosts} />
+        <PostList posts={currentItems} />
       </div>
       {filteredPosts.length > 0 && (
         <Pagination
           postsPerPage={postsPerPage}
           totalPosts={filteredPosts.length}
-          paginate={paginate}
+          paginate={goToPage}
           currentPage={currentPage}
         />
       )}
