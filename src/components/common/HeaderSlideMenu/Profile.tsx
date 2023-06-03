@@ -1,6 +1,8 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { toggleMenu } from 'reducers/slideMenu';
+import React, { MouseEvent } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { closeMenu } from 'reducers/slideMenu';
+import { logIn, logOut } from 'reducers/user';
+import { RootState } from 'store/configureStore';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './profile.module.scss';
@@ -13,15 +15,25 @@ import Logout from 'assets/bold-Logout.svg';
  * @returns {React.ReactElement} JSX 형식의 엘리먼트를 반환합니다.
  */
 const LoggedInProfile = (): React.ReactElement => {
+  let navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    navigate('/myPage');
+    dispatch(closeMenu());
+  };
+  const username = useSelector((state: RootState) => state.user.username);
+  const course = useSelector((state: RootState) => state.user.course);
+  const generation = useSelector((state: RootState) => state.user.generation);
+
   return (
-    <div className={styles.Profile}>
+    <button className={styles.Profile} onClick={handleClick}>
       <div className={styles.ProfileImage}></div>
 
       <div className={styles.ProfileInfo}>
-        <span>[SW/4]</span>
-        <span>정명진</span>
+        <span>{`[${course}/${generation}]`}</span>
+        <span>{username}</span>
       </div>
-    </div>
+    </button>
   );
 };
 
@@ -31,15 +43,17 @@ const LoggedInProfile = (): React.ReactElement => {
  */
 const ToLogIn = (): React.ReactElement => {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    navigate('/login');
+    dispatch(logIn({ username: '정명진', course: 'SW', generation: 1 }));
+    dispatch(closeMenu());
+  };
 
   return (
     <div className={styles.Profile}>
-      <button
-        className={styles.ToLogInButton}
-        onClick={() => {
-          navigate('/login');
-        }}
-      >
+      <button className={styles.ToLogInButton} onClick={handleClick}>
         <span className={styles.ToLogInSpan}>로그인하러가기</span>{' '}
         <img className={styles.arrow} src={arrow} alt='->' />
       </button>
@@ -52,20 +66,29 @@ const ToLogIn = (): React.ReactElement => {
  * @returns {React.ReactElement} JSX 형식의 엘리먼트를 반환합니다.
  */
 const Profile = (): React.ReactElement => {
-  let isLogined = false;
+  let navigate = useNavigate();
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
+
+  const handleLogoutClick = (e: MouseEvent<HTMLButtonElement>) => {
+    navigate('/');
+    dispatch(closeMenu());
+    dispatch(logOut());
+  };
 
   return (
     <div className={styles.LayoutProfile}>
       <div className={styles.ButtonBar}>
-        <button onClick={() => dispatch(toggleMenu())}>
+        <button onClick={() => dispatch(closeMenu())}>
           <img className={styles.ButtonX} src={X} alt='X' />
         </button>
-        {isLogined && (
-          <img src={Logout} className={styles.ButtonLogout} alt='Logout' />
+        {isLoggedIn && (
+          <button onClick={handleLogoutClick}>
+            <img src={Logout} className={styles.ButtonLogout} alt='Logout' />
+          </button>
         )}
       </div>
-      {isLogined ? <LoggedInProfile /> : <ToLogIn />}
+      {isLoggedIn ? <LoggedInProfile /> : <ToLogIn />}
     </div>
   );
 };
