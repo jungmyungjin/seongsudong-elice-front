@@ -5,6 +5,7 @@ import menuSlice from './slideMenu';
 import myPostSlice from './myPost';
 import myReservationSlice from './myReservation';
 import chatSlice from './chat';
+import userSlice from './user';
 
 const rootReducer = combineReducers({
   modal: modalSlice.reducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   myPost: myPostSlice.reducer,
   myReservation: myReservationSlice.reducer,
   chat: chatSlice.reducer,
+  user: userSlice.reducer,
 });
 
 export default rootReducer;

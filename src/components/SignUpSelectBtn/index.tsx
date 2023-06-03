@@ -1,4 +1,4 @@
-import React, { useState, MouseEvent } from 'react';
+import React, { useState, MouseEvent, useRef } from 'react';
 import styles from './signupSelectBtn.module.scss';
 import svgDown from 'assets/ChevronDown.svg';
 import useHideOnClickOutside from 'hooks/useHideOnClickOutside';
@@ -12,10 +12,17 @@ interface SignUpSelectBtnProps {
 
 const SignUpSelectBtn = (props: SignUpSelectBtnProps): React.ReactElement => {
   const [selectBtn, setSelectBtn] = useState('');
-  const { ref, isVisible, setIsVisible } = useHideOnClickOutside(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const menuBtnHandle = (e: MouseEvent<HTMLDivElement>) => {
+  // ignoreRef 생성
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  // useHideOnClickOutside 훅 사용
+  const { ref } = useHideOnClickOutside(() => setIsVisible(false), buttonRef);
+
+  const menuBtnHandle = (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault(); // 기본 동작 막기
+    e.stopPropagation();
     setIsVisible(!isVisible);
   };
 
@@ -29,14 +36,15 @@ const SignUpSelectBtn = (props: SignUpSelectBtnProps): React.ReactElement => {
 
   return (
     <div className={styles.buttonLayout}>
-      <div
+      <button
         key={props.buttonName}
+        ref={buttonRef}
         onClick={menuBtnHandle}
         className={styles.selectSubject}
       >
         <span>{selectBtn || props.buttonName}</span>
         <img src={svgDown} alt='메뉴' />
-      </div>
+      </button>
       <div
         ref={ref}
         className={
