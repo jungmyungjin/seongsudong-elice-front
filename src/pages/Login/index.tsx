@@ -11,7 +11,6 @@ const Login = (): React.ReactElement => {
     const backendAddress = 'http://localhost:5000';
     const api = `${backendAddress}/`; // 백엔드 api 주소
     try {
-      console.log('이동하지');
       const res = await axios.get(api);
       if (true) {
         navigate('/signUp');
