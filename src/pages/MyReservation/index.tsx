@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Pagination from 'components/common/Pagination';
+import { usePaginate } from 'hooks/usePaginate';
 
 import styles from './myReservation.module.scss';
 
@@ -19,18 +20,15 @@ import ReservationList from './ReservationList';
 function MyReservationPage() {
   const { myReservation } = useAppSelector(state => state.myReservation);
   const { isMyRevervationModalOpen } = useAppSelector(state => state.modal);
-  const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
   const dispatch = useAppDispatch();
 
   /* 페이지네이션 */
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentReservation = myReservation.slice(
-    indexOfFirstPost,
-    indexOfLastPost,
-  );
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const {
+    currentItems: currentReservation,
+    currentPage,
+    goToPage,
+  } = usePaginate(myReservation, postsPerPage);
 
   /** 더미 액션 작업 => 추후에 지워야함 */
   const setMyReservation = createAction<MyReservation[]>(
@@ -75,7 +73,7 @@ function MyReservationPage() {
         <Pagination
           postsPerPage={postsPerPage}
           totalPosts={myReservation.length}
-          paginate={paginate}
+          paginate={goToPage}
           currentPage={currentPage}
         />
       </div>

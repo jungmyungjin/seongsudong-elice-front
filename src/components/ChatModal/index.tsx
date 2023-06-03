@@ -19,8 +19,7 @@ function ChatModal() {
   const [date, setDate] = useState<string>('');
 
   /** 채팅 각 하나의 시간 */
-  const now = new Date();
-  const nowDate = convertDate(now);
+  const nowDate = convertDate(new Date());
   const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
 
   const dispatch = useAppDispatch();
@@ -34,7 +33,7 @@ function ChatModal() {
 
   /** 자동 스크롤 */
   useEffect(() => {
-    if (scrollContainerRef.current) {
+    if (scrollContainerRef.current && chatMsg.length > 0) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
@@ -42,7 +41,7 @@ function ChatModal() {
 
   /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
   useEffect(() => {
-    setDate(convertDate(now));
+    setDate(convertDate(new Date()));
     /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
     if (isAdmin) setModalTitle('[SW]신하영');
     else setModalTitle('1:1 문의 채팅방');
@@ -74,16 +73,17 @@ function ChatModal() {
   }, []);
 
   function handleSend() {
-    if (inputValue.trim() !== '') {
-      const newMyChat = {
-        chatFromMe: true,
-        chatMessage: inputValue,
-        sentTime: time,
-      };
-      dispatch(addChat(newMyChat));
-
-      setInputValue('');
+    if (inputValue.trim().length === 0) {
+      return;
     }
+
+    const newMyChat = {
+      chatFromMe: true,
+      chatMessage: inputValue,
+      sentTime: time,
+    };
+    dispatch(addChat(newMyChat));
+    setInputValue('');
   }
 
   function handleEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
