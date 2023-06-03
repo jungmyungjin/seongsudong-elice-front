@@ -13,6 +13,7 @@ import MyPage from 'pages/MyPage';
 import MyPost from 'pages/MyPost';
 import MyReservation from 'pages/MyReservation';
 import Login from 'pages/Login';
+import SignUp from 'pages/SignUp';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path='/mypage/mypost' element={<MyPost />} />
           <Route path='/mypage/myreservation' element={<MyReservation />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/signUp' element={<SignUp />} />
         </Routes>
         <FloatingButton />
       </BrowserRouter>
