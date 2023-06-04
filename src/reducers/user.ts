@@ -3,12 +3,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 사용자 상태 타입 정의
 interface UserState {
   loggedIn: boolean;
+  email: string | null;
   username: string | null;
   course: string | null;
   generation: number | string;
 }
 
 interface LogInPayload {
+  email: string;
   username: string;
   course: string;
   generation: number;
@@ -16,6 +18,7 @@ interface LogInPayload {
 
 // 초기 사용자 상태
 const initialState: UserState = {
+  email: null,
   loggedIn: false,
   username: null,
   course: null,
@@ -30,12 +33,14 @@ const userSlice = createSlice({
     // 로그인 액션
     logIn: (state, action: PayloadAction<LogInPayload>) => {
       state.loggedIn = true;
+      state.email = action.payload.email;
       state.username = action.payload.username;
       state.course = action.payload.course;
       state.generation = action.payload.generation;
     },
     // 로그아웃 액션
     logOut: state => {
+      state.email = null;
       state.loggedIn = false;
       state.username = null;
       state.course = null;
