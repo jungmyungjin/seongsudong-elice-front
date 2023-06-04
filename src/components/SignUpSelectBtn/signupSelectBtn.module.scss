@@ -1,0 +1,51 @@
+@import 'styles/colors';
+
+.buttonLayout {
+  width: 200px;
+  z-index: 1;
+  cursor: pointer;
+}
+.selectSubject {
+  width: inherit;
+  height: 5.5vh;
+  background-color: white;
+  color: $MAIN_PURPLE;
+  font-size: 2.3vh;
+  padding: 0px 1vh;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  border: 0px;
+  border-bottom: 2px solid $BRIGHT_GRAY;
+  margin-bottom: 1vh;
+  img {
+    width: 30px;
+  }
+}
+
+.selectLists {
+  background-color: white;
+  border-radius: 5px;
+  border: 1px solid hsl(0, 0%, 87%);
+  box-shadow: 0rem 0.2rem 0.2rem $BRIGHT_GRAY;
+  :hover {
+    color: $MAIN_PURPLE;
+    cursor: pointer;
+  }
+}
+
+.selectList {
+  width: 100%;
+  height: 5.8vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: solid 1px $BRIGHT_GRAY;
+  color: $BRIGHT_GRAY;
+  font-size: 2.3vh;
+}
+
+.hiddenMenu {
+  display: none;
+}

@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './HeaderSlideMenu.module.scss';
 import Profile from './Profile';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/configureStore';
+import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { RootState } from 'store/configureStore';
+import { closeMenu } from 'reducers/slideMenu'; // 메뉴를 닫는 액션을 import합니다.
+
+import useHideOnClickOutside from 'hooks/useHideOnClickOutside';
 
 /**
  * 메뉴 버튼 눌렀을 시 나오는 슬라이드 메뉴 입니다.
@@ -11,15 +14,32 @@ import { useNavigate } from 'react-router-dom';
  */
 const HeaderSlideMenu = (): React.ReactElement => {
   const isOpen = useSelector((state: RootState) => state.menu.isOpen);
+  const [isVisible, setIsVisible] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { ref } = useHideOnClickOutside(() => dispatch(closeMenu()));
+
   let navigate = useNavigate();
 
   const handleClick = (path: string) => {
     navigate(path);
+    dispatch(closeMenu());
   };
+
+  useEffect(() => {
+    setIsVisible(isOpen);
+    if (isOpen === false) {
+      dispatch(closeMenu());
+    }
+  }, [isOpen, dispatch, isVisible]);
 
   return (
     <div
-      className={`${styles.SlideMenu} ${isOpen ? styles.open : styles.close}`}
+      ref={ref}
+      className={`${styles.SlideMenu} ${
+        isVisible ? styles.open : styles.close
+      }`}
     >
       <Profile />
       <ul>
