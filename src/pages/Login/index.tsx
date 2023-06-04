@@ -3,31 +3,43 @@ import styles from './login.module.scss';
 import { useNavigate } from 'react-router-dom';
 import logo from 'assets/elice-logo.png';
 import axios from 'axios';
+import { useGoogleLogin, GoogleLogin } from '@react-oauth/google';
+import { useDispatch } from 'react-redux';
+import { logIn } from 'reducers/user';
+
+const api =
+  process.env.REACT_APP_BACKEND_ADDRESS + '/api/members/register' || '';
 
 const Login = (): React.ReactElement => {
   let navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const loginBtnHandle = async () => {
-    const backendAddress = 'http://localhost:5000';
-    const api = `${backendAddress}/`; // 백엔드 api 주소
-    try {
-      const res = await axios.get(api);
-      if (true) {
-        navigate('/signUp');
-      } else if (res.status === 200) {
-        // 회원가입 된 사용자 => 페이지를 메인으로 리디릭션 혹은 라우팅
-        navigate('/');
-      } else if (res.status === 204) {
-        // 회원가입 되지 않은 사용자 => 회원가입 페이지로 리디렉션 혹은 라우팅
-        navigate('/signUp');
-      } else {
+  // [ Authorization Code Flow 방식 ]
+  const loginBtnHandle = useGoogleLogin({
+    onSuccess: async (data: any) => {
+      try {
+        // console.log(data);
+        const res = await axios.post(api, data);
+        // console.log('useGoogleLogin', res);
+
+        if (res.status === 200) {
+          // 백엔드에서 받아온 토큰 값
+          localStorage.setItem('token', JSON.stringify(res.data));
+          navigate('/');
+        } else if (res.status === 204) {
+          // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
+          navigate('/signUp');
+        } else {
+          console.log('status error : ' + res.status);
+        }
+      } catch (error) {
+        console.log(error);
+        alert('서버와 정상적으로 통신할 수 없습니다.');
       }
-    } catch (err) {
-      console.log(err);
-      alert('서버와 정상적으로 통신할 수 없습니다.');
-      navigate('/');
-    }
-  };
+      // console.log(data);
+    },
+    flow: 'auth-code',
+  });
 
   return (
     <div className={styles.LoginLayout}>
@@ -44,6 +56,48 @@ const Login = (): React.ReactElement => {
             <span>구글 계정으로 로그인</span>
           </div>
         </button>
+        <GoogleLogin
+          onSuccess={async credentialResponse => {
+            try {
+              const res = await axios.get(api, {
+                headers: {
+                  Authorization: `Bearer ${credentialResponse.credential}`,
+                },
+              });
+              if (res.status === 200) {
+                // 백엔드에서 받아온 토큰 값
+                localStorage.setItem(
+                  'token',
+                  credentialResponse.credential || '',
+                );
+                const { email, name, generation } = res.data;
+                dispatch(
+                  logIn({
+                    email: email,
+                    username: name,
+                    course: generation.split('/')[0],
+                    generation: generation.split('/')[1],
+                  }),
+                );
+
+                navigate('/');
+              } else if (res.status === 204) {
+                // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
+                navigate('/signUp', {
+                  state: { token: credentialResponse.credential },
+                });
+              } else {
+                console.log('status error : ' + res.status);
+              }
+            } catch (error) {
+              console.log(error);
+              alert('서버와 정상적으로 통신할 수 없습니다.');
+            }
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
       </div>
     </div>
   );
