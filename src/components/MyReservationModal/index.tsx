@@ -21,6 +21,7 @@ function MyReservationModal() {
   const visitors = myReservationDetail.visitors;
   const dateAndTime = myReservationDetail.date + ' ' + myReservationDetail.time;
   const seat = myReservationDetail.seat;
+  const seatNum = myReservationDetail.seat.split(' ')[1];
 
   useEffect(() => {
     return () => {
@@ -34,11 +35,11 @@ function MyReservationModal() {
         <section className={styles.seatLayoutContainer}>
           {zoneType !== '미팅룸' ? (
             <>
-              <ProgrammingZone myReservation='15' />
+              <ProgrammingZone myReservation={seatNum} />
             </>
           ) : (
             <>
-              <MeetingRoom myReservation='A' />
+              <MeetingRoom myReservation={seatNum} />
             </>
           )}
         </section>
