@@ -59,20 +59,42 @@
   }
 }
 
-.perComment {
-  display: flex;
-}
-
 .comments {
   .perComment {
+    display: flex;
+    position: relative; // position 속성 추가
     margin: 20px;
     border: 1px solid white;
     box-shadow: inset 0px -1px 0px #E1E2E4;
     padding-bottom: 10px;
     
     .commentSet {
+      position: relative; // position 속성 추가
       display: flex;
       flex-direction: column;
+    }
+
+    .updateBtnPosition {
+      width: 580px;
+      .commentUpdateBtn {
+        padding-left: 100px;
+        position: absolute; // position 속성 추가
+        right: 0; // right 속성 추가
+        top: 0; // top 속성 추가
+
+        button {
+          width: 33px;
+          height: 30px;
+          background-color: #682BE0;
+          font-size: 13px;
+          color: white;
+          border-radius: 13px;
+        }
+
+        .commentDeleteBtn {
+          margin-left: 10px;
+        }
+      }
     }
   }
 
@@ -97,7 +119,9 @@
       color: #b4b0b0;
     }
   }
+
 }
+
 
 .imgPosition {
   margin-top: 100px;
