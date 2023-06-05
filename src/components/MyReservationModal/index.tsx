@@ -17,11 +17,21 @@ function MyReservationModal() {
   );
   const dispatch = useAppDispatch();
 
-  const zoneType = myReservationDetail.seat.split(' ')[0];
+  const returnReservationTime = (start_time: string, end_time: string) => {
+    const startTime = `${start_time.slice(0, 2)}:${start_time.slice(3, 5)}`;
+    const endTime = `${end_time.slice(0, 2)}:${end_time.slice(3, 5)}`;
+    return `${startTime}~${endTime}`;
+  };
+  const seatType = myReservationDetail.seat_type;
   const visitors = myReservationDetail.visitors;
-  const dateAndTime = myReservationDetail.date + ' ' + myReservationDetail.time;
-  const seat = myReservationDetail.seat;
-  const seatNum = myReservationDetail.seat.split(' ')[1];
+  const dateAndTime =
+    myReservationDetail.reservation_date +
+    ' ' +
+    returnReservationTime(
+      myReservationDetail.start_time,
+      myReservationDetail.end_time,
+    );
+  const seatNum = myReservationDetail.seat_number;
 
   useEffect(() => {
     return () => {
@@ -33,7 +43,7 @@ function MyReservationModal() {
     <FullModal title='예약 상세 조회' modalType='reservation'>
       <div className={styles.container}>
         <section className={styles.seatLayoutContainer}>
-          {zoneType !== '미팅룸' ? (
+          {seatType !== '미팅룸' ? (
             <>
               <ProgrammingZone myReservation={seatNum} />
             </>
@@ -52,7 +62,9 @@ function MyReservationModal() {
 
           <div className={styles.seatContainer}>
             <p>예약 좌석</p>
-            <p>{seat}</p>
+            <p>
+              {seatType} {seatNum}
+            </p>
           </div>
 
           {visitors.length > 0 ? (

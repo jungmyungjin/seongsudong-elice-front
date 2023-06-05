@@ -10,7 +10,9 @@ export interface ModalState {
  */
 export interface ModalProps {
   modalMessage: string;
+  type?: string;
   modalController?: () => void;
+  closeController?: () => void;
 }
 
 /**
