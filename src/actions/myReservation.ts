@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createAction } from '@reduxjs/toolkit';
+import { MyReservation } from 'types/myReservation';
 
 axios.defaults.baseURL = 'http://localhost:3000';
 
@@ -39,4 +40,8 @@ export const cancelMyReservation = createAsyncThunk(
       throw error;
     }
   },
+);
+
+export const setMyReservationDetail = createAction<MyReservation>(
+  'myReservation/setMyReservationDetail',
 );
