@@ -100,15 +100,12 @@ function FirstGroupSeatLayout({ myReservation }: { myReservation: string }) {
         {drawGroupSeatLayout(31, myReservation)}
       </div>
       <div className={styles.group}>
-        {' '}
         {drawGroupSeatLayout(33, myReservation)}
       </div>
       <div className={styles.group}>
-        {' '}
         {drawGroupSeatLayout(35, myReservation)}
       </div>
       <div className={styles.group}>
-        {' '}
         {drawGroupSeatLayout(37, myReservation)}
       </div>
     </>
@@ -119,10 +116,10 @@ function GraduateSeatLayout({ myReservation }: { myReservation: string }) {
   return (
     <>
       <div className={styles.graduateSeat}>
-        {drawGraduateSeatLayout(55, myReservation)}
+        {drawGraduateSeatLayout(39, myReservation)}
       </div>
       <div className={styles.graduateSeat}>
-        {drawGraduateSeatLayout(60, myReservation)}
+        {drawGraduateSeatLayout(44, myReservation)}
       </div>
     </>
   );
@@ -132,16 +129,13 @@ function SecondGroupSeatLayout({ myReservation }: { myReservation: string }) {
   return (
     <>
       <div className={styles.group}>
-        {' '}
-        {drawGroupSeatLayout(54, myReservation)}
+        {drawGroupSeatLayout(49, myReservation)}
       </div>
       <div className={styles.group}>
-        {' '}
-        {drawGroupSeatLayout(56, myReservation)}
+        {drawGroupSeatLayout(51, myReservation)}
       </div>
       <div className={styles.group}>
-        {' '}
-        {drawGroupSeatLayout(58, myReservation)}
+        {drawGroupSeatLayout(53, myReservation)}
       </div>
     </>
   );
