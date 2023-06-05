@@ -5,7 +5,12 @@ import styles from './confirmModal.module.scss';
 import { ModalProps } from 'types/modal';
 import { ReactComponent as AlertCircle } from 'assets/AlertCircle.svg';
 
-function ConfirmModal({ modalMessage, modalController }: ModalProps) {
+function ConfirmModal({
+  modalMessage,
+  type,
+  modalController,
+  closeController,
+}: ModalProps) {
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
@@ -17,6 +22,9 @@ function ConfirmModal({ modalMessage, modalController }: ModalProps) {
 
   const handleCloseModal = () => {
     dispatch(closeConfirmModal());
+    if (type === 'successCancelMyReservation' && closeController) {
+      closeController();
+    }
   };
 
   return (
