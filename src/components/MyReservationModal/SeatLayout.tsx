@@ -119,10 +119,10 @@ function GraduateSeatLayout({ myReservation }: { myReservation: string }) {
   return (
     <>
       <div className={styles.graduateSeat}>
-        {drawGraduateSeatLayout(55, myReservation)}
+        {drawGraduateSeatLayout(39, myReservation)}
       </div>
       <div className={styles.graduateSeat}>
-        {drawGraduateSeatLayout(60, myReservation)}
+        {drawGraduateSeatLayout(44, myReservation)}
       </div>
     </>
   );
@@ -133,15 +133,15 @@ function SecondGroupSeatLayout({ myReservation }: { myReservation: string }) {
     <>
       <div className={styles.group}>
         {' '}
-        {drawGroupSeatLayout(54, myReservation)}
+        {drawGroupSeatLayout(49, myReservation)}
       </div>
       <div className={styles.group}>
         {' '}
-        {drawGroupSeatLayout(56, myReservation)}
+        {drawGroupSeatLayout(51, myReservation)}
       </div>
       <div className={styles.group}>
         {' '}
-        {drawGroupSeatLayout(58, myReservation)}
+        {drawGroupSeatLayout(53, myReservation)}
       </div>
     </>
   );
