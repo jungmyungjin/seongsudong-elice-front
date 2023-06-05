@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './postsDetail.module.scss';
+import ConfirmModal from 'components/common/ConfirmModal';
+import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
+import { openConfirmModal, closeConfirmModal } from 'reducers/modal';
 import postsData from './postsData.json';
 import commentsData from './commentsData.json';
+
 
 interface Post {
   id: number;
@@ -34,6 +38,8 @@ const PostDetail: React.FC = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const navigate = useNavigate(); // useNavigate hook을 가져옵니다.
+  const { isConfirmModalOpen } = useAppSelector(state => state.modal);
+  const dispatch = useAppDispatch();
 
   // //더미 데이터 테스트
   // useEffect(() => {
@@ -70,6 +76,25 @@ const PostDetail: React.FC = () => {
     navigate(`/post/free/editPost/${id}`);
   };
 
+  const handleOpenModal = (e: React.MouseEvent) => {
+    dispatch(openConfirmModal());
+  };
+
+  const modalController = async () => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/api/posts/${id}`);
+      if(response.status === 204) {
+        dispatch(closeConfirmModal());
+        navigate("/post/free");
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  
+
+
   if (!post) {
     return <div>Loading...</div>;
   }
@@ -103,7 +128,15 @@ const PostDetail: React.FC = () => {
         <button className={styles.updateBtn} onClick={handleEdit}>
           수정
         </button>
-        <button className={styles.deleteBtn}>삭제</button>
+        <div>
+          {isConfirmModalOpen && (
+          <ConfirmModal
+            modalMessage='게시물을 삭제하시겠습니까?'
+            modalController={modalController}
+          />
+          )}
+          <button className={styles.deleteBtn} onClick={handleOpenModal}>삭제</button>
+        </div>
       </div>
       {/* 댓글 부분 */}
       <div className={styles.underLine}>
