@@ -7,6 +7,21 @@ import { useGoogleLogin, GoogleLogin } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'reducers/user';
 
+interface ResponseType {
+  headers: {
+    authorization: string;
+  };
+  token: string;
+  status: number;
+  data: {
+    isAdmin: boolean;
+    name: string;
+    email: string;
+    generation: string;
+    token: string;
+  };
+}
+
 const api =
   process.env.REACT_APP_BACKEND_ADDRESS + '/api/members/register' || '';
 
@@ -18,25 +33,38 @@ const Login = (): React.ReactElement => {
   const loginBtnHandle = useGoogleLogin({
     onSuccess: async (data: any) => {
       try {
-        // console.log(data);
-        const res = await axios.post(api, data);
-        // console.log('useGoogleLogin', res);
+        const response: ResponseType = await axios.post(api, data.code);
+        console.log(response.headers);
+        const authToken = response.headers['authorization'];
 
-        if (res.status === 200) {
+        if (response.status === 200) {
           // 백엔드에서 받아온 토큰 값
-          localStorage.setItem('token', JSON.stringify(res.data));
+          sessionStorage.setItem('token', authToken || '');
+          const { isAdmin, email, name, generation } = response.data;
+          dispatch(
+            logIn({
+              isAdmin: isAdmin,
+              email: email,
+              username: name,
+              course: generation.split('/')[0],
+              generation: generation.split('/')[1],
+            }),
+          );
+
           navigate('/');
-        } else if (res.status === 204) {
+        } else if (response.status === 204) {
           // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
-          navigate('/signUp');
+          navigate('/signUp', {
+            state: { token: authToken },
+          });
         } else {
-          console.log('status error : ' + res.status);
+          console.log('status error : ' + response.status);
         }
       } catch (error) {
         console.log(error);
         alert('서버와 정상적으로 통신할 수 없습니다.');
       }
-      // console.log(data);
+      console.log(data);
     },
     flow: 'auth-code',
   });
@@ -52,7 +80,7 @@ const Login = (): React.ReactElement => {
         </div>
         <button className={styles.LoginButton} onClick={loginBtnHandle}>
           <div>
-            <img src='/images/google_G_logo.svg.png' alt='구글 로그' />
+            <img src='/images/google_G_logo.svg.png' alt='구글 로그인' />
             <span>구글 계정으로 로그인</span>
           </div>
         </button>
@@ -66,7 +94,7 @@ const Login = (): React.ReactElement => {
               });
               if (res.status === 200) {
                 // 백엔드에서 받아온 토큰 값
-                localStorage.setItem(
+                sessionStorage.setItem(
                   'token',
                   credentialResponse.credential || '',
                 );
@@ -94,6 +122,7 @@ const Login = (): React.ReactElement => {
               console.log(error);
               alert('서버와 정상적으로 통신할 수 없습니다.');
             }
+            console.log(credentialResponse);
           }}
           onError={() => {
             console.log('Login Failed');

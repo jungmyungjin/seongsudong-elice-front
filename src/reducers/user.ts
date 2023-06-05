@@ -15,7 +15,7 @@ interface LogInPayload {
   email: string;
   username: string;
   course: string;
-  generation: number;
+  generation: number | string;
 }
 
 // 초기 사용자 상태
