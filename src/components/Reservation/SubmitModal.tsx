@@ -5,12 +5,10 @@ import styles from './ReservationOptions.module.scss';
 
 import { ReactComponent as X } from 'assets/X.svg';
 import KakaoShareButton from 'components/KakaoShareButton';
-import { useNavigate } from 'react-router-dom';
 
 const SubmitModal = ({ onClick }: { onClick: () => void }) => {
   const { reservationInfo, updateReservationInfo } =
     useContext(ReservationContext);
-  let navigate = useNavigate();
 
   return (
     <div className={styles.back}>
@@ -26,12 +24,7 @@ const SubmitModal = ({ onClick }: { onClick: () => void }) => {
         <div className={styles.KakaoShareButton}>
           <KakaoShareButton />
         </div>
-        <button
-          className={styles.checkReservationButton}
-          onClick={() => navigate('/MyPage/myreservation')}
-        >
-          예약조회
-        </button>
+        <button className={styles.checkReservationButton}>예약조회</button>
       </div>
     </div>
   );
