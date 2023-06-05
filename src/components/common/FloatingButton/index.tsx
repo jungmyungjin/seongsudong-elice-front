@@ -17,8 +17,8 @@ function FloatingButton() {
 
   useEffect(() => {
     if (
-      location.pathname === '/post/create' ||
-      location.pathname === '/reservation'
+      location.pathname === '/post/create'
+      // || location.pathname === '/reservation'
     ) {
       setHidden(true);
     } else {
