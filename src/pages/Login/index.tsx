@@ -70,9 +70,10 @@ const Login = (): React.ReactElement => {
                   'token',
                   credentialResponse.credential || '',
                 );
-                const { email, name, generation } = res.data;
+                const { isAdmin, email, name, generation } = res.data;
                 dispatch(
                   logIn({
+                    isAdmin: isAdmin,
                     email: email,
                     username: name,
                     course: generation.split('/')[0],

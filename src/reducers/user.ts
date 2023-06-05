@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 // 사용자 상태 타입 정의
 interface UserState {
   loggedIn: boolean;
+  isAdmin: boolean;
   email: string | null;
   username: string | null;
   course: string | null;
@@ -10,6 +11,7 @@ interface UserState {
 }
 
 interface LogInPayload {
+  isAdmin: boolean;
   email: string;
   username: string;
   course: string;
@@ -18,6 +20,7 @@ interface LogInPayload {
 
 // 초기 사용자 상태
 const initialState: UserState = {
+  isAdmin: false,
   email: null,
   loggedIn: false,
   username: null,
@@ -40,6 +43,7 @@ const userSlice = createSlice({
     },
     // 로그아웃 액션
     logOut: state => {
+      state.isAdmin = false;
       state.email = null;
       state.loggedIn = false;
       state.username = null;
