@@ -115,13 +115,13 @@ const PostDetail: React.FC = () => {
   };
 
   // 댓글 삭제 api 연결
-  const deleteComment = async (commentId: number) => {
+  const deleteComment = async (commentId: number, email: string) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/comments/${id}`, {
-        params: {
-          commentId: commentId,
-          email: "yoonju.eom1@gmail.com"
-        }
+      const response = await axios.delete(`http://localhost:5000/api/comments/${id}/${commentId}/${email}`, {
+        // params: {
+        //   commentId: commentId,
+        //   email: "yoonju.eom1@gmail.com"
+        // }
 
       });
       console.log(response);
@@ -249,7 +249,7 @@ const PostDetail: React.FC = () => {
                         setEditingComment({ ...editingComment, [comment.id]: comment.content });
                       }}>수정</button>
                       {/* 댓글 삭제 버튼 */}
-                      <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id)}>삭제</button> 
+                      <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id, comment.author_email)}>삭제</button>  
                     </div>
                   )}
                 </div>
