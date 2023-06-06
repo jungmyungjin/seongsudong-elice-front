@@ -117,13 +117,7 @@ const PostDetail: React.FC = () => {
   // 댓글 삭제 api 연결
   const deleteComment = async (commentId: number, email: string) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/comments/${id}/${commentId}/${email}`, {
-        // params: {
-        //   commentId: commentId,
-        //   email: "yoonju.eom1@gmail.com"
-        // }
-
-      });
+      const response = await axios.delete(`http://localhost:5000/api/comments/${id}/${commentId}/${email}`);
       console.log(response);
       if (response.status === 200) { // 서버에서 성공적으로 응답을 받았다면
         setComments(comments.filter(c => c.id !== commentId)); // 삭제된 댓글을 제외하고 상태를 업데이트합니다.
