@@ -3,7 +3,7 @@ import styles from './login.module.scss';
 import { useNavigate } from 'react-router-dom';
 import logo from 'assets/elice-logo.png';
 import axios from 'axios';
-import { useGoogleLogin, GoogleLogin } from '@react-oauth/google';
+import { useGoogleLogin, GoogleLogin, CodeResponse } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'reducers/user';
 
@@ -22,8 +22,7 @@ interface ResponseType {
   };
 }
 
-const api =
-  process.env.REACT_APP_BACKEND_ADDRESS + '/api/members/register' || '';
+const api = process.env.REACT_APP_BACKEND_ADDRESS + '/auth/google' || '';
 
 const Login = (): React.ReactElement => {
   let navigate = useNavigate();
@@ -31,9 +30,12 @@ const Login = (): React.ReactElement => {
 
   // [ Authorization Code Flow 방식 ]
   const loginBtnHandle = useGoogleLogin({
-    onSuccess: async (data: any) => {
+    onSuccess: async (code: CodeResponse) => {
       try {
-        const response: ResponseType = await axios.post(api, data.code);
+        const response: ResponseType = await axios.post(
+          'http://localhost:3000/auth/google',
+          code,
+        );
         console.log(response.headers);
         const authToken = response.headers['authorization'];
 
@@ -64,7 +66,7 @@ const Login = (): React.ReactElement => {
         console.log(error);
         alert('서버와 정상적으로 통신할 수 없습니다.');
       }
-      console.log(data);
+      console.log('CODE IS ', code);
     },
     flow: 'auth-code',
   });
@@ -87,17 +89,17 @@ const Login = (): React.ReactElement => {
         <GoogleLogin
           onSuccess={async credentialResponse => {
             try {
-              const res = await axios.get(api, {
+              const res = await axios.post(api, {
                 headers: {
                   Authorization: `Bearer ${credentialResponse.credential}`,
                 },
               });
               if (res.status === 200) {
-                // 백엔드에서 받아온 토큰 값
-                sessionStorage.setItem(
-                  'token',
-                  credentialResponse.credential || '',
-                );
+                // 백엔드에서 받아온 토큰 값  // 쿠키를 설정하면 이 부분이 사라진다
+                // sessionStorage.setItem(
+                //   'token',
+                //   credentialResponse.credential || '',
+                // );
                 const { isAdmin, email, name, generation } = res.data;
                 dispatch(
                   logIn({
