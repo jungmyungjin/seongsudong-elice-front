@@ -71,7 +71,7 @@ const Profile = (): React.ReactElement => {
 
   const handleLogoutClick = (e: MouseEvent<HTMLButtonElement>) => {
     navigate('/');
-    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
     dispatch(closeMenu());
     dispatch(logOut());
   };
