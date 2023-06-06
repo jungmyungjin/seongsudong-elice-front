@@ -13,6 +13,7 @@ import { myPost } from 'types/myPost';
 import { loadMyPost } from 'actions/myPost';
 
 function MyPost() {
+  const { email } = useAppSelector(state => state.user);
   const { myPost } = useAppSelector(state => state.myPost);
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPosts, setFilteredPosts] = useState<myPost[]>([]);
@@ -20,7 +21,7 @@ function MyPost() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(loadMyPost());
+    dispatch(loadMyPost(email));
   }, []);
 
   useEffect(() => {

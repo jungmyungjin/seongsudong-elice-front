@@ -1,5 +1,6 @@
 import CustomLink from 'components/common/Link';
 import styles from './myPage.module.scss';
+import { useAppSelector } from 'hooks/useRedux';
 
 const myPageMenu = [
   {
@@ -19,14 +20,7 @@ const myPageMenu = [
 ];
 
 function MyPage() {
-  // 원래는 useAppSelecter로 가져와야함
-  interface MyPageProps {
-    userName: string;
-  }
-
-  const initValue: MyPageProps = {
-    userName: '[SW]신하영',
-  };
+  const { username, course, generation } = useAppSelector(state => state.user);
 
   return (
     <div className={styles.myPageContainer}>
@@ -34,7 +28,9 @@ function MyPage() {
         <div className={styles.headerImage}>
           <img src='/images/rabbit_profile.png' alt='profile' />
         </div>
-        <div className={styles.myName}>{initValue.userName}</div>
+        <div className={styles.myName}>
+          [{course}/{generation}]{username}
+        </div>
       </div>
       <div className={styles.myPageMenuContainer}>
         {myPageMenu.map(item => (

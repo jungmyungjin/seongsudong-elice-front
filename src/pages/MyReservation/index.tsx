@@ -23,6 +23,8 @@ function MyReservationPage() {
   const { pastReservations, upcomingReservations } = useAppSelector(
     state => state.myReservation,
   );
+  const { email } = useAppSelector(state => state.user);
+
   const myReservationList = showUpcomingReservations
     ? upcomingReservations
     : pastReservations;
@@ -38,7 +40,7 @@ function MyReservationPage() {
   } = usePaginate(myReservationList, postsPerPage);
 
   useEffect(() => {
-    dispatch(loadMyReservation());
+    dispatch(loadMyReservation(email));
   }, []);
 
   const handleOpenReservationModal = (id: string) => {

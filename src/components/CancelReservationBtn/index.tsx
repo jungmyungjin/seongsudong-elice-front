@@ -16,18 +16,23 @@ function CancelReservationBtn() {
   const { cancelMyReservationDone, cancelMyReservationError } = useAppSelector(
     state => state.myReservation,
   );
+  const { email } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
-
   const myReservationDetail = useAppSelector(
     state => state.myReservation.myReservationDetail,
   );
+
+  const data = {
+    reservation_id: myReservationDetail.reservation_id,
+    email: email,
+  };
 
   const handleOpenModal = () => {
     dispatch(openConfirmModal());
   };
 
   const handleCancelReservation = () => {
-    dispatch(cancelMyReservation(myReservationDetail.reservation_id));
+    dispatch(cancelMyReservation(data));
   };
 
   const handleCompleteCancel = () => {
