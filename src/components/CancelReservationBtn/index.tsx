@@ -1,34 +1,63 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './cancelReservationBtn.module.scss';
 import ConfirmModal from 'components/common/ConfirmModal';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
-import { openConfirmModal, closeConfirmModal } from 'reducers/modal';
+import {
+  openConfirmModal,
+  closeConfirmModal,
+  closeMyReservationModal,
+} from 'reducers/modal';
+
+import { cancelMyReservation } from 'actions/myReservation';
 
 function CancelReservationBtn() {
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
+  const { cancelMyReservationDone, cancelMyReservationError } = useAppSelector(
+    state => state.myReservation,
+  );
   const dispatch = useAppDispatch();
 
-  /* 현재 예약 정보 가져와서 */
   const myReservationDetail = useAppSelector(
     state => state.myReservation.myReservationDetail,
   );
 
-  const handleOpenModal = (e: React.MouseEvent) => {
+  const handleOpenModal = () => {
     dispatch(openConfirmModal());
   };
 
-  /* 여기에 dispatch(action종류) 작성해서 API연결 */
-  const modalController = () => {
-    dispatch(closeConfirmModal());
-    // 예시) dispatch(cancelReservation(myReservationDetail));
+  const handleCancelReservation = () => {
+    dispatch(cancelMyReservation(myReservationDetail.reservation_id));
   };
+
+  const handleCompleteCancel = () => {
+    dispatch(closeConfirmModal());
+    dispatch(closeMyReservationModal());
+    window.location.reload();
+  };
+
   return (
     <>
       {isConfirmModalOpen && (
         <ConfirmModal
           modalMessage='해당 예약을 취소하시겠습니까?'
-          modalController={modalController}
+          modalController={handleCancelReservation}
+        />
+      )}
+      {cancelMyReservationDone && isConfirmModalOpen && (
+        <ConfirmModal
+          type='successCancelMyReservation'
+          modalMessage='예약이 취소되었습니다!😉'
+          modalController={handleCompleteCancel}
+          closeController={handleCompleteCancel}
+        />
+      )}
+      {cancelMyReservationError && isConfirmModalOpen && (
+        <ConfirmModal
+          type='successCancelMyReservation'
+          modalMessage='지난 예약은 취소할 수 없습니다.🥹'
+          modalController={handleCompleteCancel}
+          closeController={handleCompleteCancel}
         />
       )}
       <button

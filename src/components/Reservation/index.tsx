@@ -32,7 +32,7 @@ const Reservation: React.FC = () => {
       const date = new Date(startDate);
       date.setDate(date.getDate() + i);
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
+      const day = (date.getDate() + 1).toString().padStart(2, '0');
       const dayOfWeek = ['월', '화', '수', '목', '금'][date.getDay()];
       dates.push(`${getCurrentDate()}.${month}.${day}(${dayOfWeek})`);
     }
@@ -82,22 +82,21 @@ const Reservation: React.FC = () => {
     const { reservationInfo, updateReservationInfo } =
       useContext(ReservationContext);
 
-    const handleCheckboxChange = (day: string) => {
-      setSelectedCheckbox(day);
-      const weekDates = getWeekDates();
-      const index = ['월', '화', '수', '목', '금'].indexOf(day);
-
-      updateReservation({
-        date: weekDates[index].split('(')[0].replace(/\./g, '-'),
-      });
-    };
-
     const updateReservation = (updatedInfo: Partial<ReservationInfo>) => {
       const updatedReservationInfo = {
         ...reservationInfo,
         ...updatedInfo,
       };
       updateReservationInfo(updatedReservationInfo);
+    };
+    const handleCheckboxChange = (day: string) => {
+      setSelectedCheckbox(day);
+      const weekDates = getWeekDates();
+      const index = ['월', '화', '수', '목', '금'].indexOf(day);
+
+      updateReservation({
+        date: weekDates[index].replace(/\./g, '-'),
+      });
     };
 
     return (

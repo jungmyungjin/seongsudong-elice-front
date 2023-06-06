@@ -44,22 +44,27 @@ const HeaderSlideMenu = (): React.ReactElement => {
       <Profile />
       <ul>
         <li>
+          <button onClick={() => handleClick('/admin')}>
+            <span>관리자페이지</span>
+          </button>
+        </li>
+        <li>
           <button onClick={() => handleClick('/mypage')}>
             <span>마이페이지</span>
           </button>
         </li>
         <li>
-          <button onClick={() => handleClick('/')}>
+          <button onClick={() => handleClick('/reservation')}>
             <span>예약하기</span>
           </button>
         </li>
         <li>
-          <button onClick={() => handleClick('/')}>
+          <button onClick={() => handleClick('/post/free')}>
             <span>공지사항</span>
           </button>
         </li>
         <li>
-          <button onClick={() => handleClick('/')}>
+          <button onClick={() => handleClick('/post/free')}>
             <span>자유게시판</span>
           </button>
         </li>

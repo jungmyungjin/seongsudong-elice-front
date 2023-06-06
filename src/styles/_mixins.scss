@@ -5,7 +5,8 @@ $breakpoint-tablet-desktop: 891px;
 $breakpoint-desktop: 1024px;
 $breakpoint-mid-desktop: 1412px;
 $breakpoint-full-desktop: 1800px;
-$breakpoint-big-desktop: 2400px;
+$breakpoint-big-desktop: 2100px;
+$breakpoint-big-big-desktop: 2400px;
 
 /* 모바일 */
 @mixin mobile {
@@ -42,9 +43,25 @@ $breakpoint-big-desktop: 2400px;
   }
 }
 
-/* 리얼 큰 데스크탑 */
+/* 조금 큰 데스크탑 */
 @mixin bigDesktop {
-  @media (min-width: #{$breakpoint-full-desktop}) and (max-width:#{$breakpoint-big-desktop - 1px} ) {
+  @media (min-width: #{$breakpoint-full-desktop})and (max-width: #{$breakpoint-big-desktop - 1px}) {
     @content;
   }
 }
+
+/* 조금 더 큰 데스크탑 */
+@mixin bigBigDesktop {
+  @media (min-width: #{$breakpoint-big-desktop})and (max-width: #{$breakpoint-big-big-desktop - 1px}) {
+    @content;
+  }
+}
+
+/* 리얼 큰 데스크 탑 */
+@mixin realBigDesktop {
+  @media (min-width: #{$breakpoint-big-big-desktop}) {
+    @content;
+  }
+}
+
+/* 리얼 리얼 큰 데스크 탑 */

@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { closeMenu } from 'reducers/slideMenu';
-import { logIn, logOut } from 'reducers/user';
+import { logOut } from 'reducers/user';
 import { RootState } from 'store/configureStore';
 import { useNavigate } from 'react-router-dom';
 
@@ -47,7 +47,6 @@ const ToLogIn = (): React.ReactElement => {
 
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     navigate('/login');
-    dispatch(logIn({ username: '정명진', course: 'SW', generation: 1 }));
     dispatch(closeMenu());
   };
 
@@ -72,6 +71,7 @@ const Profile = (): React.ReactElement => {
 
   const handleLogoutClick = (e: MouseEvent<HTMLButtonElement>) => {
     navigate('/');
+    localStorage.removeItem('token');
     dispatch(closeMenu());
     dispatch(logOut());
   };

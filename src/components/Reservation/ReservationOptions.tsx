@@ -59,10 +59,7 @@ const CreateTimeSelector: React.FC<CreateTimeSelectorProps> = ({
 
   useEffect(() => {
     const selectedTimes = typeList.filter((_, index) => isClicked[index]);
-    const startTime = selectedTimes
-      .map(time => time.substring(0, 2))
-      .join(', ');
-
+    const startTime = selectedTimes.join(', ');
     updateReservation({ startTime: startTime });
   }, [isClicked]);
 
@@ -103,16 +100,6 @@ const ReservationOptions: React.FC = () => {
     };
     updateReservationInfo(updatedReservationInfo);
   };
-
-  useEffect(() => {
-    console.log('다른 파일 좌석 컴포넌트 렌더링');
-    console.log(reservationInfo);
-  }, [
-    reservationInfo.seatType,
-    reservationInfo.startTime,
-    reservationInfo.seat,
-    updateReservationInfo,
-  ]);
 
   const handleSeatTypeSelect = (value: string) => {
     updateReservation({ seatType: value });
