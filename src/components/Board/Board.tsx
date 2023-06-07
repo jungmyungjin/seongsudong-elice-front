@@ -8,29 +8,16 @@ import styles from './board.module.scss';
 import { Link } from 'react-router-dom';
 import { ReactComponent as PostBtn } from 'assets/Create.svg';
 import { Post } from 'types/post';
-import postsData from './postsData.json';
 
 const Posts: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(10);
+  const [posts, setPosts] = useState<Post[]>([]); // 게시물 목록을 저장하는 상태 변수
+  const [filteredPosts, setFilteredPosts] = useState<Post[]>([]); // 검색 또는 필터링된 게시물 목록을 저장하는 상태 변수
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호를 저장하는 상태 변수
+  const [postsPerPage] = useState(10); // 페이지 당 보여줄 게시물 수를 저장하는 상태 변수
   const [searchTerm, setSearchTerm] = useState(''); // 검색어를 저장하는 상태 변수
-  const [selectedTab, setSelectedTab] = useState('자유');
+  const [selectedTab, setSelectedTab] = useState('자유'); // 선택된 탭을 저장하는 상태 변수
 
-
-  //더미 데이터 테스트
-  // useEffect(() => {
-  //   const fetchPosts = async () => {
-  //     const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
-  //     const response = postsData.filter(post => post.category === category);
-  //     console.log(response);
-  //     setPosts(response);
-  //   };
-  //   fetchPosts();
-  // }, [selectedTab]);
-  
-  // api 테스트
+  // 카테고리별 게시물 리스트 조회 api
   useEffect(() => {
     const fetchPosts = async () => {
       const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
@@ -43,14 +30,14 @@ const Posts: React.FC = () => {
     };
     fetchPosts();
   }, [selectedTab]); // selectedTab 상태 변경시 데이터를 다시 불러옵니다.
-  
 
   // 검색어가 바뀌거나 포스트가 바뀌었을 때 필터링된 포스트를 업데이트합니다.
   useEffect(() => {
     setFilteredPosts(
       posts.filter(
-        post => post.title.toLowerCase().includes(searchTerm.toLowerCase()), // 대소문자를 구분하지 않고 검색합니다.
-      ),
+        (post) =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()) // 대소문자를 구분하지 않고 검색합니다.
+      )
     );
     setCurrentPage(1); // 페이지를 처음으로 돌립니다.
   }, [posts, searchTerm]);
@@ -65,7 +52,7 @@ const Posts: React.FC = () => {
     <div className={styles['posts-container']}>
       <div className={styles.tabBox}>
         <Link
-          to='/post/free'
+          to="/post/free"
           className={classNames(styles.freePost, {
             [styles.selected]: selectedTab === '자유',
           })}
@@ -74,7 +61,7 @@ const Posts: React.FC = () => {
           <p>자유</p>
         </Link>
         <Link
-          to='/post/free'
+          to="/post/free"
           className={classNames(styles.freePost, {
             [styles.selected]: selectedTab === '공지',
           })}
@@ -82,7 +69,7 @@ const Posts: React.FC = () => {
         >
           <p>공지</p>
         </Link>
-        <Link to='/post/free/create' className={styles.createBtn}>
+        <Link to="/post/free/create" className={styles.createBtn}>
           <PostBtn />
         </Link>
       </div>
