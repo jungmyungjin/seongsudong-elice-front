@@ -43,26 +43,6 @@ const PostDetail: React.FC = () => {
   const navigate = useNavigate(); // useNavigate hook을 가져옵니다.
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
-
-  // //더미 데이터 테스트
-  // useEffect(() => {
-  //   const fetchPost = () => {
-  //     const response = postsData.find((post: Post) => post.id === Number(id));
-  //     setPost(response || null);
-  //   };
-
-  //   fetchPost();
-  // }, [id]);
-
-  // 댓글 더미데이터
-  // useEffect(() => {
-  //   const fetchComments = () => {
-  //     const response = commentsData.filter((comment: Comment) => comment.post_id === Number(id));
-  //     setComments(response);
-  //   };
-
-  //   fetchComments();
-  // }, [id]);
   
   // 댓글 조회 api 연결
   useEffect(() => {
@@ -182,7 +162,6 @@ const PostDetail: React.FC = () => {
           {post.name} | {convertStringToDate(post.created_at)} | 조회수 :{' '}
           {post.views}
         </p>
-      {/* <div><img src={`http://localhost:5000/${post.images}`} /></div> */}
       </div>
       <div className={styles.description}>
         <p>{post.description}</p>
