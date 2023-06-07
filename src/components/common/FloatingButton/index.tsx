@@ -9,16 +9,12 @@ import styles from './floatingButton.module.scss';
 function FloatingButton() {
   const { isChatModalOpen } = useAppSelector(state => state.modal);
   const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-
   const [hidden, setHidden] = useState(false);
   const dispatch = useAppDispatch();
   const location = useLocation();
 
   const handleOpenChatModal = () => {
-    if (!isDragging) {
-      dispatch(openChatModal());
-    }
+    dispatch(openChatModal());
   };
 
   const handleOnDrag = (data: DraggableData) => {
@@ -40,12 +36,14 @@ function FloatingButton() {
     <>
       {isChatModalOpen && <ChatModal />}
       {!hidden && (
-        <Draggable onDrag={(_, data) => handleOnDrag(data)}>
+        <Draggable
+          position={{ x: position.x, y: position.y }}
+          onDrag={(_, data) => handleOnDrag(data)}
+        >
           <div className={styles.floatingButtonContainer}>
             <button
               className={styles.floatingButton}
               onDoubleClick={handleOpenChatModal}
-              onMouseDown={() => setIsDragging(false)}
             >
               <div className={styles.rabbitIcon}>
                 <img src='/images/rabbit.png' alt='rabbit-icon' />
