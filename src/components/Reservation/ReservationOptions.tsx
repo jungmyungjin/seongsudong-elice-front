@@ -86,13 +86,10 @@ const DateOptions: React.FC = () => {
         ...updatedInfo,
       };
 
-      console.log(updatedReservationInfo);
       dispatch(updateReservationInfo(updatedReservationInfo));
     };
 
-    useEffect(() => {
-      console.log('날짜 바뀜');
-    }, [reservationInfo.reservation_date]);
+    useEffect(() => {}, [reservationInfo.reservation_date]);
 
     const [selectedCheckbox, setSelectedCheckbox] = useState(
       reservationInfo.reservation_date.slice(-2),
@@ -152,31 +149,37 @@ const DateOptions: React.FC = () => {
 
 export const SingleSelect: React.FC<SingleSelectProps> = ({
   typeList,
+  name,
   onSelect,
 }) => {
-  const [selectedSeatTypeIndex, setSelectedSeatTypeIndex] = useState<number>(0);
+  const [selectedType, setSelectedType] = useState<string>(typeList[0]);
 
-  const handleSelect = (type: string, index: number) => {
+  const handleSelect = (type: string) => {
     if (onSelect) {
       onSelect(type);
     }
-    setSelectedSeatTypeIndex(index);
+    setSelectedType(type);
   };
 
   return (
     <div className={styles.typeSelector}>
-      {typeList.map((type, index) => (
-        <button
+      {typeList.map(type => (
+        <label
           key={type}
           className={
-            selectedSeatTypeIndex === index
-              ? styles.checkedType
-              : styles.unCheckedType
+            selectedType === type ? styles.checkedType : styles.unCheckedType
           }
-          onClick={() => handleSelect(type, index)}
         >
+          <input
+            type='radio'
+            name={name}
+            value={type}
+            checked={selectedType === type}
+            onChange={() => handleSelect(type)}
+            className={styles.checkboxInput}
+          />
           {type}
-        </button>
+        </label>
       ))}
     </div>
   );
@@ -201,17 +204,48 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
   };
 
   useEffect(() => {
+    // 최소 한 개의 항목이 선택되도록 처리
+    const clickedCount = isClicked.filter(Boolean).length;
+    if (clickedCount === 0) {
+      const updatedClickedState = [...isClicked];
+      updatedClickedState[0] = true;
+      setIsClicked(updatedClickedState);
+    }
     const selectedTimes = typeList.filter((_, index) => isClicked[index]);
     const time = selectedTimes.join(', ');
     updateReservation({ time: time });
+    // console.log(reservationInfo.time);
   }, [isClicked]);
 
-  const handleClick = (index: number) => {
+  const handleClick = (index: number, type: string) => {
+    // 클릭 상태 변경
     const updatedClickedState = [...isClicked];
     updatedClickedState[index] = !updatedClickedState[index];
     setIsClicked(updatedClickedState);
   };
 
+  // const handleClick = (index: number, type: string) => {
+  //   const updatedClickedState = [...isClicked];
+  //   updatedClickedState[index] = !updatedClickedState[index];
+  //   setIsClicked(updatedClickedState);
+  //   updateReservation({ time: type });
+  // };
+
+  // return (
+  //   <div className={styles.TimeSelector}>
+  //     {typeList.map((type, index) => (
+  //       <button
+  //         key={type}
+  //         className={
+  //           isClicked[index] ? styles.checkedType : styles.unCheckedType
+  //         }
+  //         onClick={() => handleClick(index, type)}
+  //       >
+  //         {type}
+  //       </button>
+  //     ))}
+  //   </div>
+  // );
   return (
     <div className={styles.TimeSelector}>
       {typeList.map((type, index) => (
@@ -220,7 +254,7 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
           className={
             isClicked[index] ? styles.checkedType : styles.unCheckedType
           }
-          onClick={() => handleClick(index)}
+          onClick={() => handleClick(index, type)}
         >
           {type}
         </button>
@@ -255,15 +289,27 @@ const ReservationOptions: React.FC = () => {
     }
   };
 
+  const handleMeetingRoomTimeSelect = (value: string) => {
+    updateReservation({ time: value });
+  };
+
   return (
     <>
       <DateOptions />
-      <SingleSelect typeList={seatTypeList} onSelect={handleSeatTypeSelect} />
+      <SingleSelect
+        typeList={seatTypeList}
+        name='seatType'
+        onSelect={handleSeatTypeSelect}
+      />
       {!isMeetingRoom ? (
         <TimeSelector typeList={TimeList} />
       ) : (
         <div className={styles.meetingRoomTimeSelector}>
-          <SingleSelect typeList={TimeList} />
+          <SingleSelect
+            typeList={TimeList}
+            name='time'
+            onSelect={handleMeetingRoomTimeSelect}
+          />
         </div>
       )}
     </>

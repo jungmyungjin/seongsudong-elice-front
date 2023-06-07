@@ -38,7 +38,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
 
-  & > * {
+  & > label {
     background-color: #f0f1f3;
     border: 2px solid #9c9c9c;
     border-radius: 8px;
@@ -47,16 +47,24 @@
     flex: 1 1 auto;
     font: inherit;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  & > *:not(:last-child) {
+
+  & > label:not(:last-child) {
     margin-right: 0.5rem;
     margin-bottom: 0.7rem;
   }
 
-  & > .checkedType {
+  & > label.checkedType {
     background-color: #524fa1;
     border: 2px solid #524fa1;
     color: #e2e1ff;
+  }
+
+  input[type='radio'] {
+    display: none;
   }
 }
 

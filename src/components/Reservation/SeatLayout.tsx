@@ -33,7 +33,22 @@ const SeatLayout: React.FC = () => {
   const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
   const [checkReservation, setCheckReservation] = useState<string>('');
   const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
-  let serverData: ServerResponse = {};
+  useEffect(() => {
+    // axios.get('api', {
+    //   headers: {
+    //     date: reservationInfo.date,
+    //   },
+    // })
+    //   .then(response => {
+    //
+    //   })
+    //   .catch(error => {
+    //     // 에러 처리
+    //   });
+    setServerData(serverDatas);
+  }, []);
+
+  const [serverData, setServerData] = useState<ServerResponse>(serverDatas);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -55,15 +70,20 @@ const SeatLayout: React.FC = () => {
     //     // 에러 처리
     //   });
     // 날짜 서버에 보내서 예약된 좌석 받아오기
-    serverData = serverDatas;
+    setServerData(serverDatas);
+    // console.log(serverData);
+    const seats = findAvailableSeats(serverData, '10:00~14:00');
+    setCanReservationSeat(seats);
 
-    console.log('날짜 정보 바뀜');
+    // console.log(seats);
+    // console.log('날짜 정보 바뀜');
   }, [reservationInfo.reservation_date]);
 
   useEffect(() => {
-    console.log(canReservationSeat);
+    // console.log(reservationInfo.time);
     const seats = findAvailableSeats(serverData, reservationInfo.time);
     setCanReservationSeat(seats);
+    // console.log(seats);
   }, [reservationInfo.time]);
 
   function personalSeatLayout(
@@ -321,16 +341,14 @@ const SeatLayout: React.FC = () => {
 
   function ClickMeetingRoom() {
     let typeList: string[] = [];
-    if (canReservationSeat.includes('A')) {
-      typeList = ['미팅룸A (최대 6인)'];
-    } else if (canReservationSeat.includes('A')) {
-      typeList = ['미팅룸B (최대 10인)'];
-    } else if (
-      canReservationSeat.includes('A') &&
-      canReservationSeat.includes('B')
-    ) {
+    if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
       typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
+    } else if (canReservationSeat.includes('A')) {
+      typeList = ['미팅룸A (최대 6인)'];
+    } else if (canReservationSeat.includes('B')) {
+      typeList = ['미팅룸B (최대 10인)'];
     }
+
     const [inputValue, setInputValue] = useState('');
 
     return (

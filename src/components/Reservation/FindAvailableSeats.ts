@@ -20,14 +20,38 @@ export function findAvailableSeats(
   Object.keys(serverData).forEach(key => {
     const data = serverData[key];
 
-    if (isAvailable_10to14 && data.available_10to14) {
-      availableSeatsSet.add(key);
-    }
-    if (isAvailable_14to18 && data.available_14to18) {
-      availableSeatsSet.add(key);
-    }
-    if (isAvailable_18to22 && data.available_18to22) {
-      availableSeatsSet.add(key);
+    if (isAvailable_10to14 && isAvailable_14to18 && isAvailable_18to22) {
+      if (
+        data.available_10to14 &&
+        data.available_14to18 &&
+        data.available_18to22
+      ) {
+        availableSeatsSet.add(key);
+      }
+    } else if (isAvailable_10to14 && isAvailable_14to18) {
+      if (data.available_10to14 && data.available_14to18) {
+        availableSeatsSet.add(key);
+      }
+    } else if (isAvailable_10to14 && isAvailable_18to22) {
+      if (data.available_10to14 && data.available_18to22) {
+        availableSeatsSet.add(key);
+      }
+    } else if (isAvailable_14to18 && isAvailable_18to22) {
+      if (data.available_14to18 && data.available_18to22) {
+        availableSeatsSet.add(key);
+      }
+    } else if (isAvailable_10to14) {
+      if (data.available_10to14) {
+        availableSeatsSet.add(key);
+      }
+    } else if (isAvailable_14to18) {
+      if (data.available_14to18) {
+        availableSeatsSet.add(key);
+      }
+    } else if (isAvailable_18to22) {
+      if (data.available_18to22) {
+        availableSeatsSet.add(key);
+      }
     }
   });
 
