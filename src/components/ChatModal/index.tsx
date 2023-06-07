@@ -11,33 +11,37 @@ import { addChat } from 'reducers/chat';
 import { convertDate } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
+/* 소켓 객체 */
+// import { io } from 'socket.io-client';
+// const socket = io('process.env.REACT_APP_SOCKET_ENDPOINT');
+
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
+  // const {isAdmin} = useAppSelector(state => state.user); // 임의 -> 로그인 성공 후 전역으로 isAdmin 저장 성공 시 주석 해제
   const [isAdmin, setIsAdmin] = useState<boolean>(false); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
   const [isOnline, setIsOnline] = useState<boolean>(true); // 임의 ~> 채팅 페이지에 머물러 있을 때 vs 로그인 했을 때 vs 사이트 창에 머물러 있을 때  기준 정해야함
   const [inputValue, setInputValue] = useState<string>('');
   const [date, setDate] = useState<string>('');
-
-  /** 채팅 각 하나의 시간 */
-  const nowDate = convertDate(new Date());
-  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
-
   const dispatch = useAppDispatch();
   const chatMsg = useAppSelector(state => state.chat.chatList);
 
+  /** 자동 스크롤 */
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value);
-  }
-
-  /** 자동 스크롤 */
   useEffect(() => {
     if (scrollContainerRef.current && chatMsg.length > 0) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
   }, [chatMsg]);
+
+  /** 채팅 각 하나의 시간 */
+  const nowDate = convertDate(new Date());
+  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
+
+  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setInputValue(e.target.value);
+  }
 
   /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
   useEffect(() => {

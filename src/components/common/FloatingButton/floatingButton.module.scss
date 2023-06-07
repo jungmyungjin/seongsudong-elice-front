@@ -65,6 +65,22 @@
   }
 }
 
+@include realRealBigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 40%;
+    bottom: 6%;
+  }
+}
+
+@include realRealRealBigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 41%;
+    bottom: 6%;
+  }
+}
+
 .floatingButton {
   position: relative;
 
