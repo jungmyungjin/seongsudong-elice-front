@@ -1,9 +1,10 @@
-import React, { MouseEvent } from 'react';
+import React, { MouseEvent, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { closeMenu } from 'reducers/slideMenu';
 import { logOut } from 'reducers/user';
 import { RootState } from 'store/configureStore';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import styles from './profile.module.scss';
 import X from 'assets/X.svg';
@@ -45,7 +46,7 @@ const ToLogIn = (): React.ReactElement => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+  const handleClick = async (e: MouseEvent<HTMLButtonElement>) => {
     navigate('/login');
     dispatch(closeMenu());
   };
@@ -69,12 +70,20 @@ const Profile = (): React.ReactElement => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
 
-  const handleLogoutClick = (e: MouseEvent<HTMLButtonElement>) => {
-    navigate('/');
-    sessionStorage.removeItem('token');
-    dispatch(closeMenu());
-    dispatch(logOut());
-  };
+  const handleLogoutClick = useCallback(
+    async (e: MouseEvent<HTMLButtonElement>) => {
+      const api = process.env.REACT_APP_BACKEND_ADDRESS + '/api/members/logout';
+      try {
+        await axios.post(api);
+        navigate('/');
+        dispatch(closeMenu());
+        dispatch(logOut());
+      } catch (error) {
+        console.log('Logout Error : ', error);
+      }
+    },
+    [],
+  );
 
   return (
     <div className={styles.LayoutProfile}>

@@ -18,8 +18,8 @@ function MyReservationModal() {
   const dispatch = useAppDispatch();
 
   const returnReservationTime = (start_time: string, end_time: string) => {
-    const startTime = `${start_time.slice(0, 2)}:${start_time.slice(3, 5)}`;
-    const endTime = `${end_time.slice(0, 2)}:${end_time.slice(3, 5)}`;
+    const startTime = `${start_time.slice(0, 5)}`;
+    const endTime = `${end_time.slice(0, 5)}`;
     return `${startTime}~${endTime}`;
   };
   const seatType = myReservationDetail.seat_type;
