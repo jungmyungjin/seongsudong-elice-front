@@ -3,6 +3,7 @@ import styles from './login.module.scss';
 import { useNavigate } from 'react-router-dom';
 import logo from 'assets/elice-logo.png';
 import axios from 'axios';
+// import Cookies from 'js-cookie';
 import { useGoogleLogin, GoogleLogin, CodeResponse } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'reducers/user';
@@ -22,8 +23,6 @@ interface ResponseType {
   };
 }
 
-const api = process.env.REACT_APP_BACKEND_ADDRESS + '/auth/google' || '';
-
 const Login = (): React.ReactElement => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
@@ -31,17 +30,10 @@ const Login = (): React.ReactElement => {
   // [ Authorization Code Flow 방식 ]
   const loginBtnHandle = useGoogleLogin({
     onSuccess: async (code: CodeResponse) => {
+      const api = process.env.REACT_APP_BACKEND_ADDRESS + '/auth/google' || '';
       try {
-        const response: ResponseType = await axios.post(
-          'http://localhost:3000/auth/google',
-          code,
-        );
-        console.log(response.headers);
-        const authToken = response.headers['authorization'];
-
+        const response: ResponseType = await axios.post(api, code);
         if (response.status === 200) {
-          // 백엔드에서 받아온 토큰 값
-          sessionStorage.setItem('token', authToken || '');
           const { isAdmin, email, name, generation } = response.data;
           dispatch(
             logIn({
@@ -56,18 +48,18 @@ const Login = (): React.ReactElement => {
           navigate('/');
         } else if (response.status === 204) {
           // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
-          navigate('/signUp', {
-            state: { token: authToken },
-          });
+          navigate('/signUp');
         } else {
           console.log('status error : ' + response.status);
         }
       } catch (error) {
-        console.log(error);
-        alert('서버와 정상적으로 통신할 수 없습니다.');
+        console.error('Login Error: ', error);
       }
-      console.log('CODE IS ', code);
     },
+    onError: errorResponse => {
+      console.error('Google Login Error: ', errorResponse);
+    },
+
     flow: 'auth-code',
   });
 
@@ -86,7 +78,7 @@ const Login = (): React.ReactElement => {
             <span>구글 계정으로 로그인</span>
           </div>
         </button>
-        <GoogleLogin
+        {/* <GoogleLogin
           onSuccess={async credentialResponse => {
             try {
               const res = await axios.post(api, {
@@ -95,11 +87,6 @@ const Login = (): React.ReactElement => {
                 },
               });
               if (res.status === 200) {
-                // 백엔드에서 받아온 토큰 값  // 쿠키를 설정하면 이 부분이 사라진다
-                // sessionStorage.setItem(
-                //   'token',
-                //   credentialResponse.credential || '',
-                // );
                 const { isAdmin, email, name, generation } = res.data;
                 dispatch(
                   logIn({
@@ -122,14 +109,13 @@ const Login = (): React.ReactElement => {
               }
             } catch (error) {
               console.log(error);
-              alert('서버와 정상적으로 통신할 수 없습니다.');
             }
             console.log(credentialResponse);
           }}
           onError={() => {
             console.log('Login Failed');
           }}
-        />
+        /> */}
       </div>
     </div>
   );
