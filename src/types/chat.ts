@@ -3,6 +3,8 @@ export interface IChat {
   loadChatLoading: boolean;
   loadChatDone: boolean;
   loadChatError: null | string;
+  chatRoomList: IChatRoom[];
+  chatRoomDetail: IChatRoom;
 }
 
 export interface IChatMessage {
@@ -17,4 +19,12 @@ export interface IChatInput {
   handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleClick: () => void;
   handleEnter: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+}
+
+export interface IChatRoom {
+  roomId: number;
+  memberName: string;
+  adminEmail: string;
+  memberEmail: string;
+  createAt: string;
 }

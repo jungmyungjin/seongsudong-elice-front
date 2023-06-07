@@ -18,12 +18,13 @@ import styles from './chatModal.module.scss';
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
   // const {isAdmin} = useAppSelector(state => state.user); // 임의 -> 로그인 성공 후 전역으로 isAdmin 저장 성공 시 주석 해제
-  const [isAdmin, setIsAdmin] = useState<boolean>(false); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
+  const [isAdmin, setIsAdmin] = useState<boolean>(true); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
   const [isOnline, setIsOnline] = useState<boolean>(true); // 임의 ~> 채팅 페이지에 머물러 있을 때 vs 로그인 했을 때 vs 사이트 창에 머물러 있을 때  기준 정해야함
   const [inputValue, setInputValue] = useState<string>('');
   const [date, setDate] = useState<string>('');
   const dispatch = useAppDispatch();
   const chatMsg = useAppSelector(state => state.chat.chatList);
+  const chatRoomDetail = useAppSelector(state => state.chat.chatRoomDetail);
 
   /** 자동 스크롤 */
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -45,9 +46,11 @@ function ChatModal() {
 
   /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
   useEffect(() => {
+    console.log('채팅방 입장:', chatRoomDetail);
+
     setDate(convertDate(new Date()));
     /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
-    if (isAdmin) setModalTitle('[SW]신하영');
+    if (isAdmin) setModalTitle(chatRoomDetail.memberName);
     else setModalTitle('1:1 문의 채팅방');
   }, []);
 
@@ -62,8 +65,16 @@ function ChatModal() {
         isOnline: true,
         sentTime: time,
       };
+      const newAnotherChat = {
+        chatFromMe: false,
+        chatMessage: `프로그래밍존 팀플석에서 물이 새요. 살려주세요.`,
+        fromName: chatRoomDetail.memberName,
+        isOnline: true,
+        sentTime: time,
+      };
 
-      dispatch(addChat(newOtherChat));
+      if (isAdmin) dispatch(addChat(newAnotherChat));
+      else dispatch(addChat(newOtherChat));
       count++;
 
       if (count === 5) {
