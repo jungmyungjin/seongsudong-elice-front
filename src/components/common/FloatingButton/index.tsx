@@ -1,3 +1,4 @@
+import Draggable, { DraggableData } from 'react-draggable';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
@@ -7,12 +8,21 @@ import styles from './floatingButton.module.scss';
 
 function FloatingButton() {
   const { isChatModalOpen } = useAppSelector(state => state.modal);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
   const [hidden, setHidden] = useState(false);
   const dispatch = useAppDispatch();
   const location = useLocation();
 
   const handleOpenChatModal = () => {
-    dispatch(openChatModal());
+    if (!isDragging) {
+      dispatch(openChatModal());
+    }
+  };
+
+  const handleOnDrag = (data: DraggableData) => {
+    setPosition({ x: data.x, y: data.y });
   };
 
   useEffect(() => {
@@ -30,17 +40,20 @@ function FloatingButton() {
     <>
       {isChatModalOpen && <ChatModal />}
       {!hidden && (
-        <div className={styles.floatingButtonContainer}>
-          <button
-            className={styles.floatingButton}
-            onClick={handleOpenChatModal}
-          >
-            <div className={styles.floatingButtonText}>문의하기</div>
-            <div className={styles.rabbitIcon}>
-              <img src='/images/rabbit.png' alt='rabbit-icon' />
-            </div>
-          </button>
-        </div>
+        <Draggable onDrag={(_, data) => handleOnDrag(data)}>
+          <div className={styles.floatingButtonContainer}>
+            <button
+              className={styles.floatingButton}
+              onDoubleClick={handleOpenChatModal}
+              onMouseDown={() => setIsDragging(false)}
+            >
+              <div className={styles.rabbitIcon}>
+                <img src='/images/rabbit.png' alt='rabbit-icon' />
+              </div>
+              <div className={styles.floatingButtonText}>문의하기</div>
+            </button>
+          </div>
+        </Draggable>
       )}
     </>
   );
