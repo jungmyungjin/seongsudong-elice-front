@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import Pagination from 'components/common/Pagination';
 import { usePaginate } from 'hooks/usePaginate';
@@ -79,6 +80,14 @@ function MyReservationPage() {
         <div className={styles.lengthBox}>
           <p>전체 {myReservationList.length}개</p>
         </div>
+        {currentReservation.length === 0 && (
+          <div className={styles.noReservationBox}>
+            <div className={styles.noReservation}>예약이 없습니다.</div>
+            <Link to='/reservation' className={styles.Link}>
+              예약하러 가기
+            </Link>
+          </div>
+        )}
         <div className={styles.listBox}>
           {currentReservation.map((item, _) => (
             <ReservationList

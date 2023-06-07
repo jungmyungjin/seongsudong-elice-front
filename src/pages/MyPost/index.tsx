@@ -25,11 +25,14 @@ function MyPost() {
   }, []);
 
   useEffect(() => {
-    setFilteredPosts(
-      myPost.filter(post =>
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()),
-      ),
-    );
+    if (myPost !== undefined) {
+      setFilteredPosts(
+        myPost.filter(post =>
+          post.title.toLowerCase().includes(searchTerm.toLowerCase()),
+        ),
+      );
+    }
+
     goToPage(1);
   }, [myPost, searchTerm]);
 
