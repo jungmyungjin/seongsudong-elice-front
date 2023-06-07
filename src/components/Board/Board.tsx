@@ -5,7 +5,7 @@ import Pagination from '../common/Pagination';
 import PostList from '../common/PostList';
 import SearchBox from '../common/SearchBox';
 import styles from './board.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ReactComponent as PostBtn } from 'assets/Create.svg';
 import { Post } from 'types/post';
 
@@ -16,6 +16,8 @@ const Posts: React.FC = () => {
   const [postsPerPage] = useState(10); // 페이지 당 보여줄 게시물 수를 저장하는 상태 변수
   const [searchTerm, setSearchTerm] = useState(''); // 검색어를 저장하는 상태 변수
   const [selectedTab, setSelectedTab] = useState('자유'); // 선택된 탭을 저장하는 상태 변수
+  const [isAdmin, setIsAdmin] = useState(true); // isAdmin 상태 변수 (임의로 true로 설정)
+  const navigate = useNavigate();
 
   // 카테고리별 게시물 리스트 조회 api
   useEffect(() => {
@@ -69,9 +71,18 @@ const Posts: React.FC = () => {
         >
           <p>공지</p>
         </Link>
-        <Link to="/post/free/create" className={styles.createBtn}>
-          <PostBtn />
-        </Link>
+        {((isAdmin && selectedTab) === '공지' || selectedTab === '자유') && ( // isAdmin이 true이고 선택된 탭이 '공지'인 경우에만 버튼을 렌더링합니다.
+          <Link
+            to="/post/free/create"
+            className={styles.createBtn}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/post/free/create', { state: { selectedTab } });
+            }}
+          >
+            <PostBtn />
+          </Link>
+        )}
       </div>
       {/* 검색 컴포넌트 불러옴. */}
       <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />

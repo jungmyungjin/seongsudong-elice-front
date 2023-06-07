@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './createPost.module.scss';
 import { ReactComponent as Back } from 'assets/Back.svg';
 import { ReactComponent as UploadIcon } from 'assets/Upload.svg';
@@ -18,6 +18,8 @@ const CreatePost: React.FC = () => {
   const [uploadedFile, setUploadedFile] = useState<FileList | null>(null); // New line
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null); 
+  const location = useLocation();
+  const selectedTab = location.state?.selectedTab || '자유';
 
   const onFileButtonClick = () => {
     fileInputRef.current?.click();
@@ -35,7 +37,8 @@ const CreatePost: React.FC = () => {
         }
       }
 
-      formData.append('category', '자유게시판');
+      const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
+      formData.append('category', category);
       formData.append('author_email', 'test1@example.com');
       const response = await axios.post('http://localhost:5000/api/posts/write', formData, {
         headers: {
