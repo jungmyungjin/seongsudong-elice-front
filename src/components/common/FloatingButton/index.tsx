@@ -1,4 +1,4 @@
-import Draggable, { DraggableData } from 'react-draggable';
+// import Draggable, { DraggableData } from 'react-draggable';
 import { useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
@@ -24,9 +24,9 @@ function FloatingButton() {
     else dispatch(openChatModal());
   };
 
-  const handleOnDrag = (data: DraggableData) => {
-    setPosition({ x: data.x, y: data.y });
-  };
+  // const handleOnDrag = (data: DraggableData) => {
+  //   setPosition({ x: data.x, y: data.y });
+  // };
 
   useEffect(() => {
     if (
@@ -44,24 +44,24 @@ function FloatingButton() {
       {isChatModalOpen && <ChatModal />}
       {isChatListModalOpen && <ChatListModal />}
       {!hidden && (
-        <Draggable
-          position={{ x: position.x, y: position.y }}
-          onDrag={(_, data) => handleOnDrag(data)}
-        >
-          <div className={styles.floatingButtonContainer}>
-            <button
-              className={styles.floatingButton}
-              onDoubleClick={handleOpenChatModal}
-            >
-              <div className={styles.rabbitIcon}>
-                <img src='/images/rabbit.png' alt='rabbit-icon' />
-              </div>
-              <div className={styles.floatingButtonText}>
-                {isAdmin ? '문의관리' : '문의하기'}
-              </div>
-            </button>
-          </div>
-        </Draggable>
+        // <Draggable
+        //   position={{ x: position.x, y: position.y }}
+        //   onDrag={(_, data) => handleOnDrag(data)}
+        // >
+        <div className={styles.floatingButtonContainer}>
+          <button
+            className={styles.floatingButton}
+            onClick={handleOpenChatModal}
+          >
+            <div className={styles.rabbitIcon}>
+              <img src='/images/rabbit.png' alt='rabbit-icon' />
+            </div>
+            <div className={styles.floatingButtonText}>
+              {isAdmin ? '문의관리' : '문의하기'}
+            </div>
+          </button>
+        </div>
+        // </Draggable>
       )}
     </>
   );
