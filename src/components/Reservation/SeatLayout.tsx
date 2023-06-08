@@ -21,6 +21,7 @@ import axios from 'axios';
 
 const SeatLayout: React.FC = () => {
   const reservationInfo = useSelector((state: RootState) => state.reservation);
+  const dispatch = useAppDispatch();
 
   /* 예약정보 업데이트할 떄 사용하는 함수 */
   const updateReservation = (updatedInfo: Partial<ReservationState>) => {
@@ -41,16 +42,16 @@ const SeatLayout: React.FC = () => {
   // 서버 통신
   const [serverData, setServerData] = useState<ServerResponse>({});
 
-  const fetchServerData = async () => {
+  /* 서버에서 데이터 받아오는 함수 */
+  const fetchServerData = async (time: string) => {
     try {
       const response = await axios.get(
         `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
       );
-      const serverData = response.data;
-      setServerData(serverData);
-      const seats = findAvailableSeats(serverData, '10:00~14:00');
+      const serverDatas = response.data;
+      setServerData(serverDatas);
+      const seats = findAvailableSeats(serverData, time);
       setCanReservationSeat(seats);
-      console.log(serverData);
     } catch (error) {
       // 에러 처리
       console.error(error);
@@ -58,13 +59,14 @@ const SeatLayout: React.FC = () => {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetchServerData();
-      const seats = findAvailableSeats(serverData, '10:00~14:00');
-      setCanReservationSeat(seats);
-    };
+    // 더미데이터
+    // setServerData(serverDatas);
 
-    fetchData();
+    // 서버 통신
+    fetchServerData('10:00~14:00');
+
+    // console.log(canReservationSeat);
+    // console.log(reservationInfo.reservation_date);
   }, []);
 
   useEffect(() => {
@@ -72,73 +74,24 @@ const SeatLayout: React.FC = () => {
     // setServerData(serverDatas);
 
     // 서버 통신
-    const fetchServerData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-        );
-        const serverData = response.data;
-        setServerData(serverData);
-        const seats = findAvailableSeats(serverData, '10:00~14:00');
-        setCanReservationSeat(seats);
-        console.log(serverData);
-      } catch (error) {
-        // 에러 처리
-        console.error(error);
-      }
-    };
-    console.log(fetchServerData());
-    fetchServerData();
-    console.log(canReservationSeat);
-    console.log(reservationInfo.reservation_date);
-  }, []);
+    fetchServerData(reservationInfo.time);
 
-  useEffect(() => {
-    console.log(canReservationSeat);
-  }, [canReservationSeat]);
-
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    setCheckReservation(
-      `${reservationInfo.seat_type} ${reservationInfo.seat_number}번 좌석을 예약하시겠습니까?`,
-    );
-  }, [reservationInfo.seat_number]);
-
-  useEffect(() => {
-    // 더미데이터
-    // setServerData(serverDatas);
-
-    // 서버 통신
-    const fetchServerData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-        );
-        const serverData = response.data;
-        setServerData(serverData);
-        const seats = findAvailableSeats(serverData, reservationInfo.time);
-        setCanReservationSeat(seats);
-      } catch (error) {
-        // 에러 처리
-        console.error(error);
-      }
-    };
-    fetchServerData();
-
-    // console.log(serverData);
-    const seats = findAvailableSeats(serverData, '10:00~14:00');
-    setCanReservationSeat(seats);
-
-    console.log(serverData);
     // console.log('날짜 정보 바뀜');
+    // console.log(canReservationSeat);
   }, [reservationInfo.reservation_date]);
 
   useEffect(() => {
     // console.log(reservationInfo.time);
     const seats = findAvailableSeats(serverData, reservationInfo.time);
     setCanReservationSeat(seats);
-    // console.log(seats);
+    // console.log(canReservationSeat);
   }, [reservationInfo.time]);
+
+  useEffect(() => {
+    setCheckReservation(
+      `${reservationInfo.seat_type} ${reservationInfo.seat_number}번 좌석을 예약하시겠습니까?`,
+    );
+  }, [reservationInfo.seat_number]);
 
   function personalSeatLayout(
     startSeatNumber: number,
