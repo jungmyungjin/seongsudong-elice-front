@@ -1,5 +1,6 @@
 export type ServerResponse = {
   [key: string]: {
+    seat_type: string;
     available_10to14: boolean;
     available_14to18: boolean;
     available_18to22: boolean;

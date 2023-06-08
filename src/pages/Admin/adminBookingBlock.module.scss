@@ -1,0 +1,26 @@
+.bookingBlock {
+  margin-top: 20px;
+  padding: 0 20px;
+}
+
+.btnDiv {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+
+  button {
+    width: 120px;
+    height: 40px;
+    color: white;
+    font-size: 20px;
+    background: #682be0;
+    box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+
+    &:first-child {
+      margin-right: 10px;
+    }
+  }
+}

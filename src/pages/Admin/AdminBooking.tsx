@@ -1,37 +1,35 @@
 import React from 'react';
 
 import CustomLink from 'components/common/Link';
-import styles from './Admin.module.scss';
+import styles from './AdminBooking.module.scss';
 
 const menuArr = [
   {
     id: 1,
-    to: 'chat',
-    icon: 'chat',
-    title: '레이서 문의 관리',
-    right: true,
+    to: '/admin',
+    icon: 'booking',
+    title: '예약 관리',
+    right: false,
   },
   {
     id: 2,
-    to: 'notice',
-    icon: 'notice',
-    title: '공지사항 관리',
+    to: 'block',
+    icon: 'bookmark-block',
+    title: '예약 제한하기',
     right: true,
   },
   {
     id: 3,
-    to: 'booking',
-    icon: 'booking',
-    title: '예약 관리',
+    to: 'racer',
+    icon: 'bookmark',
+    title: '레이서 예약 현황 관리',
     right: true,
   },
 ];
 
-function Admin() {
+function AdminBooking() {
   return (
-    <div className={styles.admin}>
-      <h1 className={styles.h1}>관리자 페이지</h1>
-
+    <div className={styles.booking}>
       {menuArr.map(item => (
         <CustomLink
           key={item.id}
@@ -45,4 +43,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default AdminBooking;
