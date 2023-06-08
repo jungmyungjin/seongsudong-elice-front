@@ -9,6 +9,26 @@
   z-index: 200;
 }
 
+.overlay.chat {
+  position: fixed;
+  top: 0;
+  width: 720px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 299;
+}
+.overlay.adminChatList {
+  position: fixed;
+  top: 0;
+  width: 720px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 250;
+}
 .container {
   background-color: #fff;
   width: 100%;

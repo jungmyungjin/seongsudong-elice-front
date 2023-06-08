@@ -2,6 +2,7 @@ export interface ModalState {
   isConfirmModalOpen: boolean;
   isChatModalOpen: boolean;
   isMyRevervationModalOpen: boolean;
+  isChatListModalOpen: boolean;
 }
 
 /**
@@ -21,7 +22,7 @@ export interface ModalProps {
  * @props modalType {string} 풀모달 사용하는 타입은 2가지임-예약조회, 채팅
  */
 export interface FullModalProps {
-  title: string;
+  title: string | null;
   children: React.ReactNode;
   modalType: string;
 }
