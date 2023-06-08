@@ -19,7 +19,7 @@ function FullModal({ children, title, modalType }: FullModalProps) {
     if (modalType === 'chat') {
       const userEmail = 'test3@example.com';
       dispatch(closeChatModal());
-      dispatch(offline(userEmail));
+      // dispatch(offline(userEmail));
     }
     if (modalType === 'reservation') dispatch(closeMyReservationModal());
     if (modalType === 'adminChatListModal') dispatch(closeChatListModal());

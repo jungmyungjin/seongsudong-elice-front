@@ -6,6 +6,7 @@ import { setChatRoomDetail } from 'actions/chat';
 
 import styles from './chatList.module.scss';
 import { calculateChatDate } from 'utils/calculateChatDate';
+import ChatMessage from 'components/ChatModal/ChatMessage';
 
 const dummyList = [
   {
@@ -18,6 +19,15 @@ const dummyList = [
       sentAt: '2023-06-08 10:00:00',
       lastSendMsg: '광야를 걸어가.',
     },
+    chatList: [
+      {
+        chatFromMe: false,
+        chatMessage: '광야를 걸어가.',
+        sentTime: '10:00',
+        isOnline: true,
+        fromName: '나비스[SM/4기]',
+      },
+    ],
   },
   {
     roomId: 1,
@@ -29,6 +39,15 @@ const dummyList = [
       sentAt: '2023-06-07 10:00:00',
       lastSendMsg: '모든 걸 삼켜버릴 블랙맘바. 카리나는 신이에요.',
     },
+    chatList: [
+      {
+        chatFromMe: false,
+        chatMessage: '모든 걸 삼켜버릴 블랙맘바. 카리나는 신이에요.',
+        sentTime: '10:00',
+        isOnline: true,
+        fromName: '카리나[SM/4기]',
+      },
+    ],
   },
   {
     roomId: 2,
@@ -40,6 +59,15 @@ const dummyList = [
       sentAt: '2023-06-06 10:00:00',
       lastSendMsg: '커즈 암 투 스파이시 뿰 유어 허트',
     },
+    chatList: [
+      {
+        chatFromMe: false,
+        chatMessage: '커즈 암 투 스파이시 뿰 유어 허트',
+        sentTime: '10:00',
+        isOnline: true,
+        fromName: '윈터[SM/4기]',
+      },
+    ],
   },
   {
     roomId: 3,
@@ -51,6 +79,15 @@ const dummyList = [
       sentAt: '2022-10-06 10:00:00',
       lastSendMsg: '김미김미나 김미김미나 쯔쯔쯔쯔',
     },
+    chatList: [
+      {
+        chatFromMe: false,
+        chatMessage: '김미김미나 김미김미나 쯔쯔쯔쯔',
+        sentTime: '10:00',
+        isOnline: true,
+        fromName: '닝닝[SM/4기]',
+      },
+    ],
   },
   {
     roomId: 4,
@@ -62,6 +99,15 @@ const dummyList = [
       sentAt: '2018-05-27 10:00:00',
       lastSendMsg: '암온더 넥스트 레븰 예',
     },
+    chatList: [
+      {
+        chatFromMe: false,
+        chatMessage: '암온더 넥스트 레븰 예',
+        sentTime: '10:00',
+        isOnline: true,
+        fromName: '지젤[SM/4기]',
+      },
+    ],
   },
 ];
 
@@ -71,11 +117,8 @@ function ChatList() {
   const dispatch = useAppDispatch();
 
   const handleChatModalOpen = (id: number) => {
-    // const selectOneChat = chatList.find((item: any) => item.roomId === id);
     const selectOneChat = dummyList.find((item: any) => item.roomId === id);
-
     if (selectOneChat) dispatch(setChatRoomDetail(selectOneChat));
-
     dispatch(openChatModal());
   };
 

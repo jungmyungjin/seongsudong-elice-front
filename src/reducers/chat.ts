@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IChat, IChatMessage, IChatRoom } from 'types/chat';
+// import produce from 'immer';
 
 export const initialState: IChat = {
   loadChatLoading: false,
@@ -24,30 +25,25 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    // addChat(
-    //   state,
-    //   action: PayloadAction<{ roomId: number; chatMessage: IChatMessage }>,
-    // ) {
-    //   const { roomId, chatMessage } = action.payload;
-    //   const chatRoomDetail = state.chatRoomDetail;
-
-    //   if (chatRoomDetail.roomId === roomId) {
-    //     const updatedChatList = [...chatRoomDetail.chatList, chatMessage];
-
-    //     state.chatRoomDetail = {
-    //       ...chatRoomDetail,
-    //       chatList: updatedChatList,
-    //     };
-    //   }
-    // },
+    addChat: (state, action: PayloadAction<{ chatMessage: IChatMessage }>) => {
+      const { chatMessage } = action.payload;
+      state.chatRoomDetail.chatList = [
+        ...state.chatRoomDetail.chatList,
+        chatMessage,
+      ];
+    },
     setChatRoomDetail: (state, action: PayloadAction<IChatRoom>) => {
       state.chatRoomDetail = action.payload;
+    },
+    setChatRoomDetailChatList: (
+      state,
+      action: PayloadAction<IChatMessage[]>,
+    ) => {
+      state.chatRoomDetail.chatList = action.payload;
     },
   },
 });
 
-export const {
-  //addChat,
-  setChatRoomDetail,
-} = chatSlice.actions;
+export const { addChat, setChatRoomDetail, setChatRoomDetailChatList } =
+  chatSlice.actions;
 export default chatSlice;
