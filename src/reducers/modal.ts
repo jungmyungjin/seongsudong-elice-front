@@ -5,6 +5,7 @@ export const initialState: ModalState = {
   isConfirmModalOpen: false,
   isChatModalOpen: false,
   isMyRevervationModalOpen: false,
+  isChatListModalOpen: false,
 };
 
 const modalSlice = createSlice({
@@ -29,6 +30,12 @@ const modalSlice = createSlice({
     closeMyReservationModal: state => {
       state.isMyRevervationModalOpen = false;
     },
+    openChatListModal: state => {
+      state.isChatListModalOpen = true;
+    },
+    closeChatListModal: state => {
+      state.isChatListModalOpen = false;
+    },
   },
 });
 
@@ -39,5 +46,7 @@ export const {
   closeChatModal,
   openMyReservationModal,
   closeMyReservationModal,
+  openChatListModal,
+  closeChatListModal,
 } = modalSlice.actions;
 export default modalSlice;

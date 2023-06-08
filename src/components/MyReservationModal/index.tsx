@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
 import { closeMyReservationModal } from 'reducers/modal';
@@ -6,6 +6,8 @@ import { closeMyReservationModal } from 'reducers/modal';
 import FullModal from '../common/FullModal';
 import KakaoShareButton from 'components/KakaoShareButton';
 import CancelReservationBtn from 'components/CancelReservationBtn';
+
+import { ProgrammingZone, MeetingRoom } from './SeatLayout';
 
 import styles from './myReservationModal.module.scss';
 
@@ -15,10 +17,21 @@ function MyReservationModal() {
   );
   const dispatch = useAppDispatch();
 
-  const zoneType = myReservationDetail.seat.split(' ')[0];
+  const returnReservationTime = (start_time: string, end_time: string) => {
+    const startTime = `${start_time.slice(0, 5)}`;
+    const endTime = `${end_time.slice(0, 5)}`;
+    return `${startTime}~${endTime}`;
+  };
+  const seatType = myReservationDetail.seat_type;
   const visitors = myReservationDetail.visitors;
-  const dateAndTime = myReservationDetail.date + ' ' + myReservationDetail.time;
-  const seat = myReservationDetail.seat;
+  const dateAndTime =
+    myReservationDetail.reservation_date +
+    ' ' +
+    returnReservationTime(
+      myReservationDetail.start_time,
+      myReservationDetail.end_time,
+    );
+  const seatNum = myReservationDetail.seat_number;
 
   useEffect(() => {
     return () => {
@@ -30,10 +43,14 @@ function MyReservationModal() {
     <FullModal title='예약 상세 조회' modalType='reservation'>
       <div className={styles.container}>
         <section className={styles.seatLayoutContainer}>
-          {zoneType !== '미팅룸' ? (
-            <>여기는 프로그래밍존 UI를 놓으시면 됩니다.</>
+          {seatType !== '미팅룸' ? (
+            <>
+              <ProgrammingZone myReservation={seatNum} />
+            </>
           ) : (
-            <>여기는 미팅룸 UI를 놓으시면 됩니다.</>
+            <>
+              <MeetingRoom myReservation={seatNum} />
+            </>
           )}
         </section>
 
@@ -45,7 +62,9 @@ function MyReservationModal() {
 
           <div className={styles.seatContainer}>
             <p>예약 좌석</p>
-            <p>{seat}</p>
+            <p>
+              {seatType} {seatNum}
+            </p>
           </div>
 
           {visitors.length > 0 ? (

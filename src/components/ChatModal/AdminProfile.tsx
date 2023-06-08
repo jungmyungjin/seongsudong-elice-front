@@ -3,6 +3,7 @@ import styles from './adminProfile.module.scss';
 interface AdminProfileProps {
   isOnline: boolean;
 }
+
 /** AdminProfile은 props로 관리 */
 function AdminProfile({ isOnline }: AdminProfileProps) {
   return (

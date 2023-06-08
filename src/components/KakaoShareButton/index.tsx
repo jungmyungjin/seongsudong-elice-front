@@ -13,33 +13,38 @@ function KakaoShareButton() {
     state => state.myReservation.myReservationDetail,
   );
 
-  const zoneType = myReservationDetail.seat.split(' ')[0];
+  const returnReservationTime = (start_time: string, end_time: string) => {
+    const startTime = `${start_time.slice(0, 5)}`;
+    const endTime = `${end_time.slice(0, 5)}`;
+    return `${startTime}~${endTime}`;
+  };
+
   const visitors = myReservationDetail.visitors;
-  const date = myReservationDetail.date;
-  const time = myReservationDetail.time;
-  const seat = myReservationDetail.seat;
+  const date = myReservationDetail.reservation_date;
+  const time = returnReservationTime(
+    myReservationDetail.start_time,
+    myReservationDetail.end_time,
+  );
+  const seat = `${myReservationDetail.seat_type} ${myReservationDetail.seat_number}`;
+  const buttonContents = {
+    date,
+    time,
+    seat,
+    visitors,
+  };
 
   useEffect(() => {
     if (!Kakao.isInitialized()) {
       Kakao.init(process.env.REACT_APP_KAKAO_KEY);
     }
-    console.log(Kakao.isInitialized());
-    console.log(Kakao);
   }, []);
 
-  const description = `[성수동 엘리스] 예약 안내\n\n\n*예약날짜: ${date}\n\n*예약시간: ${time}\n\n*예약좌석: ${seat}\n\n\n예약 시간을 꼬~옥! 지켜주세요💜`;
-  const meetingRoomDescription = `[성수동 엘리스] 예약 안내\n\n\n*예약날짜: ${date}\n\n*예약시간: ${time}\n\n*예약좌석: ${seat}\n\n*모든 방문자: ${visitors}\n\n\n예약 시간을 꼬~옥! 지켜주세요💜`;
-
-  const returnMessage = () => {
-    if (zoneType !== '미팅룸') return description;
-    return meetingRoomDescription;
-  };
   return (
     <>
       <button
         type='submit'
         className={styles.kakaoButton}
-        onClick={() => shareKakao(returnMessage())}
+        onClick={() => shareKakao(buttonContents)}
       >
         <div className={styles.KakaoShareText}>
           <KakaoIcon />

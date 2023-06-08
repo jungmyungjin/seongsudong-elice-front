@@ -1,43 +1,60 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
 import FullModal from '../common/FullModal';
 import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
+import { addChat } from 'reducers/chat';
+
 import { convertDate } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
-interface Message {
-  chatFromMe: boolean;
-  chatMessage: string;
-  fromName?: string;
-}
+
+/* 소켓 객체 */
+// import { io } from 'socket.io-client';
+// const socket = io('process.env.REACT_APP_SOCKET_ENDPOINT');
 
 function ChatModal() {
-  const [isAdmin, setIsAdmin] = useState<boolean>(false); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
+  const [modalTitle, setModalTitle] = useState<string>('');
+  // const {isAdmin} = useAppSelector(state => state.user); // 임의 -> 로그인 성공 후 전역으로 isAdmin 저장 성공 시 주석 해제
+  const [isAdmin, setIsAdmin] = useState<boolean>(true); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
   const [isOnline, setIsOnline] = useState<boolean>(true); // 임의 ~> 채팅 페이지에 머물러 있을 때 vs 로그인 했을 때 vs 사이트 창에 머물러 있을 때  기준 정해야함
   const [inputValue, setInputValue] = useState<string>('');
-  const [chatMsg, setChatMsg] = useState<Message[]>([]);
   const [date, setDate] = useState<string>('');
-  const now = new Date();
+  const dispatch = useAppDispatch();
+  const chatMsg = useAppSelector(state => state.chat.chatList);
+  const chatRoomDetail = useAppSelector(state => state.chat.chatRoomDetail);
 
+  /** 자동 스크롤 */
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // console.log(myMsg);
-  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value);
-  }
   useEffect(() => {
-    if (scrollContainerRef.current) {
+    if (scrollContainerRef.current && chatMsg.length > 0) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
   }, [chatMsg]);
 
+  /** 채팅 각 하나의 시간 */
+  const nowDate = convertDate(new Date());
+  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
+
+  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setInputValue(e.target.value);
+  }
+
+  /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
   useEffect(() => {
-    setDate(convertDate(now));
+    console.log('채팅방 입장:', chatRoomDetail);
+
+    setDate(convertDate(new Date()));
+    /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
+    if (isAdmin) setModalTitle(chatRoomDetail.memberName);
+    else setModalTitle('1:1 문의 채팅방');
   }, []);
 
+  /** 임의로 보내는 것 -> socket 연결되면 지워라 */
   useEffect(() => {
     let count = 0;
     const interval = setInterval(() => {
@@ -45,11 +62,22 @@ function ChatModal() {
         chatFromMe: false,
         chatMessage: '무엇을 도와드릴까욧?',
         fromName: '성수동 소방관',
+        isOnline: true,
+        sentTime: time,
       };
-      setChatMsg(prevChatMsg => [...prevChatMsg, newOtherChat]);
+      const newAnotherChat = {
+        chatFromMe: false,
+        chatMessage: `프로그래밍존 팀플석에서 물이 새요. 살려주세요.`,
+        fromName: chatRoomDetail.memberName,
+        isOnline: true,
+        sentTime: time,
+      };
+
+      if (isAdmin) dispatch(addChat(newAnotherChat));
+      else dispatch(addChat(newOtherChat));
       count++;
 
-      if (count === 3) {
+      if (count === 5) {
         clearInterval(interval);
       }
     }, 3000);
@@ -60,15 +88,17 @@ function ChatModal() {
   }, []);
 
   function handleSend() {
-    if (inputValue.trim() !== '') {
-      const newMyChat = {
-        chatFromMe: true,
-        chatMessage: inputValue,
-      };
-      setChatMsg(prevChatMsg => [...prevChatMsg, newMyChat]);
-
-      setInputValue('');
+    if (inputValue.trim().length === 0) {
+      return;
     }
+
+    const newMyChat = {
+      chatFromMe: true,
+      chatMessage: inputValue,
+      sentTime: time,
+    };
+    dispatch(addChat(newMyChat));
+    setInputValue('');
   }
 
   function handleEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -79,7 +109,7 @@ function ChatModal() {
   }
 
   return (
-    <FullModal title='1:1 문의 채팅방' modalType='chat'>
+    <FullModal title={modalTitle} modalType='chat'>
       <div className={styles.chatModalContainer}>
         <div className={styles.scrollContainer} ref={scrollContainerRef}>
           {!isAdmin && <AdminProfile isOnline={isOnline} />}
@@ -91,6 +121,8 @@ function ChatModal() {
                 chatFromMe={msg.chatFromMe}
                 chatMessage={msg.chatMessage}
                 fromName={msg.fromName}
+                isOnline={msg.isOnline}
+                sentTime={msg.sentTime}
               />
             ))}
           </div>

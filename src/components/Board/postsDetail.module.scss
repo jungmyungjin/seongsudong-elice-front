@@ -27,7 +27,7 @@
     box-shadow: inset 0px -1px 0px #E1E2E4;
     
     p {
-      margin: 100px 0 0 20px;
+      margin: 100px 0 15px 20px;
     }
   }
 
@@ -44,6 +44,7 @@
         font-size: 15px;
         color: white;
         border-radius: 4px;
+        margin-right: 15px;
     }
 
     .deleteBtn {
@@ -58,3 +59,129 @@
   }
 }
 
+.comments {
+  .perComment {
+    display: flex;
+    position: relative; // position 속성 추가
+    margin: 20px;
+    border: 1px solid white;
+    box-shadow: inset 0px -1px 0px #E1E2E4;
+    padding-bottom: 10px;
+    
+    .commentSet {
+      position: relative; // position 속성 추가
+      display: flex;
+      flex-direction: column;
+    }
+
+    .updateBtnPosition {
+      width: 580px;
+      .commentUpdateBtn {
+        padding-left: 100px;
+        position: absolute; // position 속성 추가
+        right: 0; // right 속성 추가
+        top: 0; // top 속성 추가
+
+        button {
+          width: 33px;
+          height: 30px;
+          background-color: #682BE0;
+          font-size: 13px;
+          color: white;
+          border-radius: 13px;
+        }
+
+        .commentDeleteBtn {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .commentInfo {
+    p {
+      font-size: 20px;
+    }
+  }
+
+  .commentContent {
+    p {
+      margin-top: 5px;
+      font-size: 18px;
+      color: #868181;
+    }
+
+    input {
+      margin-top: 20px;
+      width: 60%;
+      height: 50px;
+      border: 1px solid #c3c6cc;
+    }
+  }
+
+  .createdAt {
+    p {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #b4b0b0;
+    }
+  }
+
+}
+
+
+.imgPosition {
+  margin-top: 100px;
+  img {
+    width: 300px;
+    height: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+  }
+}
+
+.commentProfileImage {
+  width: 50px;  // 원하는 이미지의 크기로 조절하세요.
+  height: 50px; // 원하는 이미지의 크기로 조절하세요.
+  border-radius: 50%;
+  border: 2px solid black;
+  margin-right: 10px; // 필요한 경우 마진을 추가하세요.
+}
+
+.addComments {
+  display: flex;
+  margin: 50px 5px 50px 40px;
+
+  .inputAndBtn {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+
+    input {
+      width: 100%;
+      height: 65px;
+      border: 1px solid #c3c6cc;
+      border-radius: 3px;
+      &::placeholder {
+        color: #c3c6cc;
+      }
+    }
+
+    .addCommentBtn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: auto;
+      margin-top: 10px;
+      width: 45px;
+      height: 30px;
+      background-color: #682BE0;
+      font-size: 15px;
+      color: white;
+      border-radius: 4px;
+      
+    }
+  }
+}

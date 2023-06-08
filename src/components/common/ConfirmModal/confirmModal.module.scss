@@ -24,7 +24,6 @@
 }
 
 .overlay {
-  position: absolute;
   top: 50%;
   left: 50%;
   width: 80%;
@@ -41,6 +40,12 @@
 
   z-index: 1000;
   box-shadow: 0rem 0rem 0.7rem rgba(0, 0, 0, 0.3);
+
+  /* 스크롤의 위치가 어디있던지 상관 없이 화면의 중앙에 모달창을 띄움 */
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .modalTop {

@@ -1,11 +1,14 @@
-/*반응형 화면 크기 변수*/
+/*반응형 화면 크기 변수 이게 맞냐*/
 $breakpoint-mobile: 335px;
 $breakpoint-tablet: 758px;
 $breakpoint-tablet-desktop: 891px;
 $breakpoint-desktop: 1024px;
 $breakpoint-mid-desktop: 1412px;
 $breakpoint-full-desktop: 1800px;
-$breakpoint-big-desktop: 2400px;
+$breakpoint-big-desktop: 2100px;
+$breakpoint-big-big-desktop: 2400px;
+$breakpoint-big-big-big-desktop: 2800px;
+$breakpoint-big-big-big-big-desktop: 3200px;
 
 /* 모바일 */
 @mixin mobile {
@@ -42,9 +45,37 @@ $breakpoint-big-desktop: 2400px;
   }
 }
 
-/* 리얼 큰 데스크탑 */
+/* 조금 큰 데스크탑 */
 @mixin bigDesktop {
-  @media (min-width: #{$breakpoint-full-desktop}) and (max-width:#{$breakpoint-big-desktop - 1px} ) {
+  @media (min-width: #{$breakpoint-full-desktop})and (max-width: #{$breakpoint-big-desktop - 1px}) {
+    @content;
+  }
+}
+
+/* 조금 더 큰 데스크탑 */
+@mixin bigBigDesktop {
+  @media (min-width: #{$breakpoint-big-desktop})and (max-width: #{$breakpoint-big-big-desktop - 1px}) {
+    @content;
+  }
+}
+
+/* 리얼 큰 데스크 탑 */
+@mixin realBigDesktop {
+  @media (min-width: #{$breakpoint-big-big-desktop}) and (max-width: #{$breakpoint-big-big-big-desktop - 1px}) {
+    @content;
+  }
+}
+
+/* 리얼 리얼 큰 데스크 탑 */
+@mixin realRealBigDesktop {
+  @media (min-width: #{$breakpoint-big-big-big-desktop}) and (max-width: #{$breakpoint-big-big-big-big-desktop - 1px}) {
+    @content;
+  }
+}
+
+/* 리얼 리얼 리얼 큰 데스크 탑 */
+@mixin realRealRealBigDesktop {
+  @media (min-width: #{$breakpoint-big-big-big-big-desktop}) {
     @content;
   }
 }

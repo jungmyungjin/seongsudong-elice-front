@@ -8,6 +8,7 @@ import styles from './board.module.scss';
 import { Link } from 'react-router-dom';
 import { ReactComponent as PostBtn } from 'assets/Create.svg';
 import { Post } from 'types/post';
+import postsData from './postsData.json';
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -17,11 +18,24 @@ const Posts: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState(''); // 검색어를 저장하는 상태 변수
   const [selectedTab, setSelectedTab] = useState('자유');
 
+
+  //더미 데이터 테스트
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
+  //     const response = postsData.filter(post => post.category === category);
+  //     console.log(response);
+  //     setPosts(response);
+  //   };
+  //   fetchPosts();
+  // }, [selectedTab]);
+  
+  // api 테스트
   useEffect(() => {
     const fetchPosts = async () => {
       const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
       const response = await axios.get(
-        `http://localhost:5000/api/posts?category=${category}`,
+        `http://localhost:5000/api/posts?category=${category}`
       );
       // 선택된 탭에 따라 게시물을 필터링합니다.
       console.log(response.data);
@@ -29,6 +43,7 @@ const Posts: React.FC = () => {
     };
     fetchPosts();
   }, [selectedTab]); // selectedTab 상태 변경시 데이터를 다시 불러옵니다.
+  
 
   // 검색어가 바뀌거나 포스트가 바뀌었을 때 필터링된 포스트를 업데이트합니다.
   useEffect(() => {
@@ -77,7 +92,9 @@ const Posts: React.FC = () => {
         <p>전체 {filteredPosts.length}개</p>
       </div>
       {/* PostList 컴포넌트 불러옴 */}
-      <PostList posts={currentPosts} />
+      <div className={styles.postList}>
+        <PostList posts={currentPosts} />
+      </div>
       <Pagination
         postsPerPage={postsPerPage}
         totalPosts={filteredPosts.length}
