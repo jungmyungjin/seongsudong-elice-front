@@ -11,7 +11,7 @@ import { updateReservationInfo } from '../../reducers/reservation';
 
 import { ReactComponent as Check } from '../../assets/Check.svg';
 
-import styles from './ReservationOptions.module.scss';
+import styles from './reservationOptions.module.scss';
 
 const DateOptions: React.FC = () => {
   const getCurrentYear = () => {

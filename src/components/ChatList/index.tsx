@@ -9,13 +9,24 @@ import { calculateChatDate } from 'utils/calculateChatDate';
 
 const dummyList = [
   {
+    roomId: 0,
+    memberName: '나비스[SM/4기]',
+    adminEmail: 'shy8957@naver.com',
+    memberEmail: 'test1@test.com',
+    createAt: '2021-05-27',
+    chat: {
+      sentAt: '2023-06-08 10:00:00',
+      lastSendMsg: '광야를 걸어가.',
+    },
+  },
+  {
     roomId: 1,
     memberName: '카리나[SM/4기]',
     adminEmail: 'shy8957@naver.com',
     memberEmail: 'test1@test.com',
     createAt: '2021-05-27',
     chat: {
-      sentAt: '2023-06-08 10:00:00',
+      sentAt: '2023-06-07 10:00:00',
       lastSendMsg: '모든 걸 삼켜버릴 블랙맘바. 카리나는 신이에요.',
     },
   },
@@ -26,7 +37,7 @@ const dummyList = [
     memberEmail: 'test2@test.com',
     createAt: '2019-04-23',
     chat: {
-      sentAt: '2023-06-07 10:00:00',
+      sentAt: '2023-06-06 10:00:00',
       lastSendMsg: '커즈 암 투 스파이시 뿰 유어 허트',
     },
   },
@@ -37,7 +48,7 @@ const dummyList = [
     memberEmail: 'test3@test.com',
     createAt: '2020-09-18',
     chat: {
-      sentAt: '2023-06-06 10:00:00',
+      sentAt: '2022-10-06 10:00:00',
       lastSendMsg: '김미김미나 김미김미나 쯔쯔쯔쯔',
     },
   },
