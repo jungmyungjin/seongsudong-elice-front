@@ -1,0 +1,103 @@
+.currentDate {
+  margin-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.date {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.checkbox {
+  display: flex;
+  padding: 1rem;
+  flex-direction: row;
+  justify-content: space-between;
+
+  & > .checkboxInput {
+    display: none;
+  }
+
+  & > .checkboxLabel {
+    height: 30px;
+    width: 30px;
+    border: 2px solid #9c9c9c;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  & > input:checked + .checkboxLabel {
+    background-color: #524fa1;
+    border: 2px solid #524fa1;
+  }
+}
+
+.typeSelector {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  & > label {
+    background-color: #f0f1f3;
+    border: 2px solid #9c9c9c;
+    border-radius: 8px;
+    height: 40px;
+    color: #9c9c9c;
+    flex: 1 1 auto;
+    font: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & > label:not(:last-child) {
+    margin-right: 0.5rem;
+    margin-bottom: 0.7rem;
+  }
+
+  & > label.checkedType {
+    background-color: #524fa1;
+    border: 2px solid #524fa1;
+    color: #e2e1ff;
+  }
+
+  input[type='radio'] {
+    display: none;
+  }
+}
+
+.TimeSelector {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  & > * {
+    background-color: #f0f1f3;
+    border: 2px solid #9c9c9c;
+    border-radius: 8px;
+    height: 40px;
+    color: #9c9c9c;
+    flex: 1 1 auto;
+    font: inherit;
+    cursor: pointer;
+  }
+  
+  & > *:not(:last-child) {
+    margin-right: 0.5rem;
+    margin-bottom: 0.7rem;
+  }
+
+  & > .checkedType {
+    background-color: #e2e1ff;
+    border: 2px solid #524fa1;
+    color: #524fa1;
+  }
+}
+
+.meetingRoomTimeSelector > .typeSelector > .checkedType {
+  background-color: #e2e1ff;
+  border: 2px solid #524fa1;
+  color: #524fa1;
+}

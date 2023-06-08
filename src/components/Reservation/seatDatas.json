@@ -1,343 +1,339 @@
-[
-  {
-    "status": "success",
-    "seats": [
-      {
-        "seat_number": "1",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "2",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "3",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "4",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "5",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "6",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "7",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "8",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "9",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "10",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "11",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "12",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "13",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "14",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "15",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "16",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "17",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "18",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "19",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "20",
-        "available_10to14": false,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "21",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "22",
-        "available_10to14": false,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "23",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "24",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "25",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "26",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "27",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "28",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "29",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "30",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "31",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "32",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "33",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "34",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "35",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "36",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "37",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "38",
-        "available_10to14": false,
-        "available_14to18": false,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "39",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "40",
-        "available_10to14": true,
-        "available_14to18": false,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "41",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "42",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "43",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "44",
-        "available_10to14": false,
-        "available_14to18": false,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "45",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "46",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "47",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "48",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "49",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "50",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "51",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "52",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "53",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      },
-      {
-        "seat_number": "54",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "A",
-        "available_10to14": false,
-        "available_14to18": true,
-        "available_18to22": true
-      },
-      {
-        "seat_number": "B",
-        "available_10to14": true,
-        "available_14to18": true,
-        "available_18to22": false
-      }
-    ]
+{
+  "1": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "2": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": false
+  },
+  "3": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "4": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "5": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "6": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": false
+  },
+  "7": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "8": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "9": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "10": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "11": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "12": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "13": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "14": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "15": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "16": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "17": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "18": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "19": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "20": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "21": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "22": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "23": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "24": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "25": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "26": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "27": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "28": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "29": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "30": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "31": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "32": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "33": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "34": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "35": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "36": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "37": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "38": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": false,
+    "available_18to22": false
+  },
+  "39": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "40": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": false,
+    "available_18to22": true
+  },
+  "41": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "42": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "43": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "44": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": false,
+    "available_18to22": false
+  },
+  "45": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "46": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "47": {
+    "seat_type": "개인석",
+    "seat_number": "47",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "48": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "49": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "50": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "51": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "52": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "53": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
+  },
+  "54": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "A": {
+    "seat_type": "개인석",
+    "available_10to14": false,
+    "available_14to18": true,
+    "available_18to22": true
+  },
+  "B": {
+    "seat_type": "개인석",
+    "available_10to14": true,
+    "available_14to18": true,
+    "available_18to22": false
   }
-]
+}

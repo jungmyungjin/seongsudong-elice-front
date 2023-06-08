@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from 'assets/elice-logo.png';
 import axios from 'axios';
 // import Cookies from 'js-cookie';
-import { useGoogleLogin, GoogleLogin, CodeResponse } from '@react-oauth/google';
+import { useGoogleLogin, CodeResponse } from '@react-oauth/google';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'reducers/user';
 
@@ -30,7 +30,8 @@ const Login = (): React.ReactElement => {
   // [ Authorization Code Flow 방식 ]
   const loginBtnHandle = useGoogleLogin({
     onSuccess: async (code: CodeResponse) => {
-      const api = process.env.REACT_APP_BACKEND_ADDRESS + '/auth/google' || '';
+      const api =
+        process.env.REACT_APP_BACKEND_ADDRESS + '/members/login' || '';
       try {
         const response: ResponseType = await axios.post(api, code);
         if (response.status === 200) {

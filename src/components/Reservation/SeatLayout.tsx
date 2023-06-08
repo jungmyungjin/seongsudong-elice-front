@@ -1,88 +1,147 @@
-import { useContext, useEffect, useState } from 'react';
-import { ReservationContext, ReservationInfo } from './ReservationProvider';
-import { CreateTypeSelector } from './ReservationOptions';
-import styles from './ReservationOptions.module.scss';
+import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useRedux';
+import { RootState } from '../../store/configureStore';
+
+import { ReservationState, SeatLayoutProps } from '../../types/reservation';
+import { updateReservationInfo } from '../../reducers/reservation';
 
 import ConfirmModal from '../common/ConfirmModal';
-import { useAppDispatch } from '../../hooks/useRedux';
 import { openConfirmModal, closeConfirmModal } from '../../reducers/modal';
 
+import { SingleSelect } from './ReservationOptions';
 import SubmitModal from './SubmitModal';
-import findAvailableSeats, {
-  ServerResponse,
-  getAvailableSeatsByTimes,
-} from './FindAvailableSeats';
-import seatDatas from './seatDatas.json';
 
-interface CheckboxProps {
-  label: string;
-  checked: boolean;
-  onChange: (checked: boolean) => void;
-}
+import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
+// 더미 데이터
+// import serverDatas from './seatDatas.json';
 
-interface SeatLayoutProps {
-  className?: string;
-  clickEvent?: (value: string) => void;
-}
+import styles from './seatLayout.module.scss';
+import axios from 'axios';
 
-// axios.get('api', {
-//   headers: {
-//     date: reservationInfo.date,
-//   },
-// })
-//   .then(response => {
-//
-//   })
-//   .catch(error => {
-//     // 에러 처리
-//   });
-// 날짜 서버에 보내서 예약된 좌석 받아오기
-// const { reserved, updateReserved } = useContext(ReservationContext);
-// updateReserved(예약된 좌석 정보);
+const SeatLayout: React.FC = () => {
+  const reservationInfo = useSelector((state: RootState) => state.reservation);
 
-const ShowSeatLayout: React.FC = () => {
-  const { reservationInfo, updateReservationInfo } =
-    useContext(ReservationContext);
-
-  const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
-  const [checkReservation, setCheckReservation] = useState<string>('');
-  const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
-  const serverData: ServerResponse[] = seatDatas;
-  const availableSeats = findAvailableSeats(serverData[0]);
-
-  const dispatch = useAppDispatch();
-
-  useEffect(() => {
-    setCheckReservation(
-      `${reservationInfo.seatType} ${reservationInfo.seat}번 좌석을 예약하시겠습니까?`,
-    );
-
-    setCanReservationSeat(
-      getAvailableSeatsByTimes(availableSeats, reservationInfo.startTime),
-    );
-
-    console.log(canReservationSeat);
-
-    console.log('reservationInfo의 정보가 바뀔 때마다 새로 데이터 저장');
-    console.log(reservationInfo);
-  }, [
-    reservationInfo.date,
-    reservationInfo.seatType,
-    reservationInfo.startTime,
-    reservationInfo.seat,
-  ]);
-
-  const updateReservation = (updatedInfo: Partial<ReservationInfo>) => {
+  /* 예약정보 업데이트할 떄 사용하는 함수 */
+  const updateReservation = (updatedInfo: Partial<ReservationState>) => {
     const updatedReservationInfo = {
       ...reservationInfo,
       ...updatedInfo,
     };
-    updateReservationInfo(updatedReservationInfo);
+    dispatch(updateReservationInfo(updatedReservationInfo));
   };
 
-  function drawPersonalSeatLayout(
+  const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
+  const [checkReservation, setCheckReservation] = useState<string>('');
+  const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
+
+  // 더미데이터
+  // const [serverData, setServerData] = useState<ServerResponse>(serverDatas);
+
+  // 서버 통신
+  const [serverData, setServerData] = useState<ServerResponse>({});
+
+  const fetchServerData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+      );
+      const serverData = response.data;
+      setServerData(serverData);
+      const seats = findAvailableSeats(serverData, '10:00~14:00');
+      setCanReservationSeat(seats);
+      console.log(serverData);
+    } catch (error) {
+      // 에러 처리
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await fetchServerData();
+      const seats = findAvailableSeats(serverData, '10:00~14:00');
+      setCanReservationSeat(seats);
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    // 더미데이터
+    // setServerData(serverDatas);
+
+    // 서버 통신
+    const fetchServerData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        );
+        const serverData = response.data;
+        setServerData(serverData);
+        const seats = findAvailableSeats(serverData, '10:00~14:00');
+        setCanReservationSeat(seats);
+        console.log(serverData);
+      } catch (error) {
+        // 에러 처리
+        console.error(error);
+      }
+    };
+    console.log(fetchServerData());
+    fetchServerData();
+    console.log(canReservationSeat);
+    console.log(reservationInfo.reservation_date);
+  }, []);
+
+  useEffect(() => {
+    console.log(canReservationSeat);
+  }, [canReservationSeat]);
+
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    setCheckReservation(
+      `${reservationInfo.seat_type} ${reservationInfo.seat_number}번 좌석을 예약하시겠습니까?`,
+    );
+  }, [reservationInfo.seat_number]);
+
+  useEffect(() => {
+    // 더미데이터
+    // setServerData(serverDatas);
+
+    // 서버 통신
+    const fetchServerData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        );
+        const serverData = response.data;
+        setServerData(serverData);
+        const seats = findAvailableSeats(serverData, reservationInfo.time);
+        setCanReservationSeat(seats);
+      } catch (error) {
+        // 에러 처리
+        console.error(error);
+      }
+    };
+    fetchServerData();
+
+    // console.log(serverData);
+    const seats = findAvailableSeats(serverData, '10:00~14:00');
+    setCanReservationSeat(seats);
+
+    console.log(serverData);
+    // console.log('날짜 정보 바뀜');
+  }, [reservationInfo.reservation_date]);
+
+  useEffect(() => {
+    // console.log(reservationInfo.time);
+    const seats = findAvailableSeats(serverData, reservationInfo.time);
+    setCanReservationSeat(seats);
+    // console.log(seats);
+  }, [reservationInfo.time]);
+
+  function personalSeatLayout(
     startSeatNumber: number,
-    reserved: string[],
     onClick?: (value: string) => void,
   ): JSX.Element[] {
     const seatingCapacity: number = 12;
@@ -116,34 +175,14 @@ const ShowSeatLayout: React.FC = () => {
     return seats;
   }
 
-  function drawGroupSeatLayout(
+  function groupSeatLayout(
     startSeatNumber: number,
-    reserved: string[],
     onClick?: (value: string) => void,
   ): JSX.Element[] {
     const seats: JSX.Element[] = [];
-    let keyValue = startSeatNumber;
+    let keyValue = startSeatNumber || 0;
 
-    for (let i = 1; i <= 4; i++) {
-      const key = keyValue.toString();
-      const isPossibleSeat = canReservationSeat.includes(key);
-      const className = isPossibleSeat
-        ? `${styles.visible} ${styles.groupSeat}`
-        : `${styles.visible} ${styles.groupSeat} ${styles.alreadyReserved}`;
-      const event = isPossibleSeat
-        ? (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
-            onClick?.(event.currentTarget.textContent || '')
-        : undefined;
-
-      seats.push(
-        <div key={key} className={className} onClick={event}>
-          {key}
-        </div>,
-      );
-      keyValue++;
-    }
-
-    for (let i = 5; i <= 6; i++) {
+    for (let i = 1; i <= 2; i++) {
       const key = keyValue.toString();
       const isPossibleSeat = canReservationSeat.includes(key);
       const className = isPossibleSeat
@@ -165,9 +204,8 @@ const ShowSeatLayout: React.FC = () => {
     return seats;
   }
 
-  function drawGraduateSeatLayout(
+  function graduateSeatLayout(
     startSeatNumber: number,
-    reserved: string[],
     onClick?: (value: string) => void,
   ): JSX.Element[] {
     const seatingCapacity: number = 12;
@@ -202,75 +240,60 @@ const ShowSeatLayout: React.FC = () => {
   }
 
   function PersonalSeatLayout({ className, clickEvent }: SeatLayoutProps) {
-    const { reserved } = useContext(ReservationContext);
     return (
       <>
-        <div className={className}>
-          {drawPersonalSeatLayout(1, reserved, clickEvent)}
-        </div>
-        <div className={className}>
-          {drawPersonalSeatLayout(7, reserved, clickEvent)}
-        </div>
-        <div className={className}>
-          {drawPersonalSeatLayout(13, reserved, clickEvent)}
-        </div>
-        <div className={className}>
-          {drawPersonalSeatLayout(19, reserved, clickEvent)}
-        </div>
-        <div className={className}>
-          {drawPersonalSeatLayout(25, reserved, clickEvent)}
-        </div>
+        <div className={className}>{personalSeatLayout(1, clickEvent)}</div>
+        <div className={className}>{personalSeatLayout(7, clickEvent)}</div>
+        <div className={className}>{personalSeatLayout(13, clickEvent)}</div>
+        <div className={className}>{personalSeatLayout(19, clickEvent)}</div>
+        <div className={className}>{personalSeatLayout(25, clickEvent)}</div>
       </>
     );
   }
 
   function FirstGroupSeatLayout({ className, clickEvent }: SeatLayoutProps) {
-    const { reserved } = useContext(ReservationContext);
     return (
       <>
         <div className={`${styles.group} ${className}`}>
-          {drawGroupSeatLayout(31, reserved, clickEvent)}
+          {groupSeatLayout(31, clickEvent)}
         </div>
         <div className={`${styles.group} ${className}`}>
-          {drawGroupSeatLayout(37, reserved, clickEvent)}
+          {groupSeatLayout(33, clickEvent)}
         </div>
         <div className={`${styles.group} ${className}`}>
-          {drawGroupSeatLayout(43, reserved, clickEvent)}
+          {groupSeatLayout(35, clickEvent)}
         </div>
         <div className={`${styles.group} ${className}`}>
-          {drawGroupSeatLayout(49, reserved, clickEvent)}
+          {groupSeatLayout(37, clickEvent)}
         </div>
       </>
     );
   }
 
   function GraduateSeatLayout({ className, clickEvent }: SeatLayoutProps) {
-    const { reserved } = useContext(ReservationContext);
-
     return (
       <>
         <div className={`${styles.graduateSeat} ${className}`}>
-          {drawGraduateSeatLayout(55, reserved, clickEvent)}
+          {graduateSeatLayout(39, clickEvent)}
         </div>
         <div className={`${styles.graduateSeat} ${className}`}>
-          {drawGraduateSeatLayout(60, reserved, clickEvent)}
+          {graduateSeatLayout(44, clickEvent)}
         </div>
       </>
     );
   }
 
   function SecondGroupSeatLayout({ className, clickEvent }: SeatLayoutProps) {
-    const { reserved } = useContext(ReservationContext);
     return (
       <>
         <div className={`${styles.group} ${className}`}>
-          {drawGroupSeatLayout(65, reserved, clickEvent)}
+          {groupSeatLayout(49, clickEvent)}
         </div>
         <div className={`${styles.group} ${className}`}>
-          {drawGroupSeatLayout(71, reserved, clickEvent)}
+          {groupSeatLayout(51, clickEvent)}
         </div>
         <div className={`${styles.group} ${className}`}>
-          {drawGroupSeatLayout(77, reserved, clickEvent)}
+          {groupSeatLayout(53, clickEvent)}
         </div>
       </>
     );
@@ -297,7 +320,9 @@ const ShowSeatLayout: React.FC = () => {
           <FirstGroupSeatLayout className={styles.impossible} />
           <GraduateSeatLayout className={styles.impossible} />
           <SecondGroupSeatLayout className={styles.impossible} />
+          <div className={styles.entrance}>출입문</div>
         </div>
+        <div className={styles.managerZone}>ManagerZone</div>
       </>
     );
   }
@@ -330,7 +355,9 @@ const ShowSeatLayout: React.FC = () => {
             className={styles.possible}
             clickEvent={clickEvent}
           />
+          <div className={styles.entrance}>출입문</div>
         </div>
+        <div className={styles.managerZone}>ManagerZone</div>
       </>
     );
   }
@@ -360,6 +387,7 @@ const ShowSeatLayout: React.FC = () => {
             clickEvent={clickEvent}
           />
           <SecondGroupSeatLayout className={styles.impossible} />
+          <div className={styles.entrance}>출입문</div>
         </div>
       </>
     );
@@ -367,33 +395,40 @@ const ShowSeatLayout: React.FC = () => {
 
   function ClickMeetingRoom() {
     let typeList: string[] = [];
-    if (canReservationSeat.includes('A')) {
-      typeList = ['미팅룸B (최대 10인)'];
-    } else if (canReservationSeat.includes('B')) {
-      typeList = ['미팅룸A (최대 6인)'];
-    } else {
+    if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
       typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
+    } else if (canReservationSeat.includes('A')) {
+      typeList = ['미팅룸A (최대 6인)'];
+    } else if (canReservationSeat.includes('B')) {
+      typeList = ['미팅룸B (최대 10인)'];
     }
+
+    const [inputValue, setInputValue] = useState('');
+
     return (
       <div>
-        <CreateTypeSelector
+        <SingleSelect
           typeList={typeList}
           onSelect={(value: string) => {
-            updateReservation({ seat: value.charAt(3) });
+            updateReservation({ seat_number: value.charAt(3) });
           }}
         />
         <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
         <input
           className={styles.visitorInput}
           onChange={e => {
-            updateReservation({ visitors: e.target.value });
+            setInputValue(e.target.value);
           }}
+          value={inputValue}
           type='text'
           placeholder='필수입력*'
         />
         <div
           className={styles.submitButton}
-          onClick={() => setClickedSubmit(true)}
+          onClick={() => {
+            dispatch(openConfirmModal());
+            updateReservation({ visitors: inputValue });
+          }}
         >
           예약하기
         </div>
@@ -401,49 +436,52 @@ const ShowSeatLayout: React.FC = () => {
     );
   }
 
-  const handleClickEvent = (value: string) => {
-    updateReservation({ seat: value });
+  const handleClickSeatType = (value: string) => {
+    updateReservation({ seat_number: value });
     dispatch(openConfirmModal());
   };
 
-  const handleModalClick = () => {
-    setClickedSubmit(false);
+  const handleSubmitCLick = async () => {
+    // setClickedSubmit(false);
+
+    const timeArray = reservationInfo.time
+      .split(', ')
+      .map(time => time.split('~'));
+    const startTime = timeArray.map(time => time[0].trim());
+    const endTime = timeArray.map(time => time[1].trim());
+
+    try {
+      for (let i = 0; i < timeArray.length; i++) {
+        const response = await axios.post(
+          `http://localhost:5000/api/reservations/`,
+          {
+            member_generation: 'SW4기',
+            member_name: '홍길동',
+            member_email: 'honggildong@example.com',
+            reservation_date: reservationInfo.reservation_date,
+            start_time: startTime[i],
+            end_time: endTime[i],
+            seat_number: reservationInfo.seat_number,
+            seat_type: reservationInfo.seat_type,
+          },
+        );
+        setClickedSubmit(false);
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const ShowSeatLayout = () => {
-    if (reservationInfo.seatType === '개인석') {
-      return <ClickPersonalSeat clickEvent={handleClickEvent} />;
-    } else if (reservationInfo.seatType === '팀플석') {
-      return <ClickGroupSeat clickEvent={handleClickEvent} />;
-    } else if (reservationInfo.seatType === '수료기수석') {
-      return <ClickGraduateSeat clickEvent={handleClickEvent} />;
-    } else if (reservationInfo.seatType === '미팅룸') {
+    if (reservationInfo.seat_type === '개인석') {
+      return <ClickPersonalSeat clickEvent={handleClickSeatType} />;
+    } else if (reservationInfo.seat_type === '팀플석') {
+      return <ClickGroupSeat clickEvent={handleClickSeatType} />;
+    } else if (reservationInfo.seat_type === '수료기수석') {
+      return <ClickGraduateSeat clickEvent={handleClickSeatType} />;
+    } else if (reservationInfo.seat_type === '미팅룸') {
       return <ClickMeetingRoom />;
-      // (
-      //   <div>
-      //     <CreateTypeSelector
-      //       typeList={['미팅룸A (최대 6인)', '미팅룸B (최대 10인)']}
-      //       onSelect={(value: string) => {
-      //         updateReservation({ seat: value.charAt(3) });
-      //       }}
-      //     />
-      //     <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
-      //     <input
-      //       className={styles.visitorInput}
-      //       onChange={e => {
-      //         updateReservation({ visitors: e.target.value });
-      //       }}
-      //       type='text'
-      //       placeholder='필수입력*'
-      //     />
-      //     <div
-      //       className={styles.submitButton}
-      //       onClick={() => setClickedSubmit(true)}
-      //     >
-      //       예약하기
-      //     </div>
-      //   </div>
-      // );
     } else {
       return null;
     }
@@ -459,9 +497,9 @@ const ShowSeatLayout: React.FC = () => {
           setClickedSubmit(true);
         }}
       />
-      {clickedSubmit ? <SubmitModal onClick={handleModalClick} /> : null}
+      {clickedSubmit ? <SubmitModal onClick={handleSubmitCLick} /> : null}
     </>
   );
 };
 
-export default ShowSeatLayout;
+export default SeatLayout;

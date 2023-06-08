@@ -30,6 +30,11 @@ const Header = (): React.ReactElement => {
 
   return (
     <>
+      {isOpen === true ? (
+        <div className={styles.modalBackDrop} />
+      ) : (
+        <div className={styles.modalBackDropHidden} />
+      )}
       <header className={styles.LayoutNav} ref={ref}>
         <Link to='/'>
           <img src={logo} alt='엘리스 로고' />

@@ -1,0 +1,34 @@
+.table {
+  width: 100%;
+  text-align: center;
+
+  th {
+    color: #682be0;
+    padding: 5px 0;
+    border-bottom: 1px solid #7573b9;
+    border-right: 1px solid #7573b9;
+  }
+
+  th:last-child {
+    border-right: none;
+  }
+
+  td {
+    border-bottom: 1px solid #7573b9;
+    border-right: 1px solid #7573b9;
+    padding: 5px 0;
+  }
+
+  td:last-child {
+    padding: 5px 0;
+    border-right: none;
+  }
+}
+
+.goodbyeBtn {
+  color: white;
+  width: 40px;
+  padding: 5px;
+  background-color: #682be0;
+  border-radius: 3px;
+}
