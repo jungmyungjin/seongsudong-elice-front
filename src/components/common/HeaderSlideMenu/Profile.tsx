@@ -72,7 +72,7 @@ const Profile = (): React.ReactElement => {
 
   const handleLogoutClick = useCallback(
     async (e: MouseEvent<HTMLButtonElement>) => {
-      const api = process.env.REACT_APP_BACKEND_ADDRESS + '/api/members/logout';
+      const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/logout';
       try {
         await axios.post(api);
         navigate('/');
