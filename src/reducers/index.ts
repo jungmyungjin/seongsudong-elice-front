@@ -6,6 +6,7 @@ import myPostSlice from './myPost';
 import myReservationSlice from './myReservation';
 import chatSlice from './chat';
 import userSlice from './user';
+import accessSlice from './access';
 
 const rootReducer = combineReducers({
   modal: modalSlice.reducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   myReservation: myReservationSlice.reducer,
   chat: chatSlice.reducer,
   user: userSlice.reducer,
+  access: accessSlice.reducer,
 });
 
 export default rootReducer;
