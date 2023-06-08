@@ -22,6 +22,7 @@ import Login from 'pages/Login';
 import SignUp from 'pages/SignUp';
 import AdminNotice from 'pages/Admin/AdminNotice';
 import AdminBookingBlock from 'pages/Admin/AdminBookingBlock';
+import EliceDirection from 'components/Direction/Direction';
 
 function App() {
   const isOpen = useSelector((state: RootState) => state.menu.isOpen);
@@ -56,6 +57,7 @@ function App() {
             <Route path='/mypage/myreservation' element={<MyReservation />} />
             <Route path='/login' element={<Login />} />
             <Route path='/signUp' element={<SignUp />} />
+            <Route path='/direction' element={<EliceDirection />} />
           </Routes>
           <Footer />
           <FloatingButton />
