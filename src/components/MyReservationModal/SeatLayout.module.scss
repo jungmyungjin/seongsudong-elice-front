@@ -12,6 +12,17 @@
   flex-direction: row-reverse;
   font-size: 13px;
 
+  & > div > .graduateSeat {
+    height: 41px;
+    overflow: hidden;
+  }
+
+  & > div > .graduateSeat > div:last-child {
+    background-color: white;
+    height: 40px;
+    transform: translateY(-20px);
+  }
+
   .entrance {
     display: flex;
     justify-content: center;
