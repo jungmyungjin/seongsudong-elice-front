@@ -97,11 +97,12 @@ const PostDetail: React.FC = () => {
   };
 
   // 댓글 삭제 api 연결
+  // 관리자가 아닌 경우 자신이 작성한 댓글만 삭제할 수 있다.
   const deleteComment = async (commentId: number) => {
     try {
       const url = isAdmin ? 
       `http://localhost:5000/api/comments/admin/${id}/${commentId}/yunzoo0915@gmail.com/1` :
-      `http://localhost:5000/api/comments/${id}/${commentId}/test1@example.com`;
+      `http://localhost:5000/api/comments/${id}/${commentId}/yoonju.eom1@gmail.com`;
 
       const response = await axios.delete(url, {
         // params: {
