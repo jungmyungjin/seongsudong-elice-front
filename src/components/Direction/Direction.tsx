@@ -20,7 +20,7 @@ const EliceDirection: React.FC = () => {
 
   useEffect(() => {
     // 카카오맵 스크립트 읽어오기
-    const myScript = newScript('https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=11987f774b88cce84b32efd76546b3ab');
+    const myScript = newScript('https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=b27fea83f0e5437103ad76417aa855ac');
 
     // 스크립트 읽기 완료 후 카카오맵 설정
     myScript.then(() => {
@@ -29,12 +29,12 @@ const EliceDirection: React.FC = () => {
       kakao.maps.load(() => {
         const mapContainer = document.getElementById('map');
         const options = {
-          center: new kakao.maps.LatLng(37.5468256282571, 127.06633740658667), // 좌표설정
+          center: new kakao.maps.LatLng(37.54683016184554, 127.06628648846453), // 좌표설정
           level: 3
         };
         const map = new kakao.maps.Map(mapContainer as HTMLElement, options); // 맵생성
         // 마커설정
-        const markerPosition = new kakao.maps.LatLng(37.56000302825312, 126.97540593203321);
+        const markerPosition = new kakao.maps.LatLng(37.54683016184554, 127.06628648846453);
         const marker = new kakao.maps.Marker({
           position: markerPosition
         });
