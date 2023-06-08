@@ -1,14 +1,13 @@
 @import 'styles/colors';
 .footerLayout {
   margin-top: auto;
-
-  bottom: 0px;
   height: 14em;
   width: 100%;
+  display: flex;
 }
 
 .footer {
-  bottom: 0px;
+  margin-top: auto;
   color: #757575;
   width: 100%;
   font-size: 0.8rem;
