@@ -1,13 +1,39 @@
 import React from 'react';
 
-// interface BookingStateInterface {
-//   booking:
-// }
+import { getDate } from 'utils/getTime';
 
-function BookingState() {
+import styles from './bookingState.module.scss';
+import BookingTable from 'components/BookingTable';
+
+interface BookingStateInterface {
+  date: string;
+  toggleOnlyCurrentHandler: () => void;
+  showOnlyCurrent: boolean;
+  filteredData: any;
+  currentHour: string;
+  goodbyeHandler: (bookingId: number) => void;
+}
+
+function BookingState(props: BookingStateInterface) {
   return (
     <div>
-      <p>예약 정보가 없습니다. or 있다 컴포넌트</p>
+      <div className={styles.reservationHeader}>
+        <h2>예약 정보</h2>
+
+        {props.date === getDate() && (
+          <button onClick={props.toggleOnlyCurrentHandler}>
+            {props.showOnlyCurrent ? '모든 시간 보기' : '현재 시간만 보기'}
+          </button>
+        )}
+      </div>
+
+      <hr />
+
+      <BookingTable
+        tableData={props.filteredData}
+        currentHour={props.currentHour}
+        goodbyeHandler={props.goodbyeHandler}
+      />
     </div>
   );
 }

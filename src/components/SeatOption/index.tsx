@@ -1,6 +1,7 @@
 import React from 'react';
 
 import styles from './seatOption.module.scss';
+import ZoneOption from './ZoneOption';
 
 interface SeatOptionInterface {
   zoneOption: string;
@@ -10,9 +11,6 @@ interface SeatOptionInterface {
 }
 
 function SeatOption(props: SeatOptionInterface) {
-  // const zoneArr = ['프로그래밍', '미팅'];
-  // const zoneArr = ['개인석', '팀플석(4인)', '팀플석(2인)', '미팅룸'];
-
   const zoneArr = [
     {
       zoneName: '-공간 선택-',
@@ -41,25 +39,37 @@ function SeatOption(props: SeatOptionInterface) {
       <label>좌석 선택</label>
 
       <div className={styles.selectDiv}>
-        <select
+        {/* <select
           value={props.zoneOption}
           onChange={props.zoneChangeHandler}
           className={styles.select}
         >
-          {/* <option value='default'>-공간 선택-</option> */}
+          <option value='default'>-공간 선택-</option>
 
-          {/* {zoneArr.map((zone, index) => (
+          {zoneArr.map((zone, index) => (
             <option value={zone} key={index}>
               {zone}
             </option>
-          ))} */}
+          ))}
 
           {zoneArr.map((data, index) => (
             <option value={data.zoneValue} key={index}>
               {data.zoneName}
             </option>
           ))}
-        </select>
+        </select> */}
+
+        <div className={styles.zoneDiv}>
+          <ZoneOption
+            zoneOption={props.zoneOption}
+            changeHandler={props.zoneChangeHandler}
+          />
+        </div>
+
+        {/* <ZoneOption
+          zoneOption={props.zoneOption}
+          changeHandler={props.zoneChangeHandler}
+        /> */}
 
         <input
           type='text'

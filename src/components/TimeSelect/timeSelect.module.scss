@@ -1,0 +1,32 @@
+.timeDiv {
+  margin-bottom: 20px;
+}
+
+.timeSelectDiv {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timeOption {
+  background: white;
+  box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  transition: all ease-in-out 300ms;
+  padding: 10px;
+  border: 1px solid #682be0;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 32%;
+  text-align: center;
+
+  input {
+    display: none;
+  }
+}
+
+.checkedLabel {
+  color: white;
+  background: #682be0;
+}

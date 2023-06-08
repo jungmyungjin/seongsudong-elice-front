@@ -15,13 +15,13 @@ export function getDate(): string {
 }
 
 /**
- * H 형식의 현재 시간 데이터를 얻는 함수
- * @returns H 형식의 시현재 간 데이터
+ * HH:00 형식의 현재 시간 데이터를 얻는 함수
+ * @returns HH:00 형식의 시현재 간 데이터
  */
 export function getHour(): string {
   const today = new Date();
 
   const hour = today.getHours();
 
-  return hour.toString();
+  return `${hour}:00`;
 }

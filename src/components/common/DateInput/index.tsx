@@ -1,10 +1,12 @@
 import React from 'react';
 
+import { getDate } from 'utils/getTime';
 import styles from './DateInput.module.scss';
 
 interface DateInputInterface {
   date: string;
   changeHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  isFullRange: boolean;
 }
 
 function DateInput(props: DateInputInterface) {
@@ -19,6 +21,7 @@ function DateInput(props: DateInputInterface) {
         value={props.date}
         onChange={props.changeHandler}
         id='dateSelect'
+        min={props.isFullRange ? undefined : getDate()}
       />
     </div>
   );

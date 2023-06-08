@@ -14,6 +14,8 @@ import Header from './components/common/Header';
 import MyPage from 'pages/MyPage';
 import MyPost from 'pages/MyPost';
 import MyReservation from 'pages/MyReservation';
+import AdminNotice from 'pages/Admin/AdminNotice';
+import AdminBookingBlock from 'pages/Admin/AdminBookingBlock';
 
 function App() {
   return (
@@ -25,6 +27,8 @@ function App() {
           <Route path='/admin' element={<Admin />} />
           <Route path='/admin/booking' element={<AdminBooking />} />
           <Route path='/admin/booking/racer' element={<AdminBookingRacer />} />
+          <Route path='/admin/booking/block' element={<AdminBookingBlock />} />
+          <Route path='/admin/notice' element={<AdminNotice />} />
           <Route path='/post/free' element={<Board />} />
           <Route path='/post/free/:id' element={<PostsDetail />} />
           <Route path='/post/free/create' element={<CreatePost />} />
