@@ -32,6 +32,7 @@ interface Comment {
   name: string;
   generation: string;
   isEditing?: boolean;
+  isAdmin: number;
 }
 
 const PostDetail: React.FC = () => {
@@ -43,26 +44,7 @@ const PostDetail: React.FC = () => {
   const navigate = useNavigate(); // useNavigate hook을 가져옵니다.
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
-
-  // //더미 데이터 테스트
-  // useEffect(() => {
-  //   const fetchPost = () => {
-  //     const response = postsData.find((post: Post) => post.id === Number(id));
-  //     setPost(response || null);
-  //   };
-
-  //   fetchPost();
-  // }, [id]);
-
-  // 댓글 더미데이터
-  // useEffect(() => {
-  //   const fetchComments = () => {
-  //     const response = commentsData.filter((comment: Comment) => comment.post_id === Number(id));
-  //     setComments(response);
-  //   };
-
-  //   fetchComments();
-  // }, [id]);
+  const isAdmin = 0;
   
   // 댓글 조회 api 연결
   useEffect(() => {
@@ -84,7 +66,7 @@ const PostDetail: React.FC = () => {
     try {
       const response = await axios.post(`http://localhost:5000/api/comments/${id}`, { 
         comment: newComment,
-        email: "yoonju.eom1@gmail.com"
+        email: "test1@example.com"
       });
       console.log(response.data);
         setComments([response.data, ...comments]);
@@ -101,7 +83,7 @@ const PostDetail: React.FC = () => {
       const response = await axios.patch(`http://localhost:5000/api/comments/${id}`, { 
         updatedContent: content,
         commentId: commentId,
-        email: "yoonju.eom1@gmail.com"
+        email: "test1@example.com"
       });
       
       console.log(response.data);
@@ -115,9 +97,19 @@ const PostDetail: React.FC = () => {
   };
 
   // 댓글 삭제 api 연결
-  const deleteComment = async (commentId: number, email: string) => {
+  // 관리자가 아닌 경우 자신이 작성한 댓글만 삭제할 수 있다.
+  const deleteComment = async (commentId: number) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/comments/${id}/${commentId}/${email}`);
+      const url = isAdmin ? 
+      `http://localhost:5000/api/comments/admin/${id}/${commentId}/yunzoo0915@gmail.com/1` :
+      `http://localhost:5000/api/comments/${id}/${commentId}/yoonju.eom1@gmail.com`;
+
+      const response = await axios.delete(url, {
+        // params: {
+        //   email: "yunzoo0915@gmail.com",
+        //   isAdmin: 1
+        // }
+      });
       console.log(response);
       if (response.status === 200) { // 서버에서 성공적으로 응답을 받았다면
         setComments(comments.filter(c => c.id !== commentId)); // 삭제된 댓글을 제외하고 상태를 업데이트합니다.
@@ -182,7 +174,6 @@ const PostDetail: React.FC = () => {
           {post.name} | {convertStringToDate(post.created_at)} | 조회수 :{' '}
           {post.views}
         </p>
-      {/* <div><img src={`http://localhost:5000/${post.images}`} /></div> */}
       </div>
       <div className={styles.description}>
         <p>{post.description}</p>
@@ -243,7 +234,7 @@ const PostDetail: React.FC = () => {
                         setEditingComment({ ...editingComment, [comment.id]: comment.content });
                       }}>수정</button>
                       {/* 댓글 삭제 버튼 */}
-                      <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id, comment.author_email)}>삭제</button>  
+                      <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id)}>삭제</button>  
                     </div>
                   )}
                 </div>
