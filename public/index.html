@@ -12,7 +12,16 @@
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <link rel="/manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>React App</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net; script-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net; img-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net;">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self' https://dapi.kakao.com http://*.daumcdn.net http://localhost:5000;
+        script-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net http://localhost:5000;
+        img-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net http://localhost:5000;
+        style-src 'self' 'unsafe-inline';
+      "
+    />
+
     <meta http-equiv="X-Content-Security-Policy" content="default-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net; script-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net; img-src 'self' 'unsafe-inline' https://dapi.kakao.com http://*.daumcdn.net;">
 
     <script id="kakao-script" type="text/javascript"></script>
