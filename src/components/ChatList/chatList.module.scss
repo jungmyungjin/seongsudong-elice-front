@@ -1,0 +1,30 @@
+.chatList {
+  width: 100%;
+}
+
+.chatItem {
+  border-bottom: 2px solid #faf4ff;
+  border-radius: 8px;
+  padding: 5px;
+  transition: all 500ms;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #faf4ff;
+  }
+}
+
+.chatInfo {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+.chat {
+  width: 100%;
+  color: #767474;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
