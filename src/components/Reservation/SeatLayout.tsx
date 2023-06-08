@@ -14,9 +14,10 @@ import SubmitModal from './SubmitModal';
 
 import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
 // 더미 데이터
-import serverDatas from './seatDatas.json';
+// import serverDatas from './seatDatas.json';
 
 import styles from './seatLayout.module.scss';
+import axios from 'axios';
 
 const SeatLayout: React.FC = () => {
   const reservationInfo = useSelector((state: RootState) => state.reservation);
@@ -33,22 +34,68 @@ const SeatLayout: React.FC = () => {
   const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
   const [checkReservation, setCheckReservation] = useState<string>('');
   const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
+
+  // 더미데이터
+  // const [serverData, setServerData] = useState<ServerResponse>(serverDatas);
+
+  // 서버 통신
+  const [serverData, setServerData] = useState<ServerResponse>({});
+
+  const fetchServerData = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+      );
+      const serverData = response.data;
+      setServerData(serverData);
+      const seats = findAvailableSeats(serverData, '10:00~14:00');
+      setCanReservationSeat(seats);
+      console.log(serverData);
+    } catch (error) {
+      // 에러 처리
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
-    // axios.get('api', {
-    //   headers: {
-    //     date: reservationInfo.date,
-    //   },
-    // })
-    //   .then(response => {
-    //
-    //   })
-    //   .catch(error => {
-    //     // 에러 처리
-    //   });
-    setServerData(serverDatas);
+    const fetchData = async () => {
+      await fetchServerData();
+      const seats = findAvailableSeats(serverData, '10:00~14:00');
+      setCanReservationSeat(seats);
+    };
+
+    fetchData();
   }, []);
 
-  const [serverData, setServerData] = useState<ServerResponse>(serverDatas);
+  useEffect(() => {
+    // 더미데이터
+    // setServerData(serverDatas);
+
+    // 서버 통신
+    const fetchServerData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        );
+        const serverData = response.data;
+        setServerData(serverData);
+        const seats = findAvailableSeats(serverData, '10:00~14:00');
+        setCanReservationSeat(seats);
+        console.log(serverData);
+      } catch (error) {
+        // 에러 처리
+        console.error(error);
+      }
+    };
+    console.log(fetchServerData());
+    fetchServerData();
+    console.log(canReservationSeat);
+    console.log(reservationInfo.reservation_date);
+  }, []);
+
+  useEffect(() => {
+    console.log(canReservationSeat);
+  }, [canReservationSeat]);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
@@ -58,24 +105,31 @@ const SeatLayout: React.FC = () => {
   }, [reservationInfo.seat_number]);
 
   useEffect(() => {
-    // axios.get('api', {
-    //   headers: {
-    //     date: reservationInfo.date,
-    //   },
-    // })
-    //   .then(response => {
-    //
-    //   })
-    //   .catch(error => {
-    //     // 에러 처리
-    //   });
-    // 날짜 서버에 보내서 예약된 좌석 받아오기
-    setServerData(serverDatas);
+    // 더미데이터
+    // setServerData(serverDatas);
+
+    // 서버 통신
+    const fetchServerData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        );
+        const serverData = response.data;
+        setServerData(serverData);
+        const seats = findAvailableSeats(serverData, reservationInfo.time);
+        setCanReservationSeat(seats);
+      } catch (error) {
+        // 에러 처리
+        console.error(error);
+      }
+    };
+    fetchServerData();
+
     // console.log(serverData);
     const seats = findAvailableSeats(serverData, '10:00~14:00');
     setCanReservationSeat(seats);
 
-    // console.log(seats);
+    console.log(serverData);
     // console.log('날짜 정보 바뀜');
   }, [reservationInfo.reservation_date]);
 
@@ -387,8 +441,36 @@ const SeatLayout: React.FC = () => {
     dispatch(openConfirmModal());
   };
 
-  const handleSubmitCLick = () => {
-    setClickedSubmit(false);
+  const handleSubmitCLick = async () => {
+    // setClickedSubmit(false);
+
+    const timeArray = reservationInfo.time
+      .split(', ')
+      .map(time => time.split('~'));
+    const startTime = timeArray.map(time => time[0].trim());
+    const endTime = timeArray.map(time => time[1].trim());
+
+    try {
+      for (let i = 0; i < timeArray.length; i++) {
+        const response = await axios.post(
+          `http://localhost:5000/api/reservations/`,
+          {
+            member_generation: 'SW4기',
+            member_name: '홍길동',
+            member_email: 'honggildong@example.com',
+            reservation_date: reservationInfo.reservation_date,
+            start_time: startTime[i],
+            end_time: endTime[i],
+            seat_number: reservationInfo.seat_number,
+            seat_type: reservationInfo.seat_type,
+          },
+        );
+        setClickedSubmit(false);
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const ShowSeatLayout = () => {
