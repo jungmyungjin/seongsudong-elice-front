@@ -69,7 +69,7 @@ const HeaderSlideMenu = (): React.ReactElement => {
           </button>
         </li>
         <li>
-          <button onClick={() => handleClick('/')}>
+          <button onClick={() => handleClick('/direction')}>
             <span>찾아오시는 길</span>
           </button>
         </li>
