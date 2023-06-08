@@ -16,4 +16,12 @@
   }
   position: relative;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.noScroll {
+  max-height: 100vh;
+  overflow: hidden;
 }
