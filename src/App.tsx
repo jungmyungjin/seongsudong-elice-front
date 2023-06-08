@@ -12,6 +12,7 @@ import Admin from 'pages/Admin/Admin';
 import AdminBooking from 'pages/Admin/AdminBooking';
 import AdminBookingRacer from 'pages/Admin/AdminBookingRacer';
 import Header from './components/common/Header';
+import Footer from './components/common/Footer';
 import MyPage from 'pages/MyPage';
 import MyPost from 'pages/MyPost';
 import MyReservation from 'pages/MyReservation';
@@ -52,6 +53,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/signUp' element={<SignUp />} />
           </Routes>
+          <Footer />
           <FloatingButton />
         </BrowserRouter>
       </div>
