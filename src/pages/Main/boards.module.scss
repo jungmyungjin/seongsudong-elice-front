@@ -9,7 +9,7 @@
   display: flex;
   margin: 20px;
   border-radius: 10px;
-  height: 5vh;
+  height: 4em;
   justify-content: space-between;
   align-items: center;
   background-color: $BRIGHT_PURPLE;
@@ -20,10 +20,10 @@
 .title {
   display: flex;
   align-items: center;
-  font-size: 2vh;
+  font-size: 1.5em;
 
   img {
-    width: 40px;
+    width: 1.5em;
     border-radius: 50%;
     background-color: $MAIN_PURPLE;
     padding: 5px;
