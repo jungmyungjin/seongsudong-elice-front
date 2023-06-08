@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 import { GoogleOAuthProvider } from '@react-oauth/google';
 import './styles/index.scss';
 import Board from './components/Board/Board';
@@ -22,11 +24,13 @@ import AdminNotice from 'pages/Admin/AdminNotice';
 import AdminBookingBlock from 'pages/Admin/AdminBookingBlock';
 
 function App() {
+  const isOpen = useSelector((state: RootState) => state.menu.isOpen);
+
   return (
     <GoogleOAuthProvider
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ''}
     >
-      <div className='App'>
+      <div className={`App ${isOpen ? 'noScroll' : ''}`}>
         <BrowserRouter>
           <Header />
           <Routes>
