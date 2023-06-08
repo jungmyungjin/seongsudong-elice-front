@@ -71,8 +71,11 @@ function ChatList() {
   const dispatch = useAppDispatch();
 
   const handleChatModalOpen = (id: number) => {
-    const selectOneChat = chatList.find((item: any) => item.roomId === id);
+    // const selectOneChat = chatList.find((item: any) => item.roomId === id);
+    const selectOneChat = dummyList.find((item: any) => item.roomId === id);
+
     if (selectOneChat) dispatch(setChatRoomDetail(selectOneChat));
+
     dispatch(openChatModal());
   };
 
