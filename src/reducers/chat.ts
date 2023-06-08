@@ -2,7 +2,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IChat, IChatMessage, IChatRoom } from 'types/chat';
 
 export const initialState: IChat = {
-  chatList: [],
   loadChatLoading: false,
   loadChatDone: false,
   loadChatError: null,
@@ -13,6 +12,9 @@ export const initialState: IChat = {
     adminEmail: '',
     memberEmail: '',
     createAt: '',
+    lastSendTime: '',
+    lastSendMsg: '',
+    chatList: [],
   },
 };
 
@@ -20,8 +22,21 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    addChat(state, action: PayloadAction<IChatMessage>) {
-      state.chatList.push(action.payload);
+    addChat(
+      state,
+      action: PayloadAction<{ roomId: number; chatMessage: IChatMessage }>,
+    ) {
+      const { roomId, chatMessage } = action.payload;
+      const chatRoomDetail = state.chatRoomDetail;
+
+      if (chatRoomDetail.roomId === roomId) {
+        const updatedChatList = [...chatRoomDetail.chatList, chatMessage];
+
+        state.chatRoomDetail = {
+          ...chatRoomDetail,
+          chatList: updatedChatList,
+        };
+      }
     },
     setChatRoomDetail: (state, action: PayloadAction<IChatRoom>) => {
       state.chatRoomDetail = action.payload;

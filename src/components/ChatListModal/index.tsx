@@ -18,6 +18,21 @@ const dummyList = [
     createAt: '2018-05-27',
     lastSendTime: '오후 2:00',
     lastSendMsg: '모든 걸 삼켜버릴 블랙맘바',
+    chatList: [
+      {
+        chatFromMe: true,
+        chatMessage: '마마마맘바',
+        sentTime: '오후 12:00',
+        isOnline: true,
+      },
+      {
+        chatFromMe: false,
+        chatMessage: '우외워이',
+        sentTime: '오후 12:01',
+        fromName: '카리나',
+        isOnline: true,
+      },
+    ],
   },
   {
     roomId: 2,
@@ -27,6 +42,21 @@ const dummyList = [
     createAt: '2019-04-23',
     lastSendTime: '오전 10:00',
     lastSendMsg: '커즈 암 투 스파이시 뿰 유어 허트',
+    chatList: [
+      {
+        chatFromMe: true,
+        chatMessage: '심장을 파고들어 넌',
+        sentTime: '오후 12:00',
+        isOnline: true,
+      },
+      {
+        chatFromMe: false,
+        chatMessage: '번지는 자극 속에 넌',
+        sentTime: '오후 12:01',
+        fromName: '윈터',
+        isOnline: true,
+      },
+    ],
   },
   {
     roomId: 3,
@@ -36,6 +66,21 @@ const dummyList = [
     createAt: '2020-09-18',
     lastSendTime: '오후 10:00',
     lastSendMsg: '김미김미나 김미김미나 쯔쯔쯔쯔',
+    chatList: [
+      {
+        chatFromMe: true,
+        chatMessage: '너의 말이 보여, 네 약점 알고리즘',
+        sentTime: '오후 12:00',
+        isOnline: true,
+      },
+      {
+        chatFromMe: false,
+        chatMessage: '암어 쌔비쥐',
+        sentTime: '오후 12:01',
+        fromName: '닝닝',
+        isOnline: true,
+      },
+    ],
   },
   {
     roomId: 4,
@@ -45,6 +90,21 @@ const dummyList = [
     createAt: '2021-03-21',
     lastSendTime: '오후 06:00',
     lastSendMsg: '암온더 넥스트 레븰 예',
+    chatList: [
+      {
+        chatFromMe: true,
+        chatMessage: '절대적 룰을 지켜 내 손을 놓지 말아',
+        sentTime: '오후 12:00',
+        isOnline: true,
+      },
+      {
+        chatFromMe: false,
+        chatMessage: '광야로 걸어가 알아 네 홈그라운드',
+        sentTime: '오후 12:01',
+        fromName: '지젤',
+        isOnline: true,
+      },
+    ],
   },
 ];
 
