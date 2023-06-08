@@ -1,5 +1,4 @@
 export interface IChat {
-  chatList: IChatMessage[];
   loadChatLoading: boolean;
   loadChatDone: boolean;
   loadChatError: null | string;
@@ -27,4 +26,7 @@ export interface IChatRoom {
   adminEmail: string;
   memberEmail: string;
   createAt: string;
+  lastSendTime: string;
+  lastSendMsg: string;
+  chatList: IChatMessage[];
 }

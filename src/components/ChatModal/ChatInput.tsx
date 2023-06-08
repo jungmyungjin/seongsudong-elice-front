@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './chatInput.module.scss';
 import { ReactComponent as Send } from 'assets/Send.svg';
 
