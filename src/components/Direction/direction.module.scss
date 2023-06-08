@@ -1,11 +1,51 @@
+.mapTitle {
+    width:80%;
+    margin: 50px auto 0 auto;
+    display: flex;
+    align-items: center;
+    
+    p {
+        margin-left: 10px;
+        font-size: 25px;
+        color: #682BE0;
+        font-weight:800;
+    }
+}
+
+.borderLine {
+    width: 80%;
+    margin: 8px auto 5px auto;
+    height: 1px;
+    border: 1.3px solid #8858e8;
+}
+
+.RoadMap {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: 50px auto 0 auto;
+    p {
+        margin-left: 10px;
+        font-size: 25px;
+        color: #682BE0;
+        font-weight:800;
+    }
+}
+
+.imgRoadMap {
+    width: 85%;
+    margin: 0 auto 10px auto;
+}
+
 .map {
-    width: 100%;
+    width: 80%;
     height: 600px;
     align-items: center;
     justify-content: center;
+    margin-top: 10px;
     margin-left: auto;
     margin-right: auto;
     border-style: solid;
     border-width: medium;
-    border-color: #D8D8D8;
+    border-color: white;
   }

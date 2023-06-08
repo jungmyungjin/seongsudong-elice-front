@@ -1,5 +1,7 @@
 import styles from './direction.module.scss';
 import React, { useEffect } from 'react';
+import { ReactComponent as Map } from 'assets/Map.svg';
+import { ReactComponent as RoadMap } from 'assets/RoadMap.svg';
 
 const EliceDirection: React.FC = () => {
 
@@ -20,7 +22,7 @@ const EliceDirection: React.FC = () => {
 
   useEffect(() => {
     // 카카오맵 스크립트 읽어오기
-    const myScript = newScript('https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=b27fea83f0e5437103ad76417aa855ac');
+    const myScript = newScript(`https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${process.env.REACT_APP_KAKAO_MAP_KEY}`);
 
     // 스크립트 읽기 완료 후 카카오맵 설정
     myScript.then(() => {
@@ -45,6 +47,19 @@ const EliceDirection: React.FC = () => {
 
   return (
     <div>
+      <div className={styles.RoadMap}>
+        <RoadMap />
+        <p>약도로 찾아가기</p>
+      </div>
+      <div className={styles.borderLine}></div>
+      <div className={styles.imgRoadMap}>
+        <img src="/images/eliceRoadMap.png" />
+      </div>
+      <div className={styles.mapTitle}>
+        <Map className={styles.mapSvg} />
+        <p>지도</p>
+      </div>
+      <div className={styles.borderLine}></div>
       <div id="map" className={styles.map}></div>
     </div>
   );
