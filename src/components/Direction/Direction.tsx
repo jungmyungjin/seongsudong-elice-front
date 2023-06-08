@@ -47,6 +47,15 @@ const EliceDirection: React.FC = () => {
 
   return (
     <div>
+      <div className={styles.title}>
+        <p>성수 엘리스 랩</p>
+      </div>
+      <div className={styles.mapTitle}>
+        <Map className={styles.mapSvg} />
+        <p>지도로 찾아가기</p>
+      </div>
+      <div className={styles.borderLine}></div>
+      <div id="map" className={styles.map}></div>
       <div className={styles.RoadMap}>
         <RoadMap />
         <p>약도로 찾아가기</p>
@@ -55,12 +64,6 @@ const EliceDirection: React.FC = () => {
       <div className={styles.imgRoadMap}>
         <img src="/images/eliceRoadMap.png" />
       </div>
-      <div className={styles.mapTitle}>
-        <Map className={styles.mapSvg} />
-        <p>지도</p>
-      </div>
-      <div className={styles.borderLine}></div>
-      <div id="map" className={styles.map}></div>
     </div>
   );
 };
