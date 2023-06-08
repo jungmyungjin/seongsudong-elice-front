@@ -6,7 +6,10 @@ import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
-import { addChat, setChatRoomDetail } from 'reducers/chat';
+import {
+  //addChat,
+  setChatRoomDetail,
+} from 'reducers/chat';
 import { online, offline } from 'actions/access';
 
 import { convertDate } from 'utils/convertDate';
@@ -31,12 +34,12 @@ function ChatModal() {
   /** 자동 스크롤 */
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (scrollContainerRef.current && chatList.length > 0) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
-  }, [chatList]);
+  // useEffect(() => {
+  //   if (scrollContainerRef.current && chatList.length > 0) {
+  //     scrollContainerRef.current.scrollTop =
+  //       scrollContainerRef.current.scrollHeight;
+  //   }
+  // }, [chatList]);
 
   /** 채팅 각 하나의 시간 */
   const nowDate = convertDate(new Date());
@@ -49,22 +52,7 @@ function ChatModal() {
   useEffect(() => {
     const userEmail = 'test3@example.com';
     dispatch(online(userEmail));
-
-    if (!chatRoomDetail.roomId) {
-      // chatRoomDetail에 roomId가 없으면 초기화
-      dispatch(
-        setChatRoomDetail({
-          roomId: 0,
-          memberName: '',
-          adminEmail: '',
-          memberEmail: '',
-          createAt: '',
-          lastSendTime: '',
-          lastSendMsg: '',
-          chatList: [],
-        }),
-      );
-    }
+    console.log(chatRoomDetail);
   }, []);
   /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
   useEffect(() => {
@@ -77,59 +65,59 @@ function ChatModal() {
   }, [chatRoomDetail, isAdmin]);
 
   /** 임의로 보내는 것 -> socket 연결되면 지워라 */
-  useEffect(() => {
-    let count = 0;
-    const interval = setInterval(() => {
-      const newOtherChat = {
-        chatFromMe: false,
-        chatMessage: '무엇을 도와드릴까욧?',
-        fromName: '성수동 소방관',
-        isOnline: true,
-        sentTime: time,
-      };
-      const newAnotherChat = {
-        chatFromMe: false,
-        chatMessage: `프로그래밍존 팀플석에서 물이 새요. 살려주세요.`,
-        fromName: chatRoomDetail.memberName,
-        isOnline: true,
-        sentTime: time,
-      };
+  // useEffect(() => {
+  //   let count = 0;
+  //   const interval = setInterval(() => {
+  //     const newOtherChat = {
+  //       chatFromMe: false,
+  //       chatMessage: '무엇을 도와드릴까욧?',
+  //       fromName: '성수동 소방관',
+  //       isOnline: true,
+  //       sentTime: time,
+  //     };
+  //     const newAnotherChat = {
+  //       chatFromMe: false,
+  //       chatMessage: `프로그래밍존 팀플석에서 물이 새요. 살려주세요.`,
+  //       fromName: chatRoomDetail.memberName,
+  //       isOnline: true,
+  //       sentTime: time,
+  //     };
 
-      if (isAdmin) {
-        dispatch(
-          addChat({
-            roomId: chatRoomDetail.roomId,
-            chatMessage: newAnotherChat,
-          }),
-        );
-        dispatch(
-          setChatRoomDetail({
-            ...chatRoomDetail,
-            chatList: [...chatRoomDetail.chatList, newAnotherChat],
-          }),
-        );
-      } else {
-        dispatch(
-          addChat({ roomId: chatRoomDetail.roomId, chatMessage: newOtherChat }),
-        );
-        dispatch(
-          setChatRoomDetail({
-            ...chatRoomDetail,
-            chatList: [...chatRoomDetail.chatList, newOtherChat],
-          }),
-        );
-      }
-      count++;
+  //     if (isAdmin) {
+  //       dispatch(
+  //         addChat({
+  //           roomId: chatRoomDetail.roomId,
+  //           chatMessage: newAnotherChat,
+  //         }),
+  //       );
+  //       dispatch(
+  //         setChatRoomDetail({
+  //           ...chatRoomDetail,
+  //           chatList: [...chatRoomDetail.chatList, newAnotherChat],
+  //         }),
+  //       );
+  //     } else {
+  //       dispatch(
+  //         addChat({ roomId: chatRoomDetail.roomId, chatMessage: newOtherChat }),
+  //       );
+  //       dispatch(
+  //         setChatRoomDetail({
+  //           ...chatRoomDetail,
+  //           chatList: [...chatRoomDetail.chatList, newOtherChat],
+  //         }),
+  //       );
+  //     }
+  //     count++;
 
-      if (count === 5) {
-        clearInterval(interval);
-      }
-    }, 3000);
+  //     if (count === 5) {
+  //       clearInterval(interval);
+  //     }
+  //   }, 3000);
 
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   function handleSend() {
     if (inputValue.trim().length === 0) {
@@ -142,16 +130,16 @@ function ChatModal() {
       sentTime: time,
     };
 
-    dispatch(
-      addChat({ roomId: chatRoomDetail.roomId, chatMessage: newMyChat }),
-    );
+    // dispatch(
+    //   addChat({ roomId: chatRoomDetail.roomId, chatMessage: newMyChat }),
+    // );
 
-    dispatch(
-      setChatRoomDetail({
-        ...chatRoomDetail,
-        chatList: [...chatRoomDetail.chatList, newMyChat],
-      }),
-    );
+    // dispatch(
+    //   setChatRoomDetail({
+    //     ...chatRoomDetail,
+    //     chatList: [...chatRoomDetail.chatList, newMyChat],
+    //   }),
+    // );
     setInputValue('');
   }
 
@@ -169,7 +157,7 @@ function ChatModal() {
           {!isAdmin && <AdminProfile isOnline={isOnline} />}
           <div className={styles.nowDate}>{date}</div>
           <div className={styles.chatListContainer}>
-            {chatList.map((msg, i) => (
+            {/* {chatList.map((msg, i) => (
               <ChatMessage
                 key={i}
                 chatFromMe={msg.chatFromMe}
@@ -178,7 +166,7 @@ function ChatModal() {
                 isOnline={msg.isOnline}
                 sentTime={msg.sentTime}
               />
-            ))}
+            ))} */}
           </div>
         </div>
         <div className={styles.chatInputContainer}>

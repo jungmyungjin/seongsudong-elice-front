@@ -26,7 +26,11 @@ export interface IChatRoom {
   adminEmail: string;
   memberEmail: string;
   createAt: string;
-  lastSendTime: string;
+  chat: IRecentMessages;
+  chatList?: IChatMessage[];
+}
+
+export interface IRecentMessages {
+  sentAt: string;
   lastSendMsg: string;
-  chatList: IChatMessage[];
 }

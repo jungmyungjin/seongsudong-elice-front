@@ -12,8 +12,10 @@ export const initialState: IChat = {
     adminEmail: '',
     memberEmail: '',
     createAt: '',
-    lastSendTime: '',
-    lastSendMsg: '',
+    chat: {
+      sentAt: '',
+      lastSendMsg: '',
+    },
     chatList: [],
   },
 };
@@ -22,27 +24,30 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    addChat(
-      state,
-      action: PayloadAction<{ roomId: number; chatMessage: IChatMessage }>,
-    ) {
-      const { roomId, chatMessage } = action.payload;
-      const chatRoomDetail = state.chatRoomDetail;
+    // addChat(
+    //   state,
+    //   action: PayloadAction<{ roomId: number; chatMessage: IChatMessage }>,
+    // ) {
+    //   const { roomId, chatMessage } = action.payload;
+    //   const chatRoomDetail = state.chatRoomDetail;
 
-      if (chatRoomDetail.roomId === roomId) {
-        const updatedChatList = [...chatRoomDetail.chatList, chatMessage];
+    //   if (chatRoomDetail.roomId === roomId) {
+    //     const updatedChatList = [...chatRoomDetail.chatList, chatMessage];
 
-        state.chatRoomDetail = {
-          ...chatRoomDetail,
-          chatList: updatedChatList,
-        };
-      }
-    },
+    //     state.chatRoomDetail = {
+    //       ...chatRoomDetail,
+    //       chatList: updatedChatList,
+    //     };
+    //   }
+    // },
     setChatRoomDetail: (state, action: PayloadAction<IChatRoom>) => {
       state.chatRoomDetail = action.payload;
     },
   },
 });
 
-export const { addChat, setChatRoomDetail } = chatSlice.actions;
+export const {
+  //addChat,
+  setChatRoomDetail,
+} = chatSlice.actions;
 export default chatSlice;
