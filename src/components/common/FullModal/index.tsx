@@ -1,5 +1,9 @@
 import { useAppDispatch } from 'hooks/useRedux';
-import { closeChatModal, closeMyReservationModal } from 'reducers/modal';
+import {
+  closeChatModal,
+  closeMyReservationModal,
+  closeChatListModal,
+} from 'reducers/modal';
 
 import styles from './fullmodal.module.scss';
 import { FullModalProps } from 'types/modal';
@@ -12,11 +16,20 @@ function FullModal({ children, title, modalType }: FullModalProps) {
     e.preventDefault();
     if (modalType === 'chat') dispatch(closeChatModal());
     if (modalType === 'reservation') dispatch(closeMyReservationModal());
+    if (modalType === 'adminChatListModal') dispatch(closeChatListModal());
   };
+
+  let overlayClass = styles.overlay;
+
+  if (modalType === 'chat') {
+    overlayClass = `${overlayClass} ${styles.chat}`;
+  } else if (modalType === 'adminChatListModal') {
+    overlayClass = `${overlayClass} ${styles.adminChatList}`;
+  }
 
   return (
     <div>
-      <div className={styles.overlay}>
+      <div className={overlayClass}>
         <div className={styles.container}>
           <div className={styles.header}>
             <ChevronLeft className={styles.goback} onClick={closeAction} />
