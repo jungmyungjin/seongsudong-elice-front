@@ -1,6 +1,13 @@
+.title {
+    width: 80%;
+    margin: 60px auto 0 auto;
+    font-size: 50px;
+    color: #682BE0;
+}
+
 .mapTitle {
     width:80%;
-    margin: 50px auto 0 auto;
+    margin: 100px auto 0 auto;
     display: flex;
     align-items: center;
     
@@ -9,6 +16,17 @@
         font-size: 25px;
         color: #682BE0;
         font-weight:800;
+    }
+
+    .findRouteBtn {
+        display: flex;
+        margin-left: auto;
+        
+        button {
+            margin-left: 5px;
+            font-size: 20px;
+            color: #682BE0;
+        }
     }
 }
 
@@ -39,7 +57,7 @@
 
 .map {
     width: 80%;
-    height: 600px;
+    height: 400px;
     align-items: center;
     justify-content: center;
     margin-top: 10px;
