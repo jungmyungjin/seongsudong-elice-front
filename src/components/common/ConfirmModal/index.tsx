@@ -22,7 +22,11 @@ function ConfirmModal({
 
   const handleCloseModal = () => {
     dispatch(closeConfirmModal());
-    if (type === 'successCancelMyReservation' && closeController) {
+    if (
+      (type === 'successCancelMyReservation' ||
+        type === 'errorCancelMyReservation') &&
+      closeController
+    ) {
       closeController();
     }
   };
