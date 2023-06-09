@@ -17,6 +17,8 @@ const HeaderSlideMenu = (): React.ReactElement => {
   const [isVisible, setIsVisible] = useState(false);
 
   const dispatch = useDispatch();
+  const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
 
   const { ref } = useHideOnClickOutside(() => dispatch(closeMenu()));
 
@@ -43,39 +45,41 @@ const HeaderSlideMenu = (): React.ReactElement => {
     >
       <Profile />
       <ul>
-        <li>
-          <button onClick={() => handleClick('/admin')}>
-            <span>관리자페이지</span>
-          </button>
-        </li>
-        <li>
-          <button onClick={() => handleClick('/mypage')}>
-            <span>마이페이지</span>
-          </button>
-        </li>
-        <li>
-          <button onClick={() => handleClick('/reservation')}>
-            <span>예약하기</span>
-          </button>
-        </li>
-        <li>
-          <button onClick={() => handleClick('/post/free')}>
-            <span>공지사항</span>
-          </button>
-        </li>
-        <li>
-          <button onClick={() => handleClick('/post/free')}>
-            <span>자유게시판</span>
-          </button>
-        </li>
+        {/* 관리자만 보여줘야 함, 일단 테스트 하기 쉽게 ture  */}
+        {isAdmin ||
+          (true && (
+            <li>
+              <button onClick={() => handleClick('/admin')}>
+                <span>관리자페이지</span>{' '}
+              </button>
+            </li>
+          ))}
+
+        {/* 로그인/관리자 기능인 경우 후에 보여줘야 함, 일단 테스트 하기 쉽게 ture */}
+        {isLoggedIn ||
+          isAdmin ||
+          (true && (
+            <>
+              <li>
+                <button onClick={() => handleClick('/mypage')}>
+                  <span>마이페이지</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleClick('/reservation')}>
+                  <span>예약하기</span>
+                </button>
+              </li>
+              <li>
+                <button onClick={() => handleClick('/post/free')}>
+                  <span>게시판</span>
+                </button>
+              </li>
+            </>
+          ))}
         <li>
           <button onClick={() => handleClick('/direction')}>
             <span>찾아오시는 길</span>
-          </button>
-        </li>
-        <li>
-          <button onClick={() => handleClick('/')}>
-            <span>관리자 1:1 문의</span>
           </button>
         </li>
       </ul>

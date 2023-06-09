@@ -1,4 +1,5 @@
 import React, { MouseEvent, useCallback } from 'react';
+import { AppDispatch } from 'store/configureStore';
 import { useSelector, useDispatch } from 'react-redux';
 import { closeMenu } from 'reducers/slideMenu';
 import { logOut } from 'reducers/user';
@@ -10,6 +11,7 @@ import styles from './profile.module.scss';
 import X from 'assets/X.svg';
 import arrow from 'assets/arrow-right.svg';
 import Logout from 'assets/bold-Logout.svg';
+import { offline } from 'actions/access';
 
 /**
  * 사용자가 로그인 된 경우 보여주는 컴포넌트입니다.
@@ -17,14 +19,16 @@ import Logout from 'assets/bold-Logout.svg';
  */
 const LoggedInProfile = (): React.ReactElement => {
   let navigate = useNavigate();
-  const dispatch = useDispatch();
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    navigate('/myPage');
-    dispatch(closeMenu());
-  };
+  const dispatch: AppDispatch = useDispatch();
+  const email = useSelector((state: RootState) => state.user.email);
   const username = useSelector((state: RootState) => state.user.username);
   const course = useSelector((state: RootState) => state.user.course);
   const generation = useSelector((state: RootState) => state.user.generation);
+  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
+    dispatch(offline(email));
+    navigate('/myPage');
+    dispatch(closeMenu());
+  };
 
   return (
     <button className={styles.Profile} onClick={handleClick}>
