@@ -35,7 +35,7 @@ function App() {
     <GoogleOAuthProvider
       clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID || ''}
     >
-      <div className={`App ${isOpen ? 'noScroll' : ''}`}>
+      <div className={'App'}>
         <BrowserRouter>
           <Header />
           <Routes>
