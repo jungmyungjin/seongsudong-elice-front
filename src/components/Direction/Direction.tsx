@@ -75,11 +75,17 @@ const EliceDirection: React.FC = () => {
         <p>성수 엘리스 랩</p>
       </div>
       <div className={styles.mapTitle}>
-        <Map className={styles.mapSvg} />
-        <p>엘리스랩 위치</p>
-        <div className={styles.findRouteBtn}>
-          <button onClick={findRoute}><FindRoute /></button>
-        </div>
+        {/* <div className={styles.findRouteBtn}> */}
+          <button onClick={findRoute}>
+            <div className={styles.btnFindRoad}>
+              <Map className={styles.mapSvg} />
+              <p>엘리스랩 길찾기(클릭!)</p>
+            </div>
+          </button>
+          {/* <div className={styles.findRouteBtn}> */}
+          {/* <FindRoute /> */}
+          {/* <button onClick={findRoute}>길찾기</button> */}
+        {/* </div> */}
         {/* 모달 */}
         {isModalOpen && (
           <div className={styles.modal}>
