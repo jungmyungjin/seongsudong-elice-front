@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { openChatModal } from 'reducers/modal';
-import { setChatRoomDetail } from 'actions/chat';
+import { setChatRoomDetail } from 'reducers/chat';
 
 import styles from './chatList.module.scss';
 import { calculateChatDate } from 'utils/calculateChatDate';
-import ChatMessage from 'components/ChatModal/ChatMessage';
 
 const dummyList = [
   {
@@ -126,20 +125,15 @@ function ChatList() {
     const getChatList = async () => {
       // API 연결 전 더미
       setChatList(dummyList);
-
       // try {
       //   const response = await fetch(
       //     `${process.env.REACT_APP_BACKEND_ADDRESS}/`,
       //   );
-
       //   if (!response.ok) {
       //     throw new Error('채팅 데이터를 불러오는데 실패했습니다.');
       //   }
-
       //   const data = await response.json();
-
       //   console.log(data);
-
       //   setChatList(data);
       // } catch (err) {
       //   console.log(err);
