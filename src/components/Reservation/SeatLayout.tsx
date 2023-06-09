@@ -44,50 +44,9 @@ const SeatLayout: React.FC = () => {
   // 서버 통신
   const [serverData, setServerData] = useState<ServerResponse>({});
 
-  /* 서버에서 데이터 받아오는 함수 */
-  const fetchServerData = async (time: string) => {
-    try {
-      const response = await axios.get(
-        // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-        `http://localhost:8080/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-      );
-      const serverDatas = response.data;
-      setServerData(serverDatas);
-      const seats = findAvailableSeats(serverData, time);
-      setCanReservationSeat(seats);
-    } catch (error) {
-      // 에러 처리
-      console.error(error);
-    }
-  };
-
-  // 없어도 되나요..?
-  // useEffect(() => {
-  //   // 더미데이터
-  //   // setServerData(serverDatas);
-
-  //   // 서버 통신
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.get(
-  //         `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-  //       );
-  //       const serverDatas = response.data;
-  //       setServerData(serverDatas);
-  //       const seats = findAvailableSeats(serverDatas, '10:00~14:00');
-  //       setCanReservationSeat(seats);
-  //       console.log(seats); // 업데이트된 seats 값을 출력
-  //     } catch (error) {
-  //       // 에러 처리
-  //       console.error(error);
-  //     }
-  //   };
-
-  //   fetchData();
-  //   console.log('렌더시 실행');
-  //   console.log(canReservationSeat);
-  //   // console.log(reservationInfo.reservation_date);
-  // }, []);
+  useEffect(() => {
+    console.log(reservationInfo.time);
+  }, []);
 
   useEffect(() => {
     // 더미데이터
@@ -113,8 +72,6 @@ const SeatLayout: React.FC = () => {
     };
 
     fetchData();
-
-    // console.log('날짜 정보 바뀜');
     // console.log(canReservationSeat);
   }, [reservationInfo.reservation_date]);
 
@@ -432,40 +389,6 @@ const SeatLayout: React.FC = () => {
     dispatch(openConfirmModal());
   };
 
-  // const handleSubmitCLick = async () => {
-  //   // setClickedSubmit(false);
-
-  //   const timeArray = reservationInfo.time
-  //     .split(', ')
-  //     .map(time => time.split('~'));
-  //   const startTime = timeArray.map(time => time[0].trim());
-  //   const endTime = timeArray.map(time => time[1].trim());
-
-  //   try {
-  //     for (let i = 0; i < timeArray.length; i++) {
-  //       const response = await axios.post(
-  //         `http://localhost:3000/api/reservations/`,
-  //         {
-  //           member_generation: 'SW4기',
-  //           member_name: '홍길동',
-  //           member_email: 'honggildong@example.com',
-  //           reservation_date: reservationInfo.reservation_date,
-  //           start_time: startTime[i],
-  //           end_time: endTime[i],
-  //           seat_number: reservationInfo.seat_number,
-  //           seat_type: reservationInfo.seat_type,
-  //         },
-  //       );
-  //       setClickedSubmit(false);
-  //       console.log(response.data);
-  //     }
-  //   } catch (error) {
-  //     alert('실패쓰ㅠ');
-  //     setIsReservationFail(true);
-  //     console.error(error);
-  //   }
-  // };
-
   const handleModalController = async () => {
     const timeArray = reservationInfo.time
       .split(', ')
@@ -474,19 +397,6 @@ const SeatLayout: React.FC = () => {
     const endTime = timeArray.map(time => time[1].trim());
 
     try {
-      // const request = {
-      //   member_generation: 'SW/2',
-      //   member_name: '갤럭시',
-      //   member_email: 'email222@gmail.com',
-      //   reservation_date: reservationInfo.reservation_date,
-      //   start_time: reservationInfo.time.split('~')[0],
-      //   end_time: reservationInfo.time.split('~')[1],
-      //   visitors: '',
-      //   num_of_guests: 1,
-      //   seat_type: reservationInfo.seat_type,
-      //   seat_number: reservationInfo.seat_number,
-      // };
-
       for (let i = 0; i < timeArray.length; i++) {
         const request = {
           member_generation: 'SW/2',

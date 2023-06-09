@@ -26,9 +26,24 @@ const getDate = () => {
   }
 };
 
+const getTime = (): string => {
+  const currentHour = new Date().getHours();
+
+  // if (currentHour >= 10 && currentHour < 14) {
+  //   return '10:00~14:00';
+  // } else
+  if (currentHour >= 10 && currentHour < 14) {
+    return '14:00~18:00';
+  } else if (currentHour >= 14 && currentHour < 18) {
+    return '18:00~22:00';
+  } else {
+    return '10:00~14:00';
+  }
+};
+
 export const initialState: ReservationState = {
   reservation_date: getDate(),
-  time: '10:00~14:00',
+  time: getTime(),
   seat_number: '',
   seat_type: '개인석',
   visitors: '',
