@@ -7,7 +7,6 @@ import TimeSelect from 'components/TimeSelect';
 
 import styles from './adminBookingBlock.module.scss';
 import BookingTable from 'components/BookingTable';
-import { dummyData } from './AdminBookingRacer';
 
 function AdminBookingBlock() {
   const [date, setDate] = useState('');
@@ -16,6 +15,7 @@ function AdminBookingBlock() {
   const [seatEndNumber, setSeatEndNumber] = useState('');
   const [checkedLabel, setCheckedLabel] = useState('');
   const [filteredData, setFilteredData] = useState<any>([]);
+  const [bookingData, setBookingData] = useState<any>([]);
 
   const dateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
@@ -237,96 +237,105 @@ function AdminBookingBlock() {
 
     const [startTime, endTime] = getTimeOfReservation();
 
-    console.log(
-      seatArr.map((seat: number | string) => {
-        const data = {
-          member_generation: '관리자',
-          member_name: '엄윤주',
-          member_email: 'yunzoo0915@gmail.com',
-          reservation_date: date,
-          start_time: startTime,
-          end_time: endTime,
-          num_of_guests: 1,
-          seat_number: seat.toString(),
-          seat_type: zoneState,
-        };
+    try {
+      const response = await Promise.all(
+        seatArr.map((seat: number | string) => {
+          const data = {
+            // member_generation: '관리자',
+            member_generation: 'SW4기',
+            member_name: '엄윤주',
+            member_email: 'yunzoo0915@gmail.com',
+            reservation_date: date,
+            start_time: startTime,
+            end_time: endTime,
+            seat_number: seat.toString(),
+            seat_type: zoneState,
+            visitors: '',
+          };
 
-        return data;
-      }),
-    );
+          return fetch(
+            `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            },
+          );
+        }),
+      );
 
-    const response = await Promise.all(
-      seatArr.map((seat: number | string) => {
-        const data = {
-          member_generation: '관리자',
-          member_name: '관리자명',
-          member_email: 'yunzoo0915@gmail.com',
-          reservation_date: date,
-          start_time: startTime,
-          end_time: endTime,
-          num_of_guests: 1,
-          seat_number: seat.toString(),
-          seat_type: zoneState,
-        };
+      await Promise.all(
+        response.map(async res => {
+          if (!res.ok) {
+            throw new Error('예약 중 에러가 발생했습니다.');
+          }
+        }),
+      );
 
-        // API 아직 없음!!!!!!!
-        return fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`, {
-          method: 'POST',
-          body: JSON.stringify(data),
-        });
-      }),
-    );
-
-    const data = await Promise.all(
-      response.map(async res => {
-        const json = await res.json();
-
-        console.log(json);
-
-        // return json.drinks;
-      }),
-    );
+      alert('예약 제한이 완료되었습니다.');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
-  // 직접 예약 조회 API 넣어야함.
   useEffect(() => {
     if (date === '') {
       return;
     }
 
     const getReservationData = async () => {
-      // admin API 따로 있음
       try {
         const response = await fetch(
-          // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/reservation-check?member_email=${email}`,
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/reservation-check?member_email=yunzoo0915@gmail.com`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
         );
 
         if (!response.ok) {
           throw new Error('예약 조회 중 에러가 발생했습니다.');
         }
 
-        const data = response.json();
+        const data = await response.json();
 
-        // 특정 날짜에 대해서만 필요함.
-        console.log(data);
-      } catch (err) {}
+        setBookingData(data.reservations);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     getReservationData();
+  }, [date]);
 
-    // const [startTime, endTime] = getTimeOfReservation();
+  useEffect(() => {
+    const [startTime, endTime] = getTimeOfReservation();
 
-    // const filtering = dummyData.filter(
-    //   data =>
-    //     data.date === date &&
-    //     data.startTime === startTime &&
-    //     data.endTime === endTime &&
-    //     data.zone === zoneState,
-    // );
+    if (zoneState === '') {
+      const filtering = bookingData.filter(
+        (data: any) =>
+          data.reservation_date === date &&
+          data.start_time === startTime &&
+          data.end_time === endTime,
+      );
 
-    // setFilteredData(filtering);
-  }, [date, checkedLabel, zoneState]);
+      setFilteredData(filtering);
+
+      return;
+    }
+
+    const filtering = bookingData.filter(
+      (data: any) =>
+        data.reservation_date === date &&
+        data.start_time === startTime &&
+        data.end_time === endTime &&
+        data.seat_type === zoneState,
+    );
+
+    setFilteredData(filtering);
+  }, [date, checkedLabel, zoneState, bookingData]);
+
+  useEffect(() => {
+    setFilteredData(bookingData);
+  }, [bookingData]);
 
   const cancelHandler = async () => {
     // 날짜 선택 필요
@@ -372,21 +381,20 @@ function AdminBookingBlock() {
       seatArr = getSeatRange(seatStartNumber, seatEndNumber);
     }
 
-    const [startTime, endTime] = getTimeOfReservation();
-
-    const response = await Promise.all(
-      seatArr.map((seat: number | string) => {
-        const data = {
-          reservationId: '', // 조회 API를 통해서 얻은 값들 중 필요한 데이터의 Id만 활용해야할듯.
-          member_email: 'yunzoo0915@gmail.com',
-        };
-
-        return fetch(`${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`, {
-          method: 'POST',
-          body: JSON.stringify(data),
-        });
-      }),
-    );
+    // try {
+    //   const response = await Promise.all(
+    //     seatArr.map((seat: number | string) => {
+    //       return fetch(
+    //         `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/delete-reservation/${}`,
+    //         {
+    //           method: 'DELETE',
+    //         },
+    //       );
+    //     }),
+    //   );
+    // } catch (err) {
+    //   console.log(err);
+    // }
   };
 
   return (
@@ -421,8 +429,6 @@ function AdminBookingBlock() {
         <button onClick={cancelHandler}>취소하기</button>
       </div>
 
-      {/* 더미 데이터 export 해서 넣어보자 */}
-      {/* 날짜, 시간, 좌석을 필터링해서 보여주기 */}
       <BookingTable tableData={filteredData} />
     </div>
   );
