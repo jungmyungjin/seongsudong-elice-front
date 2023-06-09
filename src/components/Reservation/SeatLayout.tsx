@@ -48,7 +48,8 @@ const SeatLayout: React.FC = () => {
   const fetchServerData = async (time: string) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        `http://localhost:8080/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
       );
       const serverDatas = response.data;
       setServerData(serverDatas);
@@ -97,7 +98,8 @@ const SeatLayout: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+          // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+          `http://localhost:8080/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
         );
         const serverDatas = response.data;
         setServerData(serverDatas);
@@ -472,34 +474,42 @@ const SeatLayout: React.FC = () => {
     const endTime = timeArray.map(time => time[1].trim());
 
     try {
-      // for (let i = 0; i < timeArray.length; i++) {
-      const headers = {
-        'Content-Type': 'application/json',
-      };
-      const request = {
-        member_generation: 'SW/2',
-        member_name: '갤럭시',
-        member_email: 'email222@gmail.com',
-        reservation_date: reservationInfo.reservation_date,
-        start_time: reservationInfo.time.split('~')[0],
-        end_time: reservationInfo.time.split('~')[1],
-        visitors: '',
-        num_of_guests: 1,
-        seat_type: reservationInfo.seat_type,
-        seat_number: reservationInfo.seat_number,
-      };
+      // const request = {
+      //   member_generation: 'SW/2',
+      //   member_name: '갤럭시',
+      //   member_email: 'email222@gmail.com',
+      //   reservation_date: reservationInfo.reservation_date,
+      //   start_time: reservationInfo.time.split('~')[0],
+      //   end_time: reservationInfo.time.split('~')[1],
+      //   visitors: '',
+      //   num_of_guests: 1,
+      //   seat_type: reservationInfo.seat_type,
+      //   seat_number: reservationInfo.seat_number,
+      // };
 
-      const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/reservations`,
-        // `http://localhost:3000/api/reservations`,
-        { data: request },
-        { headers: headers },
-      );
+      for (let i = 0; i < timeArray.length; i++) {
+        const request = {
+          member_generation: 'SW/2',
+          member_name: '갤럭시',
+          member_email: 'email222@gmail.com',
+          reservation_date: reservationInfo.reservation_date,
+          start_time: startTime[i],
+          end_time: endTime[i],
+          visitors: '',
+          seat_type: reservationInfo.seat_type,
+          seat_number: reservationInfo.seat_number,
+        };
 
-      setClickedSubmit(true);
-      console.log(request); // 요청(request) 정보 출력
-      console.log(response.data);
-      // }
+        const response = await axios.post(
+          // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
+          `http://localhost:8080/api/reservations`,
+          request,
+        );
+
+        setClickedSubmit(true);
+        console.log(request); // 요청(request) 정보 출력
+        console.log(response.data);
+      }
     } catch (error) {
       setIsReservationFail(true);
       console.error(error);
