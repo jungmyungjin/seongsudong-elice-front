@@ -52,7 +52,7 @@ const EliceDirection: React.FC = () => {
       </div>
       <div className={styles.mapTitle}>
         <Map className={styles.mapSvg} />
-        <p>지도로 찾아가기</p>
+        <p>엘리스랩 위치</p>
       </div>
       <div className={styles.borderLine}></div>
       <div id="map" className={styles.map}></div>
