@@ -36,7 +36,7 @@ function BookingTable(props: BookingTableInterface) {
                 <td>{data.member_name}</td>
                 {props.currentHour && props.goodbyeHandler && (
                   <td>
-                    {data.date === getDate() &&
+                    {data.reservation_date === getDate() &&
                       data.start_time <= props.currentHour &&
                       data.end_time > props.currentHour && (
                         <button
