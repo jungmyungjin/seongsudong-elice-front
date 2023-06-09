@@ -11,6 +11,7 @@ import { openConfirmModal, closeConfirmModal } from '../../reducers/modal';
 
 import { SingleSelect } from './ReservationOptions';
 import SubmitModal from './SubmitModal';
+import AlertModal from './AlertModal';
 
 import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
 // 더미 데이터
@@ -21,6 +22,7 @@ import axios from 'axios';
 
 const SeatLayout: React.FC = () => {
   const reservationInfo = useSelector((state: RootState) => state.reservation);
+  const dispatch = useAppDispatch();
 
   /* 예약정보 업데이트할 떄 사용하는 함수 */
   const updateReservation = (updatedInfo: Partial<ReservationState>) => {
@@ -34,6 +36,7 @@ const SeatLayout: React.FC = () => {
   const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
   const [checkReservation, setCheckReservation] = useState<string>('');
   const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
+  const [isReservationFail, setIsReservationFail] = useState<boolean>(false);
 
   // 더미데이터
   // const [serverData, setServerData] = useState<ServerResponse>(serverDatas);
@@ -41,104 +44,49 @@ const SeatLayout: React.FC = () => {
   // 서버 통신
   const [serverData, setServerData] = useState<ServerResponse>({});
 
-  const fetchServerData = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-      );
-      const serverData = response.data;
-      setServerData(serverData);
-      const seats = findAvailableSeats(serverData, '10:00~14:00');
-      setCanReservationSeat(seats);
-      console.log(serverData);
-    } catch (error) {
-      // 에러 처리
-      console.error(error);
-    }
-  };
+  useEffect(() => {
+    console.log(reservationInfo.time);
+  }, []);
 
   useEffect(() => {
+    // 더미데이터
+    // setServerData(serverDatas);
+
+    // 서버 통신
+    // fetchServerData(reservationInfo.time);
     const fetchData = async () => {
-      await fetchServerData();
-      const seats = findAvailableSeats(serverData, '10:00~14:00');
-      setCanReservationSeat(seats);
+      try {
+        const response = await axios.get(
+          // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+          `http://localhost:8080/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        );
+        const serverDatas = response.data;
+        setServerData(serverDatas);
+        const seats = findAvailableSeats(serverDatas, '10:00~14:00');
+        setCanReservationSeat(seats);
+        console.log(serverDatas);
+      } catch (error) {
+        // 에러 처리
+        console.error(error);
+      }
     };
 
     fetchData();
-  }, []);
-
-  useEffect(() => {
-    // 더미데이터
-    // setServerData(serverDatas);
-
-    // 서버 통신
-    const fetchServerData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-        );
-        const serverData = response.data;
-        setServerData(serverData);
-        const seats = findAvailableSeats(serverData, '10:00~14:00');
-        setCanReservationSeat(seats);
-        console.log(serverData);
-      } catch (error) {
-        // 에러 처리
-        console.error(error);
-      }
-    };
-    console.log(fetchServerData());
-    fetchServerData();
-    console.log(canReservationSeat);
-    console.log(reservationInfo.reservation_date);
-  }, []);
-
-  useEffect(() => {
-    console.log(canReservationSeat);
-  }, [canReservationSeat]);
-
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    setCheckReservation(
-      `${reservationInfo.seat_type} ${reservationInfo.seat_number}번 좌석을 예약하시겠습니까?`,
-    );
-  }, [reservationInfo.seat_number]);
-
-  useEffect(() => {
-    // 더미데이터
-    // setServerData(serverDatas);
-
-    // 서버 통신
-    const fetchServerData = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-        );
-        const serverData = response.data;
-        setServerData(serverData);
-        const seats = findAvailableSeats(serverData, reservationInfo.time);
-        setCanReservationSeat(seats);
-      } catch (error) {
-        // 에러 처리
-        console.error(error);
-      }
-    };
-    fetchServerData();
-
-    // console.log(serverData);
-    const seats = findAvailableSeats(serverData, '10:00~14:00');
-    setCanReservationSeat(seats);
-
-    console.log(serverData);
-    // console.log('날짜 정보 바뀜');
+    // console.log(canReservationSeat);
   }, [reservationInfo.reservation_date]);
 
   useEffect(() => {
     // console.log(reservationInfo.time);
     const seats = findAvailableSeats(serverData, reservationInfo.time);
     setCanReservationSeat(seats);
-    // console.log(seats);
+    // console.log(canReservationSeat);
   }, [reservationInfo.time]);
+
+  useEffect(() => {
+    setCheckReservation(
+      `${reservationInfo.seat_type} ${reservationInfo.seat_number}번 좌석을 예약하시겠습니까?`,
+    );
+  }, [reservationInfo.seat_number]);
 
   function personalSeatLayout(
     startSeatNumber: number,
@@ -436,14 +384,12 @@ const SeatLayout: React.FC = () => {
     );
   }
 
-  const handleClickSeatType = (value: string) => {
+  const handleClickSeatNumber = (value: string) => {
     updateReservation({ seat_number: value });
     dispatch(openConfirmModal());
   };
 
-  const handleSubmitCLick = async () => {
-    // setClickedSubmit(false);
-
+  const handleModalController = async () => {
     const timeArray = reservationInfo.time
       .split(', ')
       .map(time => time.split('~'));
@@ -452,34 +398,43 @@ const SeatLayout: React.FC = () => {
 
     try {
       for (let i = 0; i < timeArray.length; i++) {
+        const request = {
+          member_generation: 'SW/2',
+          member_name: '갤럭시',
+          member_email: 'email222@gmail.com',
+          reservation_date: reservationInfo.reservation_date,
+          start_time: startTime[i],
+          end_time: endTime[i],
+          visitors: '',
+          seat_type: reservationInfo.seat_type,
+          seat_number: reservationInfo.seat_number,
+        };
+
         const response = await axios.post(
-          `http://localhost:5000/api/reservations/`,
-          {
-            member_generation: 'SW4기',
-            member_name: '홍길동',
-            member_email: 'honggildong@example.com',
-            reservation_date: reservationInfo.reservation_date,
-            start_time: startTime[i],
-            end_time: endTime[i],
-            seat_number: reservationInfo.seat_number,
-            seat_type: reservationInfo.seat_type,
-          },
+          // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
+          `http://localhost:8080/api/reservations`,
+          request,
         );
-        setClickedSubmit(false);
+
+        setClickedSubmit(true);
+        console.log(request); // 요청(request) 정보 출력
         console.log(response.data);
       }
     } catch (error) {
+      setIsReservationFail(true);
       console.error(error);
     }
+
+    dispatch(closeConfirmModal());
   };
 
   const ShowSeatLayout = () => {
     if (reservationInfo.seat_type === '개인석') {
-      return <ClickPersonalSeat clickEvent={handleClickSeatType} />;
+      return <ClickPersonalSeat clickEvent={handleClickSeatNumber} />;
     } else if (reservationInfo.seat_type === '팀플석') {
-      return <ClickGroupSeat clickEvent={handleClickSeatType} />;
+      return <ClickGroupSeat clickEvent={handleClickSeatNumber} />;
     } else if (reservationInfo.seat_type === '수료기수석') {
-      return <ClickGraduateSeat clickEvent={handleClickSeatType} />;
+      return <ClickGraduateSeat clickEvent={handleClickSeatNumber} />;
     } else if (reservationInfo.seat_type === '미팅룸') {
       return <ClickMeetingRoom />;
     } else {
@@ -492,12 +447,16 @@ const SeatLayout: React.FC = () => {
       {ShowSeatLayout()}
       <ConfirmModal
         modalMessage={checkReservation}
-        modalController={() => {
-          dispatch(closeConfirmModal());
-          setClickedSubmit(true);
-        }}
+        modalController={handleModalController}
       />
-      {clickedSubmit ? <SubmitModal onClick={handleSubmitCLick} /> : null}
+      {clickedSubmit && <SubmitModal onClick={() => setClickedSubmit(false)} />}
+      {isReservationFail && (
+        <AlertModal
+          modalMessage1='좌석 예약에 실패하였습니다.'
+          modalMessage2='새로고침 후 다시 시도해주세요.'
+          onClick={() => setIsReservationFail(false)}
+        />
+      )}
     </>
   );
 };

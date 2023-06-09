@@ -1,9 +1,9 @@
 export type ServerResponse = {
   [key: string]: {
     seat_type: string;
-    available_10to14: boolean;
-    available_14to18: boolean;
-    available_18to22: boolean;
+    available10to14: boolean;
+    available14to18: boolean;
+    available18to22: boolean;
   };
 };
 
@@ -23,34 +23,34 @@ export function findAvailableSeats(
 
     if (isAvailable_10to14 && isAvailable_14to18 && isAvailable_18to22) {
       if (
-        data.available_10to14 &&
-        data.available_14to18 &&
-        data.available_18to22
+        data.available10to14 &&
+        data.available14to18 &&
+        data.available18to22
       ) {
         availableSeatsSet.add(key);
       }
     } else if (isAvailable_10to14 && isAvailable_14to18) {
-      if (data.available_10to14 && data.available_14to18) {
+      if (data.available10to14 && data.available14to18) {
         availableSeatsSet.add(key);
       }
     } else if (isAvailable_10to14 && isAvailable_18to22) {
-      if (data.available_10to14 && data.available_18to22) {
+      if (data.available10to14 && data.available18to22) {
         availableSeatsSet.add(key);
       }
     } else if (isAvailable_14to18 && isAvailable_18to22) {
-      if (data.available_14to18 && data.available_18to22) {
+      if (data.available14to18 && data.available18to22) {
         availableSeatsSet.add(key);
       }
     } else if (isAvailable_10to14) {
-      if (data.available_10to14) {
+      if (data.available10to14) {
         availableSeatsSet.add(key);
       }
     } else if (isAvailable_14to18) {
-      if (data.available_14to18) {
+      if (data.available14to18) {
         availableSeatsSet.add(key);
       }
     } else if (isAvailable_18to22) {
-      if (data.available_18to22) {
+      if (data.available18to22) {
         availableSeatsSet.add(key);
       }
     }
