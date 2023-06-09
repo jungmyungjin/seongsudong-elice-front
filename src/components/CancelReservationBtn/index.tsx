@@ -59,7 +59,7 @@ function CancelReservationBtn() {
       )}
       {cancelMyReservationError && isConfirmModalOpen && (
         <ConfirmModal
-          type='successCancelMyReservation'
+          type='errorCancelMyReservation'
           modalMessage='예약 취소 중에 오류가 발생했습니다.🥹'
           modalController={handleCompleteCancel}
           closeController={handleCompleteCancel}

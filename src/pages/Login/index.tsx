@@ -3,10 +3,11 @@ import styles from './login.module.scss';
 import { useNavigate } from 'react-router-dom';
 import logo from 'assets/elice-logo.png';
 import axios from 'axios';
-// import Cookies from 'js-cookie';
 import { useGoogleLogin, CodeResponse } from '@react-oauth/google';
+import { AppDispatch } from 'store/configureStore';
 import { useDispatch } from 'react-redux';
 import { logIn } from 'reducers/user';
+import { online } from 'actions/access';
 
 interface ResponseType {
   headers: {
@@ -25,7 +26,7 @@ interface ResponseType {
 
 const Login = (): React.ReactElement => {
   let navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
 
   // [ Authorization Code Flow 방식 ]
   const loginBtnHandle = useGoogleLogin({
@@ -45,7 +46,7 @@ const Login = (): React.ReactElement => {
               generation: generation.split('/')[1],
             }),
           );
-
+          dispatch(online(email));
           navigate('/');
         } else if (response.status === 204) {
           // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
