@@ -23,6 +23,10 @@ import SignUp from 'pages/SignUp';
 import AdminNotice from 'pages/Admin/AdminNotice';
 import AdminBookingBlock from 'pages/Admin/AdminBookingBlock';
 import EliceDirection from 'components/Direction/Direction';
+import Unvalid from 'pages/Unvalid/Unvalid';
+import AdminRoutes from 'routes/AdminRoutes';
+import UserRoutes from 'routes/UserRoutes';
+import AlreadyLoggedInRoutes from 'routes/AlreadyLoggedInRoutes';
 
 function App() {
   const isOpen = useSelector((state: RootState) => state.menu.isOpen);
@@ -58,6 +62,37 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/signUp' element={<SignUp />} />
             <Route path='/direction' element={<EliceDirection />} />
+
+            {/* <Route element={<AlreadyLoggedInRoutes />}>
+              <Route path='/login' element={<Login />} />
+              <Route path='/signUp' element={<SignUp />} />
+            </Route> */}
+
+            {/* <Route element={<UserRoutes />}>
+              <Route path='/post/free/:id' element={<PostsDetail />} />
+              <Route path='/post/free/create' element={<CreatePost />} />
+              <Route path='/post/free/editPost/:id' element={<PostUpdate />} />
+              <Route path='/reservation' element={<Reservation />} />
+              <Route path='/mypage' element={<MyPage />} />
+              <Route path='/mypage/mypost' element={<MyPost />} />
+              <Route path='/mypage/myreservation' element={<MyReservation />} />
+            </Route> */}
+
+            {/* <Route element={<AdminRoutes />}>
+              <Route path='/admin' element={<Admin />} />
+              <Route path='/admin/booking' element={<AdminBooking />} />
+              <Route
+                path='/admin/booking/racer'
+                element={<AdminBookingRacer />}
+              />
+              <Route
+                path='/admin/booking/block'
+                element={<AdminBookingBlock />}
+              />
+              <Route path='/admin/notice' element={<AdminNotice />} />
+            </Route> */}
+
+            <Route path='/*' element={<Unvalid />} />
           </Routes>
           <Footer />
           <FloatingButton />
