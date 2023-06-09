@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 import CustomLink from 'components/common/Link';
 import DateInput from 'components/common/DateInput';
 import SeatNumberInput from 'components/SeatNumberInput';
 import TimeSelect from 'components/TimeSelect';
-
 import styles from './adminBookingBlock.module.scss';
 import BookingTable from 'components/BookingTable';
+import { RootState } from 'store/configureStore';
 
 function AdminBookingBlock() {
   const [date, setDate] = useState('');
@@ -16,6 +17,9 @@ function AdminBookingBlock() {
   const [checkedLabel, setCheckedLabel] = useState('');
   const [filteredData, setFilteredData] = useState<any>([]);
   const [bookingData, setBookingData] = useState<any>([]);
+
+  const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
+  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
 
   const dateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
@@ -192,6 +196,14 @@ function AdminBookingBlock() {
   };
 
   const blockHandler = async () => {
+    // if (!loggedIn) {
+    //   return alert('로그인이 필요한 기능입니다.');
+    // }
+
+    // if (!isAdmin) {
+    //   return alert('관리자 권한이 없습니다.');
+    // }
+
     // 날짜 선택 필요
     if (date === '') {
       return alert('날짜를 선택해주세요.');
@@ -285,6 +297,14 @@ function AdminBookingBlock() {
       return;
     }
 
+    // if (!loggedIn) {
+    //   return alert('로그인이 필요한 기능입니다.');
+    // }
+
+    // if (!isAdmin) {
+    //   return alert('관리자 권한이 없습니다.');
+    // }
+
     const getReservationData = async () => {
       try {
         const response = await fetch(
@@ -338,6 +358,14 @@ function AdminBookingBlock() {
   }, [bookingData]);
 
   const cancelHandler = async () => {
+    // if (!loggedIn) {
+    //   return alert('로그인이 필요한 기능입니다.');
+    // }
+
+    // if (!isAdmin) {
+    //   return alert('관리자 권한이 없습니다.');
+    // }
+
     // 날짜 선택 필요
     if (date === '') {
       return alert('날짜를 선택해주세요.');
