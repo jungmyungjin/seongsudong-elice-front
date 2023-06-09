@@ -21,20 +21,50 @@ const DateOptions: React.FC = () => {
   };
 
   const getCurrentWeekDates = () => {
-    const today = new Date();
-    const day = today.getDay();
-    const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - day);
-    const dates = [];
-    for (let i = 0; i < 5; i++) {
-      const date = new Date(startDate);
-      date.setDate(date.getDate() + i);
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = (date.getDate() + 1).toString().padStart(2, '0');
-      const dayOfWeek = ['월', '화', '수', '목', '금'][date.getDay()];
-      dates.push(`${getCurrentYear()}.${month}.${day}(${dayOfWeek})`);
+    const currentDate = new Date();
+    const currentDay = currentDate.getDay(); // 일요일(0)부터 토요일(6)까지의 숫자를 반환합니다.
+
+    // 금요일 오후 6시 이후, 토요일, 일요일인 경우 다음주 날짜를 리턴합니다.
+    if (
+      currentDay >= 5 ||
+      (currentDay === 4 && currentDate.getHours() >= 18) ||
+      (currentDay === 3 &&
+        currentDate.getHours() === 18 &&
+        currentDate.getMinutes() >= 0)
+    ) {
+      const nextWeekDates = [];
+
+      const nextWeekStartDate = new Date(currentDate);
+      nextWeekStartDate.setDate(currentDate.getDate() + (7 - currentDay) + 1);
+
+      for (let i = 0; i < 5; i++) {
+        const date = new Date(nextWeekStartDate);
+        date.setDate(nextWeekStartDate.getDate() + i);
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const dayOfWeek = ['일', '월', '화', '수', '목', '금'][date.getDay()];
+        nextWeekDates.push(`${getCurrentYear()}.${month}.${day}(${dayOfWeek})`);
+      }
+
+      return nextWeekDates;
     }
-    return dates;
+
+    // 그 외의 경우 이번주 날짜를 리턴합니다.
+    const thisWeekDates = [];
+
+    const thisWeekStartDate = new Date(currentDate);
+    thisWeekStartDate.setDate(currentDate.getDate() - currentDay);
+
+    for (let i = 0; i < 5; i++) {
+      const date = new Date(thisWeekStartDate);
+      date.setDate(thisWeekStartDate.getDate() + i);
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const dayOfWeek = ['월', '화', '수', '목', '금'][date.getDay()];
+      thisWeekDates.push(`${getCurrentYear()}.${month}.${day}(${dayOfWeek})`);
+    }
+
+    return thisWeekDates;
   };
 
   const SelectDate: React.FC<SelectDateProps> = ({
@@ -95,83 +125,45 @@ const DateOptions: React.FC = () => {
       reservationInfo.reservation_date.slice(-2),
     );
 
-    // const getCurrentWeekDates = () => {
-    //   const today = new Date();
-    //   const day = today.getDay();
-    //   const startDate = new Date(today);
-    //   startDate.setDate(startDate.getDate() - day + 1);
-
-    //   const weekdayDates = [];
-
-    //   for (let i = 0; i < 5; i++) {
-    //     const date = startDate.getDate().toString().padStart(2, '0');
-    //     weekdayDates.push(date);
-
-    //     startDate.setDate(startDate.getDate() + 1);
-    //   }
-
-    //   return weekdayDates;
-    // };
-
     const getCurrentWeekDates = () => {
-      const today = new Date();
-      const day = today.getDay();
-      const startDate = new Date(today);
-      startDate.setDate(startDate.getDate() - day + 1);
+      const currentDate = new Date();
+      const currentDay = currentDate.getDay(); // 일요일(0)부터 토요일(6)까지의 숫자를 반환합니다.
 
-      if (day === 0 || day === 6) {
-        startDate.setDate(startDate.getDate() + 7); // 토요일이나 일요일인 경우 다음 주의 시작 날짜로 설정
+      // 금요일 오후 6시 이후, 토요일, 일요일인 경우 다음주 날짜를 리턴합니다.
+      if (
+        currentDay >= 5 ||
+        (currentDay === 4 && currentDate.getHours() >= 18) ||
+        (currentDay === 3 &&
+          currentDate.getHours() === 18 &&
+          currentDate.getMinutes() >= 0)
+      ) {
+        const nextWeekDates = [];
+
+        const nextWeekStartDate = new Date(currentDate);
+        nextWeekStartDate.setDate(currentDate.getDate() + (7 - currentDay) + 1);
+
+        for (let i = 0; i < 5; i++) {
+          const date = new Date(nextWeekStartDate);
+          date.setDate(nextWeekStartDate.getDate() + i);
+          const dateStr = date.getDate().toString().padStart(2, '0');
+          nextWeekDates.push(dateStr);
+        }
+
+        return nextWeekDates;
       }
 
-      const weekdayDates = [];
+      // 그 외의 경우 이번주 날짜를 리턴합니다.
+      const thisWeekDates = [];
 
       for (let i = 0; i < 5; i++) {
-        const date = startDate.getDate().toString().padStart(2, '0');
-        weekdayDates.push(date);
-
-        startDate.setDate(startDate.getDate() + 1);
+        const date = new Date(currentDate);
+        date.setDate(currentDate.getDate() + i);
+        const dateStr = date.getDate().toString().padStart(2, '0');
+        thisWeekDates.push(dateStr);
       }
 
-      return weekdayDates;
+      return thisWeekDates;
     };
-
-    // const getCurrentWeekDates = () => {
-    //   const today = new Date();
-    //   const day = today.getDay();
-    //   const hour = today.getHours();
-    //   const startDate = new Date(today);
-
-    //   if (day === 5 && hour >= 18) {
-    //     startDate.setDate(startDate.getDate() + 3 + 7); // 금요일 오후 6시 이후라면 다음주의 시작 날짜로 설정 (현재 날짜 + 3일 + 7일)
-    //   } else if (day === 0 || day === 6) {
-    //     startDate.setDate(startDate.getDate() + 7); // 토요일이나 일요일인 경우 다음 주의 시작 날짜로 설정
-    //   } else {
-    //     startDate.setDate(startDate.getDate() - day + 1);
-    //   }
-
-    //   const weekdayDates = [];
-
-    //   for (let i = 0; i < 5; i++) {
-    //     const date = startDate.getDate().toString().padStart(2, '0');
-    //     weekdayDates.push(date);
-
-    //     startDate.setDate(startDate.getDate() + 1);
-    //   }
-
-    //   return weekdayDates;
-    // };
-
-    // const handleSelectedDateChange = (
-    //   e: React.ChangeEvent<HTMLInputElement>,
-    // ) => {
-    //   setSelectedCheckbox(e.target.id);
-    //   const weekDates = getCurrentWeekDates();
-    //   const index = getCurrentWeekdayDates().indexOf(e.target.id);
-
-    //   updateReservation({
-    //     reservation_date: weekDates[index].replace(/\./g, '-').slice(0, -3),
-    //   });
-    // };
 
     const handleSelectedDateChange = (
       e: React.ChangeEvent<HTMLInputElement>,
@@ -181,17 +173,18 @@ const DateOptions: React.FC = () => {
       const index = getCurrentWeekDates().indexOf(selectedDate);
 
       // 오늘 날짜와 선택한 날짜를 비교하여 이전 날짜인 경우에만 alert 메시지를 띄웁니다.
-      const today = new Date();
-      const selectedDateObject = new Date(weekDates[index]);
-      if (selectedDateObject < today) {
+      const date = new Date().getDate().toString().padStart(2, '0');
+      if (weekDates[index] < date) {
         alert('지난 날짜에는 예약이 불가합니다.');
         return;
       }
+      console.log(weekDates[index]);
 
-      setSelectedCheckbox(selectedDate);
+      setSelectedCheckbox(weekDates[index]);
       updateReservation({
-        reservation_date: weekDates[index].replace(/\./g, '-').slice(0, -3),
+        reservation_date: '23-06-12',
       });
+      console.log(reservationInfo.reservation_date);
     };
 
     return (
@@ -253,80 +246,6 @@ export const SingleSelect: React.FC<SingleSelectProps> = ({
     </div>
   );
 };
-
-// const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
-//   const [isClicked, setIsClicked] = useState<boolean[]>(
-//     typeList.map((_, index) => index === 0),
-//   );
-
-//   const reservationInfo = useSelector((state: RootState) => state.reservation);
-//   const dispatch = useDispatch();
-
-//   const updateReservation = (
-//     updatedInfo: Partial<ReservationState> & { date?: string },
-//   ) => {
-//     const updatedReservationInfo = {
-//       ...reservationInfo,
-//       ...updatedInfo,
-//     };
-//     dispatch(updateReservationInfo(updatedReservationInfo));
-//   };
-
-//   useEffect(() => {
-//     // 최소 한 개의 항목이 선택되도록 처리
-//     const clickedCount = isClicked.filter(Boolean).length;
-//     if (clickedCount === 0) {
-//       const updatedClickedState = [...isClicked];
-//       updatedClickedState[0] = true;
-//       setIsClicked(updatedClickedState);
-//     }
-//     const selectedTimes = typeList.filter((_, index) => isClicked[index]);
-//     const time = selectedTimes.join(', ');
-//     updateReservation({ time: time });
-//     // console.log(reservationInfo.time);
-//   }, [isClicked]);
-
-//   // const handleClick = (index: number, type: string) => {
-//   //   // 클릭 상태 변경
-//   //   const updatedClickedState = [...isClicked];
-//   //   updatedClickedState[index] = !updatedClickedState[index];
-//   //   setIsClicked(updatedClickedState);
-//   // };
-
-//   const handleClick = (index: number, type: string) => {
-//     const currentTime = new Date().getHours(); // 현재 시간 가져오기
-//     const [startHour] = type.split(':');
-//     const startTime = Number(startHour);
-
-//     // 선택한 시간과 현재 시간 비교
-//     if (startTime < currentTime) {
-//       // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행하지 않음
-//       alert('지난 시간을 예약하실 수 없습니다.');
-//       return;
-//     }
-
-//     // 클릭 상태 변경
-//     const updatedClickedState = [...isClicked];
-//     updatedClickedState[index] = !updatedClickedState[index];
-//     setIsClicked(updatedClickedState);
-//   };
-
-//   return (
-//     <div className={styles.TimeSelector}>
-//       {typeList.map((type, index) => (
-//         <button
-//           key={type}
-//           className={
-//             isClicked[index] ? styles.checkedType : styles.unCheckedType
-//           }
-//           onClick={() => handleClick(index, type)}
-//         >
-//           {type}
-//         </button>
-//       ))}
-//     </div>
-//   );
-// };
 
 const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
   const [isClicked, setIsClicked] = useState<boolean[]>(

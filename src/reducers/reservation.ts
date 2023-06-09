@@ -4,9 +4,10 @@ import { ReservationState } from '../types/reservation';
 const getDate = () => {
   const today = new Date();
   const day = today.getDay();
+  const hours = today.getHours();
 
-  if (day === 0 || day === 6) {
-    // 일요일(0)이거나 토요일(6)인 경우
+  if (day === 0 || (day === 5 && hours >= 18) || day === 6) {
+    // 일요일(0)이거나 금요일 오후 6시 이후 또는 토요일(6)인 경우
     const nextMonday = new Date(today);
     nextMonday.setDate(today.getDate() + (8 - day)); // 다음 주 월요일로 이동
 
