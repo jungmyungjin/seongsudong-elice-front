@@ -11,6 +11,7 @@ import { openConfirmModal, closeConfirmModal } from '../../reducers/modal';
 
 import { SingleSelect } from './ReservationOptions';
 import SubmitModal from './SubmitModal';
+import AlertModal from './AlertModal';
 
 import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
 // 더미 데이터
@@ -35,6 +36,7 @@ const SeatLayout: React.FC = () => {
   const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
   const [checkReservation, setCheckReservation] = useState<string>('');
   const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
+  const [isReservationFail, setIsReservationFail] = useState<boolean>(false);
 
   // 더미데이터
   // const [serverData, setServerData] = useState<ServerResponse>(serverDatas);
@@ -58,23 +60,57 @@ const SeatLayout: React.FC = () => {
     }
   };
 
+  // 없어도 되나요..?
+  // useEffect(() => {
+  //   // 더미데이터
+  //   // setServerData(serverDatas);
+
+  //   // 서버 통신
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+  //       );
+  //       const serverDatas = response.data;
+  //       setServerData(serverDatas);
+  //       const seats = findAvailableSeats(serverDatas, '10:00~14:00');
+  //       setCanReservationSeat(seats);
+  //       console.log(seats); // 업데이트된 seats 값을 출력
+  //     } catch (error) {
+  //       // 에러 처리
+  //       console.error(error);
+  //     }
+  //   };
+
+  //   fetchData();
+  //   console.log('렌더시 실행');
+  //   console.log(canReservationSeat);
+  //   // console.log(reservationInfo.reservation_date);
+  // }, []);
+
   useEffect(() => {
     // 더미데이터
     // setServerData(serverDatas);
 
     // 서버 통신
-    fetchServerData('10:00~14:00');
+    // fetchServerData(reservationInfo.time);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+        );
+        const serverDatas = response.data;
+        setServerData(serverDatas);
+        const seats = findAvailableSeats(serverDatas, '10:00~14:00');
+        setCanReservationSeat(seats);
+        console.log(serverDatas);
+      } catch (error) {
+        // 에러 처리
+        console.error(error);
+      }
+    };
 
-    // console.log(canReservationSeat);
-    // console.log(reservationInfo.reservation_date);
-  }, []);
-
-  useEffect(() => {
-    // 더미데이터
-    // setServerData(serverDatas);
-
-    // 서버 통신
-    fetchServerData(reservationInfo.time);
+    fetchData();
 
     // console.log('날짜 정보 바뀜');
     // console.log(canReservationSeat);
@@ -389,14 +425,46 @@ const SeatLayout: React.FC = () => {
     );
   }
 
-  const handleClickSeatType = (value: string) => {
+  const handleClickSeatNumber = (value: string) => {
     updateReservation({ seat_number: value });
     dispatch(openConfirmModal());
   };
 
-  const handleSubmitCLick = async () => {
-    // setClickedSubmit(false);
+  // const handleSubmitCLick = async () => {
+  //   // setClickedSubmit(false);
 
+  //   const timeArray = reservationInfo.time
+  //     .split(', ')
+  //     .map(time => time.split('~'));
+  //   const startTime = timeArray.map(time => time[0].trim());
+  //   const endTime = timeArray.map(time => time[1].trim());
+
+  //   try {
+  //     for (let i = 0; i < timeArray.length; i++) {
+  //       const response = await axios.post(
+  //         `http://localhost:3000/api/reservations/`,
+  //         {
+  //           member_generation: 'SW4기',
+  //           member_name: '홍길동',
+  //           member_email: 'honggildong@example.com',
+  //           reservation_date: reservationInfo.reservation_date,
+  //           start_time: startTime[i],
+  //           end_time: endTime[i],
+  //           seat_number: reservationInfo.seat_number,
+  //           seat_type: reservationInfo.seat_type,
+  //         },
+  //       );
+  //       setClickedSubmit(false);
+  //       console.log(response.data);
+  //     }
+  //   } catch (error) {
+  //     alert('실패쓰ㅠ');
+  //     setIsReservationFail(true);
+  //     console.error(error);
+  //   }
+  // };
+
+  const handleModalController = async () => {
     const timeArray = reservationInfo.time
       .split(', ')
       .map(time => time.split('~'));
@@ -404,35 +472,49 @@ const SeatLayout: React.FC = () => {
     const endTime = timeArray.map(time => time[1].trim());
 
     try {
-      for (let i = 0; i < timeArray.length; i++) {
-        const response = await axios.post(
-          `http://localhost:5000/api/reservations/`,
-          {
-            member_generation: 'SW4기',
-            member_name: '홍길동',
-            member_email: 'honggildong@example.com',
-            reservation_date: reservationInfo.reservation_date,
-            start_time: startTime[i],
-            end_time: endTime[i],
-            seat_number: reservationInfo.seat_number,
-            seat_type: reservationInfo.seat_type,
-          },
-        );
-        setClickedSubmit(false);
-        console.log(response.data);
-      }
+      // for (let i = 0; i < timeArray.length; i++) {
+      const headers = {
+        'Content-Type': 'application/json',
+      };
+      const request = {
+        member_generation: 'SW/2',
+        member_name: '갤럭시',
+        member_email: 'email222@gmail.com',
+        reservation_date: reservationInfo.reservation_date,
+        start_time: reservationInfo.time.split('~')[0],
+        end_time: reservationInfo.time.split('~')[1],
+        visitors: '',
+        num_of_guests: 1,
+        seat_type: reservationInfo.seat_type,
+        seat_number: reservationInfo.seat_number,
+      };
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/api/reservations`,
+        // `http://localhost:3000/api/reservations`,
+        { data: request },
+        { headers: headers },
+      );
+
+      setClickedSubmit(true);
+      console.log(request); // 요청(request) 정보 출력
+      console.log(response.data);
+      // }
     } catch (error) {
+      setIsReservationFail(true);
       console.error(error);
     }
+
+    dispatch(closeConfirmModal());
   };
 
   const ShowSeatLayout = () => {
     if (reservationInfo.seat_type === '개인석') {
-      return <ClickPersonalSeat clickEvent={handleClickSeatType} />;
+      return <ClickPersonalSeat clickEvent={handleClickSeatNumber} />;
     } else if (reservationInfo.seat_type === '팀플석') {
-      return <ClickGroupSeat clickEvent={handleClickSeatType} />;
+      return <ClickGroupSeat clickEvent={handleClickSeatNumber} />;
     } else if (reservationInfo.seat_type === '수료기수석') {
-      return <ClickGraduateSeat clickEvent={handleClickSeatType} />;
+      return <ClickGraduateSeat clickEvent={handleClickSeatNumber} />;
     } else if (reservationInfo.seat_type === '미팅룸') {
       return <ClickMeetingRoom />;
     } else {
@@ -445,12 +527,16 @@ const SeatLayout: React.FC = () => {
       {ShowSeatLayout()}
       <ConfirmModal
         modalMessage={checkReservation}
-        modalController={() => {
-          dispatch(closeConfirmModal());
-          setClickedSubmit(true);
-        }}
+        modalController={handleModalController}
       />
-      {clickedSubmit ? <SubmitModal onClick={handleSubmitCLick} /> : null}
+      {clickedSubmit && <SubmitModal onClick={() => setClickedSubmit(false)} />}
+      {isReservationFail && (
+        <AlertModal
+          modalMessage1='좌석 예약에 실패하였습니다.'
+          modalMessage2='새로고침 후 다시 시도해주세요.'
+          onClick={() => setIsReservationFail(false)}
+        />
+      )}
     </>
   );
 };
