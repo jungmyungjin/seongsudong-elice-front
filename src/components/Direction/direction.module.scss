@@ -17,6 +17,17 @@
         color: #682BE0;
         font-weight:800;
     }
+
+    .findRouteBtn {
+        display: flex;
+        margin-left: auto;
+        
+        button {
+            margin-left: 5px;
+            font-size: 20px;
+            color: #682BE0;
+        }
+    }
 }
 
 .borderLine {

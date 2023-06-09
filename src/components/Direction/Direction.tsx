@@ -2,6 +2,7 @@ import styles from './direction.module.scss';
 import React, { useEffect } from 'react';
 import { ReactComponent as Map } from 'assets/Map.svg';
 import { ReactComponent as RoadMap } from 'assets/RoadMap.svg';
+import { ReactComponent as FindRoute } from 'assets/FindRoute.svg';
 
 const EliceDirection: React.FC = () => {
 
@@ -18,6 +19,22 @@ const EliceDirection: React.FC = () => {
       });
       document.head.appendChild(script);
     });
+  };
+
+  // 길찾기 함수
+  const findRoute = () => {
+    if (navigator.geolocation) {
+      // 현재 위치 정보를 가져옴
+      navigator.geolocation.getCurrentPosition((position) => {
+        const latitude = position.coords.latitude; // 현재 위치의 위도
+        const longitude = position.coords.longitude; // 현재 위치의 경도
+
+        // 카카오맵 길찾기 페이지로 이동
+        window.open(`https://map.kakao.com/link/to/성수 엘리스 랩,37.54683016184554,127.06628648846453/from/${latitude},${longitude}`, '_blank');
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
   };
 
   useEffect(() => {
@@ -53,6 +70,10 @@ const EliceDirection: React.FC = () => {
       <div className={styles.mapTitle}>
         <Map className={styles.mapSvg} />
         <p>엘리스랩 위치</p>
+        <div className={styles.findRouteBtn}>
+          
+          <button onClick={findRoute}><FindRoute /></button>
+        </div>
       </div>
       <div className={styles.borderLine}></div>
       <div id="map" className={styles.map}></div>
