@@ -9,12 +9,18 @@ import styles from './fullmodal.module.scss';
 import { FullModalProps } from 'types/modal';
 import { ReactComponent as ChevronLeft } from 'assets/ChevronLeft.svg';
 
+import { offline } from 'actions/access';
+
 function FullModal({ children, title, modalType }: FullModalProps) {
   const dispatch = useAppDispatch();
 
   const closeAction = (e: React.MouseEvent) => {
     e.preventDefault();
-    if (modalType === 'chat') dispatch(closeChatModal());
+    if (modalType === 'chat') {
+      const userEmail = 'test3@example.com';
+      dispatch(closeChatModal());
+      // dispatch(offline(userEmail));
+    }
     if (modalType === 'reservation') dispatch(closeMyReservationModal());
     if (modalType === 'adminChatListModal') dispatch(closeChatListModal());
   };

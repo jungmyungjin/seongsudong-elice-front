@@ -6,14 +6,18 @@ import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
-import { addChat } from 'reducers/chat';
+import {
+  addChat,
+  setChatRoomDetail,
+  setChatRoomDetailChatList,
+} from 'reducers/chat';
+import { online } from 'actions/access';
 
 import { convertDate } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
 /* 소켓 객체 */
-// import { io } from 'socket.io-client';
-// const socket = io('process.env.REACT_APP_SOCKET_ENDPOINT');
+import { io } from 'socket.io-client';
 
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
@@ -22,19 +26,45 @@ function ChatModal() {
   const [isOnline, setIsOnline] = useState<boolean>(true); // 임의 ~> 채팅 페이지에 머물러 있을 때 vs 로그인 했을 때 vs 사이트 창에 머물러 있을 때  기준 정해야함
   const [inputValue, setInputValue] = useState<string>('');
   const [date, setDate] = useState<string>('');
+
   const dispatch = useAppDispatch();
-  const chatMsg = useAppSelector(state => state.chat.chatList);
+  const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
   const chatRoomDetail = useAppSelector(state => state.chat.chatRoomDetail);
 
   /** 자동 스크롤 */
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  /** socket선언은 꼭꼭 사용하는 컴포넌트 내에서 선언해야 인식을 한다. */
 
   useEffect(() => {
-    if (scrollContainerRef.current && chatMsg.length > 0) {
+    if (scrollContainerRef.current && chatList) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-  }, [chatMsg]);
+  }, [chatList]);
+
+  /** 소켓 연결 */
+  useEffect(() => {
+    dispatch(setChatRoomDetailChatList(chatList));
+    const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
+      path: '/socket.io',
+      transports: ['websocket'],
+    });
+    socket.on('connect', () => {
+      console.log('소켓 연결 성공');
+      const userEmail = 'test3@example.com';
+      const email = userEmail;
+      const message = 'hi';
+      // let interval = 2000;
+
+      // setTimeout(() => {
+      //   socket.emit('checkChatRoom', email, message);
+      // }, interval);
+
+      // socket.on('messages', messages => {
+      //   console.log('messages:', messages, 'messages길이: ', messages.length);
+      // });
+    });
+  }, []);
 
   /** 채팅 각 하나의 시간 */
   const nowDate = convertDate(new Date());
@@ -47,12 +77,11 @@ function ChatModal() {
   /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
   useEffect(() => {
     console.log('채팅방 입장:', chatRoomDetail);
-
     setDate(convertDate(new Date()));
     /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
     if (isAdmin) setModalTitle(chatRoomDetail.memberName);
     else setModalTitle('1:1 문의 채팅방');
-  }, []);
+  }, [chatRoomDetail, isAdmin, chatList]);
 
   /** 임의로 보내는 것 -> socket 연결되면 지워라 */
   useEffect(() => {
@@ -73,8 +102,15 @@ function ChatModal() {
         sentTime: time,
       };
 
-      if (isAdmin) dispatch(addChat(newAnotherChat));
-      else dispatch(addChat(newOtherChat));
+      if (isAdmin) {
+        dispatch(
+          addChat({
+            chatMessage: newAnotherChat,
+          }),
+        );
+      } else {
+        dispatch(addChat({ chatMessage: newOtherChat }));
+      }
       count++;
 
       if (count === 5) {
@@ -97,7 +133,9 @@ function ChatModal() {
       chatMessage: inputValue,
       sentTime: time,
     };
-    dispatch(addChat(newMyChat));
+
+    dispatch(addChat({ chatMessage: newMyChat }));
+
     setInputValue('');
   }
 
@@ -115,7 +153,7 @@ function ChatModal() {
           {!isAdmin && <AdminProfile isOnline={isOnline} />}
           <div className={styles.nowDate}>{date}</div>
           <div className={styles.chatListContainer}>
-            {chatMsg.map((msg, i) => (
+            {chatList?.map((msg, i) => (
               <ChatMessage
                 key={i}
                 chatFromMe={msg.chatFromMe}

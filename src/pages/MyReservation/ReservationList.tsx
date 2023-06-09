@@ -16,6 +16,11 @@ function ReservationList({ reservation, onClick }: Props) {
     return `${startTime}~${endTime}`;
   };
 
+  const convertStringToDate = (date: string) => {
+    const value = date.split('T')[0];
+    return value;
+  };
+
   return (
     <div className={styles.reservationList}>
       <div
@@ -24,7 +29,9 @@ function ReservationList({ reservation, onClick }: Props) {
         onClick={onClick}
       >
         <div className={styles.eachReservation}>
-          <p className={styles.date}>{reservation.reservation_date}</p>
+          <p className={styles.date}>
+            {convertStringToDate(reservation.reservation_date)}
+          </p>
           <p className={styles.timeAndSeat}>
             {returnReservationTime(
               reservation.start_time,

@@ -16,8 +16,12 @@
   }
   position: relative;
   overflow: hidden;
+
+  display: flex;
+  flex-direction: column;
 }
 
-.main {
-  padding: 0 20px;
+.noScroll {
+  max-height: 100vh;
+  overflow: hidden;
 }
