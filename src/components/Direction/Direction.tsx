@@ -1,10 +1,13 @@
 import styles from './direction.module.scss';
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ReactComponent as Map } from 'assets/Map.svg';
 import { ReactComponent as RoadMap } from 'assets/RoadMap.svg';
 import { ReactComponent as FindRoute } from 'assets/FindRoute.svg';
 
 const EliceDirection: React.FC = () => {
+  // 모달 상태 관리
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mapUrl, setMapUrl] = useState("");
 
   // 스크립트 파일 읽어오기
   const newScript = (src: string) => {
@@ -29,8 +32,12 @@ const EliceDirection: React.FC = () => {
         const latitude = position.coords.latitude; // 현재 위치의 위도
         const longitude = position.coords.longitude; // 현재 위치의 경도
 
-        // 카카오맵 길찾기 페이지로 이동
-        window.open(`https://map.kakao.com/link/to/성수 엘리스 랩,37.54683016184554,127.06628648846453/from/${latitude},${longitude}`, '_blank');
+        // 카카오맵 길찾기 URL 생성
+        const url = `https://map.kakao.com/link/to/성수 엘리스 랩,37.54683016184554,127.06628648846453/from/${latitude},${longitude}`;
+        setMapUrl(url);
+        
+        // 모달을 연다
+        setIsModalOpen(true);
       });
     } else {
       alert("Geolocation is not supported by this browser.");
@@ -68,12 +75,26 @@ const EliceDirection: React.FC = () => {
         <p>성수 엘리스 랩</p>
       </div>
       <div className={styles.mapTitle}>
-        <Map className={styles.mapSvg} />
-        <p>엘리스랩 위치</p>
-        <div className={styles.findRouteBtn}>
-          
-          <button onClick={findRoute}><FindRoute /></button>
-        </div>
+        {/* <div className={styles.findRouteBtn}> */}
+          <button onClick={findRoute}>
+            <div className={styles.btnFindRoad}>
+              <Map className={styles.mapSvg} />
+              <p>엘리스랩 길찾기(클릭!)</p>
+            </div>
+          </button>
+          {/* <div className={styles.findRouteBtn}> */}
+          {/* <FindRoute /> */}
+          {/* <button onClick={findRoute}>길찾기</button> */}
+        {/* </div> */}
+        {/* 모달 */}
+        {isModalOpen && (
+          <div className={styles.modal}>
+            <div className={styles.modalContent}>
+              <iframe src={mapUrl} width="100%" height="100%"></iframe>
+              <button onClick={() => setIsModalOpen(false)}>닫기</button>
+            </div>
+          </div>
+        )}
       </div>
       <div className={styles.borderLine}></div>
       <div id="map" className={styles.map}></div>
