@@ -17,8 +17,7 @@ import AlertModal from './AlertModal';
 const DateOptions: React.FC = () => {
   const getCurrentYear = () => {
     const today = new Date();
-    const year = today.getFullYear();
-    return `${year}`;
+    return today.getFullYear().toString();
   };
 
   const getCurrentWeekDates = () => {
@@ -38,36 +37,32 @@ const DateOptions: React.FC = () => {
       currentDate.getDate() - (currentDay - 1 + (currentDay === 6 ? 1 : 0)),
     );
 
-    const thisWeekDates = Array.from({ length: 5 }, (_, index) => {
+    return Array.from({ length: 5 }, (_, index) => {
       const date = new Date(thisWeekStartDate);
       date.setDate(thisWeekStartDate.getDate() + index);
       return getFormattedDate(date);
     });
-
-    return thisWeekDates;
   };
 
   const SelectDate: React.FC<SelectDateProps> = ({
     label,
     changeHandler,
     selectedCheckbox,
-  }) => {
-    return (
-      <>
-        <input
-          type='radio'
-          name='dateSelector'
-          id={label}
-          onChange={changeHandler}
-          className={styles.checkboxInput}
-          checked={selectedCheckbox === label}
-        />
-        <label htmlFor={label} className={styles.checkboxLabel}>
-          {selectedCheckbox === label && <Check />}
-        </label>
-      </>
-    );
-  };
+  }) => (
+    <>
+      <input
+        type='radio'
+        name='dateSelector'
+        id={label}
+        onChange={changeHandler}
+        className={styles.checkboxInput}
+        checked={selectedCheckbox === label}
+      />
+      <label htmlFor={label} className={styles.checkboxLabel}>
+        {selectedCheckbox === label && <Check />}
+      </label>
+    </>
+  );
 
   const DateDisplay: React.FC = () => {
     const currentDate = getCurrentYear();
@@ -127,11 +122,9 @@ const DateOptions: React.FC = () => {
         startDate.setDate(currentDate.getDate() + 1); // Move to Monday
       }
 
-      const thisWeekDates = Array.from({ length: 5 }, (_, index) =>
+      return Array.from({ length: 5 }, (_, index) =>
         getNextDate(startDate, index),
       );
-
-      return thisWeekDates;
     };
 
     const handleSelectedDateChange = (
@@ -142,8 +135,8 @@ const DateOptions: React.FC = () => {
       const index = getCurrentWeekDates().indexOf(selectedDate);
 
       // 오늘 날짜와 선택한 날짜를 비교하여 이전 날짜인 경우에만 alert 메시지를 띄웁니다.
-      const date = new Date().getDate().toString().padStart(2, '0');
-      if (weekDates[index] < date) {
+      const currentDate = new Date().getDate().toString().padStart(2, '0');
+      if (weekDates[index] < currentDate) {
         setIsPastDate(true);
         return;
       }
@@ -264,10 +257,10 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
       );
       setIsClicked(updatedClickedState);
     }
-  }, []); // 빈 배열로 전달하여 최초 한 번만 실행되도록 설정
+  }, []);
 
   const handleTimeClick = (index: number, time: string) => {
-    const currentTime = new Date().getHours(); // 현재 시간 가져오기
+    const currentTime = new Date().getHours();
     const [startHour] = time.split(':');
     const startTime = Number(startHour);
 
@@ -294,7 +287,6 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
       }
     }
 
-    // 클릭 상태 변경
     const updatedClickedState = [...isClicked];
     updatedClickedState[index] = !updatedClickedState[index];
     setIsClicked(updatedClickedState);
@@ -352,7 +344,7 @@ const ReservationOptions: React.FC = () => {
 
   const handleMeetingRoomTimeSelect = (value: string) => {
     updateReservation({ time: value });
-    const currentTime = new Date().getHours(); // 현재 시간 가져오기
+    const currentTime = new Date().getHours();
     const [startHour] = value.split(':');
     const startTime = Number(startHour);
 
