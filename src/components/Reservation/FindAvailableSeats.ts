@@ -7,6 +7,12 @@ export type ServerResponse = {
   };
 };
 
+export const enum TimeRange {
+  AVAILABLE_10TO14 = '10:00~14:00',
+  AVAILABLE_14TO18 = '14:00~18:00',
+  AVAILABLE_18TO22 = '18:00~22:00',
+}
+
 export function findAvailableSeats(
   serverData: ServerResponse,
   time: string,
@@ -14,9 +20,9 @@ export function findAvailableSeats(
   const availableSeatsSet: Set<string> = new Set();
   const timeRanges = time.split(',').map(t => t.trim());
 
-  const isAvailable_10to14 = timeRanges.includes('10:00~14:00');
-  const isAvailable_14to18 = timeRanges.includes('14:00~18:00');
-  const isAvailable_18to22 = timeRanges.includes('18:00~22:00');
+  const isAvailable_10to14 = timeRanges.includes(TimeRange.AVAILABLE_10TO14);
+  const isAvailable_14to18 = timeRanges.includes(TimeRange.AVAILABLE_14TO18);
+  const isAvailable_18to22 = timeRanges.includes(TimeRange.AVAILABLE_18TO22);
 
   Object.keys(serverData).forEach(key => {
     const data = serverData[key];
