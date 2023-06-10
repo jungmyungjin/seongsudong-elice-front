@@ -21,3 +21,13 @@ export function convertDate(now?: Date): string {
 
   return formattedDate;
 }
+
+/**
+ *
+ * @returns {string} "오전 1:11"
+ */
+export function chatTime(date: Date) {
+  const nowDate = convertDate(new Date());
+  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
+  return time;
+}

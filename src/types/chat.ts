@@ -3,7 +3,6 @@ export interface IChat {
   loadChatDone: boolean;
   loadChatError: null | string;
   isOnline: boolean;
-  chatRoomList: IChatRoom[];
   chatRoomDetail: IChatRoom;
 }
 

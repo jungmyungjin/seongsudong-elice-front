@@ -9,7 +9,8 @@ import ChatMessage from './ChatMessage';
 import { addChat, setChatRoomDetail } from 'reducers/chat';
 import { online } from 'actions/access';
 
-import { convertDate } from 'utils/convertDate';
+import { IChatMessage } from 'types/chat';
+import { convertDate, chatTime } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
 /* 소켓 객체 */
@@ -37,27 +38,22 @@ function ChatModal() {
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`);
 
   useEffect(() => {
-    if (scrollContainerRef.current && chatList) {
+    if (scrollContainerRef.current && chatList?.length > 0) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
   }, [chatList]);
 
-  /** 소켓 연결 */
+  /** 어드민 여부 */
   useEffect(() => {
     if (userEmail === 'yunzoo0915@gmail.com') {
       setIsAdmin(true);
     }
-    // dispatch(setChatRoomDetail(chatList));
+    const onlineUserList = ['test1@example.com', 'email2@gmail.com'];
+    // onlineUserList.find(user => user === sender_email)
+    //   ? setIsOnline(true)
+    //   : setIsOnline(false);
   }, []);
-
-  /** 채팅 각 하나의 시간 */
-  const nowDate = convertDate(new Date());
-  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
-
-  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value);
-  }
 
   /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
   useEffect(() => {
@@ -67,75 +63,33 @@ function ChatModal() {
     });
     setDate(convertDate(new Date()));
     /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
-    if (isAdmin) setModalTitle(chatRoomDetail.name);
+    if (isAdmin)
+      setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
   }, [chatRoomDetail, isAdmin, chatList]);
-
-  /** 임의로 보내는 것 -> socket 연결되면 지워라 */
-  // useEffect(() => {
-  //   let count = 0;
-  //   const interval = setInterval(() => {
-  // const newOtherChat = {
-  //   chatFromMe: false,
-  //   chatMessage: '무엇을 도와드릴까욧?',
-  //   fromName: '성수동 소방관',
-  //   isOnline: true,
-  //   sentTime: time,
-  // };
-  //     const newAnotherChat = {
-  //       chatFromMe: false,
-  //       chatMessage: `프로그래밍존 팀플석에서 물이 새요. 살려주세요.`,
-  //       fromName: chatRoomDetail.memberName,
-  //       isOnline: true,
-  //       sentTime: time,
-  //     };
-
-  //     if (isAdmin) {
-  //       dispatch(
-  //         addChat({
-  //           chatMessage: newAnotherChat,
-  //         }),
-  //       );
-  //     } else {
-  //       dispatch(addChat({ chatMessage: newOtherChat }));
-  //     }
-  //     count++;
-
-  //     if (count === 5) {
-  //       clearInterval(interval);
-  //     }
-  //   }, 3000);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   };
-  // }, []);
 
   /** 모든 메세지 받는 */
   socket.off('AllMessages').on('AllMessages', data => {
     console.log(data);
-    // const newOtherChat = {
-    //   chatFromMe: false,
-    //   chatMessage: data,
-    //   fromName: chatRoomDetail.memberName,
-    //   isOnline: true,
-    //   sentTime: time,
-    // };
     // dispatch(addChat({ chatMessage: newOtherChat }));
   });
-  // socket.on('new_message', )
+
+  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+    setInputValue(e.target.value);
+  }
+
   function handleSend() {
     if (inputValue.trim().length === 0) {
       return;
     }
     socket.emit('checkChatRoom', userEmail, inputValue);
-    // const userEmail = localStorage.getItem('email');
+    // 소켓에서 받아온 메세지 형태가 아래와 같음.
     const newMyChat = {
-      sender_email: userEmail,
-      name: chatRoomDetail.name,
-      generation: chatRoomDetail.generation,
-      message: inputValue,
-      sentAt: time,
+      sender_email: userEmail, // 현재 로그인한 유저
+      name: chatRoomDetail.name, // 룸 디테일에 저장된 이름
+      generation: chatRoomDetail.generation, // 룸 디테일에 저장된 제네레이션
+      message: inputValue, // 메세지
+      sentAt: chatTime(new Date()), // 시간
     };
 
     dispatch(addChat({ chatMessage: newMyChat }));
