@@ -6,8 +6,11 @@ const getDate = () => {
   const day = today.getDay();
   const hours = today.getHours();
 
+  const isFridayAfterSixPm = day === 5 && hours >= 18;
+  const isSaturday = day === 6;
+
   // 금요일 오후 6시 이후 또는 토요일(6)인 경우
-  if ((day === 5 && hours >= 18) || day === 6) {
+  if (isFridayAfterSixPm || isSaturday) {
     const nextMonday = new Date(today);
     nextMonday.setDate(today.getDate() + (8 - day)); // 다음 주 월요일로 이동
 
@@ -19,12 +22,12 @@ const getDate = () => {
     return formattedDate;
   } else if (day === 0) {
     // 일요일(0)인 경우
-    const nextMonday = new Date(today);
-    nextMonday.setDate(today.getDate() + (1 - day)); // 다음 주 월요일로 이동
+    const currentMonday = new Date(today);
+    currentMonday.setDate(today.getDate() + (1 - day)); // 해당 주 월요일로 이동
 
-    const year = nextMonday.getFullYear();
-    const month = (nextMonday.getMonth() + 1).toString().padStart(2, '0');
-    const date = nextMonday.getDate().toString().padStart(2, '0');
+    const year = currentMonday.getFullYear();
+    const month = (currentMonday.getMonth() + 1).toString().padStart(2, '0');
+    const date = currentMonday.getDate().toString().padStart(2, '0');
 
     const formattedDate = `${year}-${month}-${date}`;
     return formattedDate;
@@ -41,9 +44,6 @@ const getDate = () => {
 const getTime = (): string => {
   const currentHour = new Date().getHours();
 
-  // if (currentHour >= 10 && currentHour < 14) {
-  //   return '10:00~14:00';
-  // } else
   if (currentHour >= 10 && currentHour < 14) {
     return '14:00~18:00';
   } else if (currentHour >= 14 && currentHour < 18) {

@@ -20,28 +20,59 @@ const DateOptions: React.FC = () => {
     return today.getFullYear().toString();
   };
 
-  const getCurrentWeekDates = () => {
-    const currentDate = new Date();
-    const currentDay = currentDate.getDay();
+  const getWeekdayDates = () => {
+    const today = new Date();
+    const day = today.getDay();
+    const hours = today.getHours();
 
-    const getFormattedDate = (date: Date) => {
-      const year = date.getFullYear().toString().slice(-2);
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const day = date.getDate().toString().padStart(2, '0');
-      const dayOfWeek = ['월', '화', '수', '목', '금'][date.getDay() - 1];
-      return `${year}.${month}.${day}(${dayOfWeek})`;
-    };
+    const isFridayAfterSixPm = day === 5 && hours >= 18;
+    const isSaturday = day === 6;
 
-    const thisWeekStartDate = new Date(currentDate);
-    thisWeekStartDate.setDate(
-      currentDate.getDate() - (currentDay - 1 + (currentDay === 6 ? 1 : 0)),
-    );
+    // 금요일 오후 6시 이후 또는 토요일(6)인 경우
+    if (isFridayAfterSixPm || isSaturday) {
+      const nextMonday = new Date(today);
+      nextMonday.setDate(today.getDate() + (8 - day)); // 다음 주 월요일로 이동
 
-    return Array.from({ length: 5 }, (_, index) => {
-      const date = new Date(thisWeekStartDate);
-      date.setDate(thisWeekStartDate.getDate() + index);
-      return getFormattedDate(date);
-    });
+      const weekDates = Array.from({ length: 5 }, (_, index) => {
+        const date = new Date(nextMonday);
+        date.setDate(nextMonday.getDate() + index);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const dayOfWeek = ['월', '화', '수', '목', '금'][index];
+        return `${year}-${month}-${day}(${dayOfWeek})`;
+      });
+
+      return weekDates;
+    } else if (day === 0) {
+      // 일요일(0)인 경우
+      const currentMonday = new Date(today);
+      currentMonday.setDate(today.getDate() + (1 - day)); // 해당 주 월요일로 이동
+
+      const weekDates = Array.from({ length: 5 }, (_, index) => {
+        const date = new Date(currentMonday);
+        date.setDate(currentMonday.getDate() + index);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const dayOfWeek = ['월', '화', '수', '목', '금'][index];
+        return `${year}-${month}-${day}(${dayOfWeek})`;
+      });
+
+      return weekDates;
+    } else {
+      const weekDates = Array.from({ length: 5 }, (_, index) => {
+        const date = new Date(today);
+        date.setDate(today.getDate() + index);
+        const year = date.getFullYear();
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const dayOfWeek = ['월', '화', '수', '목', '금'][index];
+        return `${year}-${month}-${day}(${dayOfWeek})`;
+      });
+
+      return weekDates;
+    }
   };
 
   const SelectDate: React.FC<SelectDateProps> = ({
@@ -66,17 +97,17 @@ const DateOptions: React.FC = () => {
 
   const DateDisplay: React.FC = () => {
     const currentDate = getCurrentYear();
-    const weekDates = getCurrentWeekDates();
+    const weekDates = getWeekdayDates();
 
     return (
-      <div className={styles.dateContainer}>
-        <div className={styles.currentDate}>{currentDate}</div>
+      <section className={styles.dateContainer}>
+        <time className={styles.currentDate}>{currentDate}</time>
         <div className={styles.date}>
           {weekDates.map((date, index) => (
-            <div key={index}>{date.slice(3)}</div>
+            <time key={index}>{date.slice(5).replace(/-/g, '.')}</time>
           ))}
         </div>
-      </div>
+      </section>
     );
   };
 
@@ -96,64 +127,39 @@ const DateOptions: React.FC = () => {
       dispatch(updateReservationInfo(updatedReservationInfo));
     };
 
-    useEffect(() => {
-      console.log(selectedCheckbox);
-    }, [reservationInfo.reservation_date]);
-
     const [selectedCheckbox, setSelectedCheckbox] = useState(
       reservationInfo.reservation_date,
     );
-
-    const getCurrentWeekDates = () => {
-      const currentDate = new Date();
-      const currentDay = currentDate.getDay();
-
-      const getNextDate = (date: Date, days: number) => {
-        const nextDate = new Date(date);
-        nextDate.setDate(date.getDate() + days);
-        const year = nextDate.getFullYear().toString();
-        const month = (nextDate.getMonth() + 1).toString().padStart(2, '0');
-        const day = nextDate.getDate().toString().padStart(2, '0');
-        return `${year}-${month}-${day}`;
-      };
-
-      let startDate = currentDate;
-      if (currentDay === 0) {
-        startDate.setDate(currentDate.getDate() + 1); // Move to Monday
-      }
-
-      return Array.from({ length: 5 }, (_, index) =>
-        getNextDate(startDate, index),
-      );
-    };
 
     const handleSelectedDateChange = (
       e: React.ChangeEvent<HTMLInputElement>,
     ) => {
       const selectedDate = e.target.id;
-      const weekDates = getCurrentWeekDates();
-      const index = getCurrentWeekDates().indexOf(selectedDate);
+      console.log(selectedDate);
+      const weekDates = getWeekdayDates();
+      const notIncludeDay = weekDates.map(date => date.split('(')[0]);
+      const index = notIncludeDay.indexOf(selectedDate);
 
       // 오늘 날짜와 선택한 날짜를 비교하여 이전 날짜인 경우에만 alert 메시지를 띄웁니다.
-      const currentDate = new Date().getDate().toString().padStart(2, '0');
-      if (weekDates[index] < currentDate) {
+      const currentDate = new Date();
+      const clickedDate = new Date(weekDates[index]);
+      if (clickedDate < currentDate && clickedDate !== currentDate) {
         setIsPastDate(true);
         return;
       }
-      console.log(weekDates[index]);
 
       setSelectedCheckbox(weekDates[index]);
       updateReservation({
-        reservation_date: weekDates[index],
+        reservation_date: notIncludeDay[index],
       });
     };
 
     return (
       <div className={styles.checkbox}>
-        {getCurrentWeekDates().map(day => (
+        {getWeekdayDates().map(day => (
           <SelectDate
-            key={day}
-            label={day}
+            key={day.slice(0, -3)}
+            label={day.slice(0, -3)}
             selectedCheckbox={selectedCheckbox}
             changeHandler={handleSelectedDateChange}
           />
