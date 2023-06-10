@@ -13,10 +13,19 @@ function KakaoShareButton() {
     state => state.myReservation.myReservationDetail,
   );
 
+  const returnReservationTime = (start_time: string, end_time: string) => {
+    const startTime = `${start_time.slice(0, 5)}`;
+    const endTime = `${end_time.slice(0, 5)}`;
+    return `${startTime}~${endTime}`;
+  };
+
   const visitors = myReservationDetail.visitors;
-  const date = myReservationDetail.date;
-  const time = myReservationDetail.time;
-  const seat = myReservationDetail.seat;
+  const date = myReservationDetail.reservation_date;
+  const time = returnReservationTime(
+    myReservationDetail.start_time,
+    myReservationDetail.end_time,
+  );
+  const seat = `${myReservationDetail.seat_type} ${myReservationDetail.seat_number}`;
   const buttonContents = {
     date,
     time,

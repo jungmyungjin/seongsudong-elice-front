@@ -1,0 +1,120 @@
+.title {
+    width: 80%;
+    margin: 60px auto 0 auto;
+    font-size: 50px;
+    color: #682BE0;
+}
+
+.mapTitle {
+    width:80%;
+    margin: 100px auto 0 auto;
+    display: flex;
+    align-items: center;
+    
+    p {
+        margin-left: 10px;
+        font-size: 25px;
+        color: #682BE0;
+        font-weight:800;
+    }
+
+    // .findRouteBtn {
+    //     display: flex;
+    //     margin-left: auto;
+        
+    //     button {
+    //         margin-left: 5px;
+    //         font-size: 20px;
+    //         color: #682BE0;
+    //     }
+    // }
+
+    .btnFindRoad {
+        display: flex;
+    }
+}
+
+.borderLine {
+    width: 80%;
+    margin: 8px auto 5px auto;
+    height: 1px;
+    border: 1.3px solid #8858e8;
+}
+
+.RoadMap {
+    display: flex;
+    align-items: center;
+    width: 80%;
+    margin: 50px auto 0 auto;
+    p {
+        margin-left: 10px;
+        font-size: 25px;
+        color: #682BE0;
+        font-weight:800;
+    }
+}
+
+.imgRoadMap {
+    width: 85%;
+    margin: 0 auto 10px auto;
+}
+
+.map {
+    width: 80%;
+    height: 400px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: solid;
+    border-width: medium;
+    border-color: white;
+  }
+
+//   모달 창 부분
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; // 높은 z-index 값을 설정하여 다른 요소 위에 표시됨
+  }
+  
+  .modalContent {
+    background-color: white;
+    width: 90%; // 전체 화면 너비의 80%
+    height: 90%; // 전체 화면 높이의 80%
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: auto;
+    border-radius: 10px; // 모달의 모서리를 둥글게 만듭니다.
+  
+    // iframe 스타일
+    iframe {
+      width: 100%;
+      height: 90%;
+      border: 0;
+    }
+  
+    // 닫기 버튼 스타일
+    button {
+      width: 80px;
+      height: 50px;
+      position: absolute;
+      margin-top: 46%;
+      right: 130px;
+      background-color: red;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 20px;
+    }
+  }
+  

@@ -41,11 +41,42 @@
   }
 }
 
-/* 임의로 설정해놓긴 했는데, 내 모니터에선 확인 불가능*/
 @include bigDesktop {
   .floatingButtonContainer {
     position: fixed;
-    right: 34%;
+    right: 33%;
+    bottom: 6%;
+  }
+}
+
+@include bigBigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 36%;
+    bottom: 6%;
+  }
+}
+
+@include realBigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 37%;
+    bottom: 6%;
+  }
+}
+
+@include realRealBigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 40%;
+    bottom: 6%;
+  }
+}
+
+@include realRealRealBigDesktop {
+  .floatingButtonContainer {
+    position: fixed;
+    right: 41%;
     bottom: 6%;
   }
 }

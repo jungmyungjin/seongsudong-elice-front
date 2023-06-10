@@ -3,32 +3,67 @@ import styles from './login.module.scss';
 import { useNavigate } from 'react-router-dom';
 import logo from 'assets/elice-logo.png';
 import axios from 'axios';
+import { useGoogleLogin, CodeResponse } from '@react-oauth/google';
+import { AppDispatch } from 'store/configureStore';
+import { useDispatch } from 'react-redux';
+import { logIn } from 'reducers/user';
+import { online } from 'actions/access';
+
+interface ResponseType {
+  headers: {
+    authorization: string;
+  };
+  token: string;
+  status: number;
+  data: {
+    isAdmin: boolean;
+    name: string;
+    email: string;
+    generation: string;
+    token: string;
+  };
+}
 
 const Login = (): React.ReactElement => {
   let navigate = useNavigate();
+  const dispatch: AppDispatch = useDispatch();
 
-  const loginBtnHandle = async () => {
-    const backendAddress = 'http://localhost:5000';
-    const api = `${backendAddress}/`; // 백엔드 api 주소
-    try {
-      console.log('이동하지');
-      const res = await axios.get(api);
-      if (true) {
-        navigate('/signUp');
-      } else if (res.status === 200) {
-        // 회원가입 된 사용자 => 페이지를 메인으로 리디릭션 혹은 라우팅
-        navigate('/');
-      } else if (res.status === 204) {
-        // 회원가입 되지 않은 사용자 => 회원가입 페이지로 리디렉션 혹은 라우팅
-        navigate('/signUp');
-      } else {
+  // [ Authorization Code Flow 방식 ]
+  const loginBtnHandle = useGoogleLogin({
+    onSuccess: async (code: CodeResponse) => {
+      const api =
+        process.env.REACT_APP_BACKEND_ADDRESS + '/members/login' || '';
+      try {
+        const response: ResponseType = await axios.post(api, code);
+        if (response.status === 200) {
+          const { isAdmin, email, name, generation } = response.data;
+          dispatch(
+            logIn({
+              isAdmin: isAdmin,
+              email: email,
+              username: name,
+              course: generation.split('/')[0],
+              generation: generation.split('/')[1],
+            }),
+          );
+          dispatch(online(email));
+          navigate('/');
+        } else if (response.status === 204) {
+          // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
+          navigate('/signUp');
+        } else {
+          console.log('status error : ' + response.status);
+        }
+      } catch (error) {
+        console.error('Login Error: ', error);
       }
-    } catch (err) {
-      console.log(err);
-      alert('서버와 정상적으로 통신할 수 없습니다.');
-      navigate('/');
-    }
-  };
+    },
+    onError: errorResponse => {
+      console.error('Google Login Error: ', errorResponse);
+    },
+
+    flow: 'auth-code',
+  });
 
   return (
     <div className={styles.LoginLayout}>
@@ -41,10 +76,48 @@ const Login = (): React.ReactElement => {
         </div>
         <button className={styles.LoginButton} onClick={loginBtnHandle}>
           <div>
-            <img src='/images/google_G_logo.svg.png' alt='구글 로그' />
+            <img src='/images/google_G_logo.svg.png' alt='구글 로그인' />
             <span>구글 계정으로 로그인</span>
           </div>
         </button>
+        {/* <GoogleLogin
+          onSuccess={async credentialResponse => {
+            try {
+              const res = await axios.post(api, {
+                headers: {
+                  Authorization: `Bearer ${credentialResponse.credential}`,
+                },
+              });
+              if (res.status === 200) {
+                const { isAdmin, email, name, generation } = res.data;
+                dispatch(
+                  logIn({
+                    isAdmin: isAdmin,
+                    email: email,
+                    username: name,
+                    course: generation.split('/')[0],
+                    generation: generation.split('/')[1],
+                  }),
+                );
+
+                navigate('/');
+              } else if (res.status === 204) {
+                // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
+                navigate('/signUp', {
+                  state: { token: credentialResponse.credential },
+                });
+              } else {
+                console.log('status error : ' + res.status);
+              }
+            } catch (error) {
+              console.log(error);
+            }
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        /> */}
       </div>
     </div>
   );

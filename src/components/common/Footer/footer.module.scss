@@ -1,0 +1,21 @@
+@import 'styles/colors';
+.footerLayout {
+  margin-top: auto;
+  height: 14em;
+  width: 100%;
+  display: flex;
+}
+
+.footer {
+  margin-top: auto;
+  color: #757575;
+  width: 100%;
+  font-size: 0.8rem;
+  padding: 20px 10px 10px 10px;
+  p {
+    padding: 10px;
+  }
+  div {
+    padding: 0px 10px;
+  }
+}

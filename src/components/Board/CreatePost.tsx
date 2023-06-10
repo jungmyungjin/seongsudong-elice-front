@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import styles from './createPost.module.scss';
 import { ReactComponent as Back } from 'assets/Back.svg';
 import { ReactComponent as UploadIcon } from 'assets/Upload.svg';
@@ -13,33 +13,39 @@ interface FormInput {
 }
 
 const CreatePost: React.FC = () => {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<FormInput>();
+  const { register, handleSubmit, formState: { errors } } = useForm<FormInput>();
   const [isLoading, setIsLoading] = useState(false);
+  const [uploadedFile, setUploadedFile] = useState<FileList | null>(null); // New line
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null); 
+  const location = useLocation();
+  const selectedTab = location.state?.selectedTab || '자유';
 
   const onFileButtonClick = () => {
     fileInputRef.current?.click();
   };
-
-  const file = watch('file'); // file 필드의 변화를 감시합니다.
 
   const onSubmit = async (data: FormInput) => {
     setIsLoading(true);
     try {
       const formData = new FormData();
       formData.append('title', data.title);
-      formData.append('body', data.body);
-      if (file?.length > 0) {
-        formData.append('file', file[0]);
+      formData.append('description', data.body); 
+      if (uploadedFile && uploadedFile?.length > 0) { 
+        for (let i = 0; i < uploadedFile.length; i++) {
+          formData.append('file', uploadedFile[i]);
+        }
       }
 
-      const response = await axios.post('https://jsonplaceholder.typicode.com/posts', formData, {
+      const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
+      formData.append('category', category);
+      formData.append('author_email', 'test1@example.com');
+      const response = await axios.post('http://localhost:5000/api/posts/write', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
-
+      // console.log(response);
       if (response.status === 201) {
         navigate(-1);
       }
@@ -50,7 +56,6 @@ const CreatePost: React.FC = () => {
     }
   };
 
-
   return (
     <div className={styles['create-post-container']}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -59,7 +64,7 @@ const CreatePost: React.FC = () => {
           <button type="button" onClick={() => navigate(-1)}>
             <Back />
           </button>
-          <button type="submit" disabled={isLoading}>
+          <button type="submit" onClick={() => navigate(-1)} disabled={isLoading}>
             {isLoading ? '게시글 생성 중...' : '완료'}
           </button>
         </div>
@@ -84,7 +89,19 @@ const CreatePost: React.FC = () => {
         {/* 파일 업로드 */}
         <div className={styles.fileUpload}>
           <UploadIcon onClick={onFileButtonClick} />
-          <input id="file" type="file" ref={fileInputRef} onChange={e => register('file').onChange(e)} style={{ display: 'none' }} />
+          <input 
+            id="file" 
+            type="file" 
+            multiple  // Allow multiple files to be selected
+            ref={fileInputRef} 
+            onChange={e => {
+              register('file').onChange(e);  // Still register the file input for React Hook Form
+              if (e.target.files?.length) {
+                setUploadedFile(e.target.files);  // But also store the FileList in the local state
+              }
+            }} 
+            style={{ display: 'none' }} 
+          />
         </div>
       </form>
     </div>

@@ -1,0 +1,42 @@
+.date_div {
+  input[type='date'] {
+    border: none;
+    position: relative;
+    width: 100%;
+    padding: 10px;
+    background: url(../../../assets/Calendar.svg) no-repeat right 10px center /
+      35px auto;
+    background-color: #bbbbbb;
+    box-shadow: 2px 2px 7px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 100%;
+    margin-bottom: 20px;
+  }
+
+  input[type='date']::-webkit-clear-button,
+  input[type='date']::-webkit-inner-spin-button {
+    display: none;
+  }
+
+  input[type='date']::-webkit-calendar-picker-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    color: transparent;
+    cursor: pointer;
+  }
+
+  input[type='date']::before {
+    content: attr(placeholder);
+    width: 100%;
+    height: 100%;
+  }
+
+  input[type='date']:valid::before {
+    display: none;
+  }
+}

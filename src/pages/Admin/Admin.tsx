@@ -29,7 +29,7 @@ const menuArr = [
 
 function Admin() {
   return (
-    <div>
+    <div className={styles.admin}>
       <h1 className={styles.h1}>관리자 페이지</h1>
 
       {menuArr.map(item => (

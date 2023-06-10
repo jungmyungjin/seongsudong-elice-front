@@ -1,12 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
-const useHideOnClickOutside = (initialIsVisible: boolean) => {
-  const [isVisible, setIsVisible] = useState(initialIsVisible);
+const useHideOnClickOutside = (
+  callback: () => void,
+  ignoreRef?: React.RefObject<HTMLElement>,
+) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const handleClickOutside = (event: MouseEvent) => {
-    if (ref.current && !ref.current.contains(event.target as Node)) {
-      setIsVisible(false);
+    if (
+      ref.current &&
+      !ref.current.contains(event.target as Node) &&
+      (!ignoreRef?.current || !ignoreRef.current.contains(event.target as Node))
+    ) {
+      callback();
     }
   };
 
@@ -15,9 +21,9 @@ const useHideOnClickOutside = (initialIsVisible: boolean) => {
     return () => {
       document.removeEventListener('click', handleClickOutside, true);
     };
-  }, []);
+  }, [callback]);
 
-  return { ref, isVisible, setIsVisible };
+  return { ref };
 };
 
 export default useHideOnClickOutside;
