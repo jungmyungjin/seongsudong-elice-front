@@ -13,7 +13,7 @@ const SubmitModal = ({ onClick }: { onClick: () => void }) => {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.back}>
+    <div className={styles.back} onClick={onClick}>
       <div className={styles.modalContainer}>
         <div className={styles.overlay}>
           <div className={styles.X} onClick={onClick}>
