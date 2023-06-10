@@ -41,7 +41,7 @@
   background-color: #f2effb;
   height: 2000px;
 
-  > div {
+  > section {
     width: 90%;
     margin-left: auto;
     margin-top: 5%;
@@ -118,14 +118,14 @@
 
 .visitor {
   margin: 1rem 0;
+}
 
-  .visitorInput {
-    height: 50px;
-    width: 100%;
-    margin-bottom: 60%;
-    border-radius: 5px;
-    font-size: 1.2rem;
-  }
+.visitorInput {
+  height: 50px;
+  width: 100%;
+  margin-bottom: 60%;
+  border-radius: 5px;
+  font-size: 1.2rem;
 }
 
 .submitButton {

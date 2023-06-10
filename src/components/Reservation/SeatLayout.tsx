@@ -132,8 +132,8 @@ const SeatLayout: React.FC = () => {
       const key = keyValue.toString();
       const isPossibleSeat = canReservationSeat.includes(key);
       const className = isPossibleSeat
-        ? `${styles.visible} ${styles.groupSeat}`
-        : `${styles.visible} ${styles.groupSeat} ${styles.alreadyReserved}`;
+        ? styles.visible
+        : `${styles.visible} ${styles.alreadyReserved}`;
       const event = isPossibleSeat
         ? (event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
             onClick?.(event.currentTarget.textContent || '')
@@ -188,11 +188,21 @@ const SeatLayout: React.FC = () => {
   function PersonalSeatLayout({ className, clickEvent }: SeatLayoutProps) {
     return (
       <>
-        <div className={className}>{personalSeatLayout(1, clickEvent)}</div>
-        <div className={className}>{personalSeatLayout(7, clickEvent)}</div>
-        <div className={className}>{personalSeatLayout(13, clickEvent)}</div>
-        <div className={className}>{personalSeatLayout(19, clickEvent)}</div>
-        <div className={className}>{personalSeatLayout(25, clickEvent)}</div>
+        <section className={className}>
+          {personalSeatLayout(1, clickEvent)}
+        </section>
+        <section className={className}>
+          {personalSeatLayout(7, clickEvent)}
+        </section>
+        <section className={className}>
+          {personalSeatLayout(13, clickEvent)}
+        </section>
+        <section className={className}>
+          {personalSeatLayout(19, clickEvent)}
+        </section>
+        <section className={className}>
+          {personalSeatLayout(25, clickEvent)}
+        </section>
       </>
     );
   }
@@ -200,18 +210,18 @@ const SeatLayout: React.FC = () => {
   function FirstGroupSeatLayout({ className, clickEvent }: SeatLayoutProps) {
     return (
       <>
-        <div className={`${styles.group} ${className}`}>
+        <section className={`${styles.group} ${className}`}>
           {groupSeatLayout(31, clickEvent)}
-        </div>
-        <div className={`${styles.group} ${className}`}>
+        </section>
+        <section className={`${styles.group} ${className}`}>
           {groupSeatLayout(33, clickEvent)}
-        </div>
-        <div className={`${styles.group} ${className}`}>
+        </section>
+        <section className={`${styles.group} ${className}`}>
           {groupSeatLayout(35, clickEvent)}
-        </div>
-        <div className={`${styles.group} ${className}`}>
+        </section>
+        <section className={`${styles.group} ${className}`}>
           {groupSeatLayout(37, clickEvent)}
-        </div>
+        </section>
       </>
     );
   }
@@ -219,12 +229,12 @@ const SeatLayout: React.FC = () => {
   function GraduateSeatLayout({ className, clickEvent }: SeatLayoutProps) {
     return (
       <>
-        <div className={`${styles.graduateSeat} ${className}`}>
+        <section className={className}>
           {graduateSeatLayout(39, clickEvent)}
-        </div>
-        <div className={`${styles.graduateSeat} ${className}`}>
+        </section>
+        <section className={className}>
           {graduateSeatLayout(44, clickEvent)}
-        </div>
+        </section>
       </>
     );
   }
@@ -232,15 +242,15 @@ const SeatLayout: React.FC = () => {
   function SecondGroupSeatLayout({ className, clickEvent }: SeatLayoutProps) {
     return (
       <>
-        <div className={`${styles.group} ${className}`}>
+        <section className={`${styles.group} ${className}`}>
           {groupSeatLayout(49, clickEvent)}
-        </div>
-        <div className={`${styles.group} ${className}`}>
+        </section>
+        <section className={`${styles.group} ${className}`}>
           {groupSeatLayout(51, clickEvent)}
-        </div>
-        <div className={`${styles.group} ${className}`}>
+        </section>
+        <section className={`${styles.group} ${className}`}>
           {groupSeatLayout(53, clickEvent)}
-        </div>
+        </section>
       </>
     );
   }
@@ -248,17 +258,17 @@ const SeatLayout: React.FC = () => {
   function ClickPersonalSeat({ clickEvent }: SeatLayoutProps) {
     return (
       <>
-        <div className={styles.seatKindContainer}>
-          <div>
+        <section className={styles.seatKindContainer}>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>다른좌석유형/이용불가</div>
-          </div>
-          <div>
+          </article>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>이용가능</div>
-          </div>
-        </div>
-        <div className={styles.seatContainer}>
+          </article>
+        </section>
+        <section className={styles.seatContainer}>
           <PersonalSeatLayout
             className={styles.possible}
             clickEvent={clickEvent}
@@ -267,7 +277,7 @@ const SeatLayout: React.FC = () => {
           <GraduateSeatLayout className={styles.impossible} />
           <SecondGroupSeatLayout className={styles.impossible} />
           <div className={styles.entrance}>출입문</div>
-        </div>
+        </section>
         <div className={styles.managerZone}>ManagerZone</div>
       </>
     );
@@ -276,21 +286,21 @@ const SeatLayout: React.FC = () => {
   function ClickGroupSeat({ clickEvent }: SeatLayoutProps) {
     return (
       <>
-        <div className={styles.seatKindContainer}>
-          <div>
+        <section className={styles.seatKindContainer}>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>다른좌석유형/이용불가</div>
-          </div>
-          <div>
+          </article>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>이용가능 (4인석)</div>
-          </div>
-          <div>
+          </article>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>이용가능 (2인석)</div>
-          </div>
-        </div>
-        <div className={styles.seatContainer}>
+          </article>
+        </section>
+        <section className={styles.seatContainer}>
           <PersonalSeatLayout className={styles.impossible} />
           <FirstGroupSeatLayout
             className={styles.possible}
@@ -302,7 +312,7 @@ const SeatLayout: React.FC = () => {
             clickEvent={clickEvent}
           />
           <div className={styles.entrance}>출입문</div>
-        </div>
+        </section>
         <div className={styles.managerZone}>ManagerZone</div>
       </>
     );
@@ -311,21 +321,21 @@ const SeatLayout: React.FC = () => {
   function ClickGraduateSeat({ clickEvent }: SeatLayoutProps) {
     return (
       <>
-        <div className={styles.seatKindContainer}>
-          <div>
+        <section className={styles.seatKindContainer}>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>다른좌석유형/이용불가</div>
-          </div>
-          <div>
+          </article>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>이용가능 (개인석)</div>
-          </div>
-          <div>
+          </article>
+          <article>
             <div className={styles.box}></div>
             <div className={styles.kindText}>이용가능 (2인석)</div>
-          </div>
-        </div>
-        <div className={styles.seatContainer}>
+          </article>
+        </section>
+        <section className={styles.seatContainer}>
           <PersonalSeatLayout className={styles.impossible} />
           <FirstGroupSeatLayout className={styles.impossible} />
           <GraduateSeatLayout
@@ -334,7 +344,7 @@ const SeatLayout: React.FC = () => {
           />
           <SecondGroupSeatLayout className={styles.impossible} />
           <div className={styles.entrance}>출입문</div>
-        </div>
+        </section>
       </>
     );
   }
@@ -367,7 +377,7 @@ const SeatLayout: React.FC = () => {
     };
 
     return (
-      <div>
+      <section>
         <SingleSelect
           typeList={typeList}
           onSelect={(value: string) => {
@@ -399,7 +409,7 @@ const SeatLayout: React.FC = () => {
             onClick={() => setIsVisiterNameInput(false)}
           />
         )}
-      </div>
+      </section>
     );
   }
 

@@ -13,28 +13,30 @@ const SubmitModal = ({ onClick }: { onClick: () => void }) => {
   const navigate = useNavigate();
 
   return (
-    <div className={styles.back} onClick={onClick}>
-      <div className={styles.modalContainer}>
-        <div className={styles.overlay}>
-          <div className={styles.X} onClick={onClick}>
-            <X />
+    <section>
+      <div className={styles.back} onClick={onClick}>
+        <div className={styles.modalContainer}>
+          <div className={styles.overlay}>
+            <div className={styles.X} onClick={onClick}>
+              <X />
+            </div>
+            <div>{reservationInfo.reservation_date.replace(/\-/g, '.')}</div>
+            <div>{reservationInfo.time}</div>
+            <div>{`${reservationInfo.seat_type} ${reservationInfo.seat_number}번`}</div>
+            <div>예약이 완료되었습니다!</div>
+            <div className={styles.KakaoShareButton}>
+              <KakaoShareButton />
+            </div>
+            <button
+              className={styles.checkReservationButton}
+              onClick={() => navigate('/mypage/myreservation')}
+            >
+              예약조회
+            </button>
           </div>
-          <div>{reservationInfo.reservation_date.replace(/\-/g, '.')}</div>
-          <div>{reservationInfo.time}</div>
-          <div>{`${reservationInfo.seat_type} ${reservationInfo.seat_number}번`}</div>
-          <div>예약이 완료되었습니다!</div>
-          <div className={styles.KakaoShareButton}>
-            <KakaoShareButton />
-          </div>
-          <button
-            className={styles.checkReservationButton}
-            onClick={() => navigate('/mypage/myreservation')}
-          >
-            예약조회
-          </button>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

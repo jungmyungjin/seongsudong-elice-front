@@ -1,17 +1,23 @@
-.currentDate {
-  margin-top: 1rem;
-  font-size: 1.5rem;
-}
+.dateContainer {
+  margin: 10px 0;
 
+  .currentDate {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+  }
+}
 .date {
   display: flex;
   justify-content: space-between;
   margin-top: 0.5rem;
+  time {
+    font-size: 1.2rem;
+  }
 }
 
 .checkbox {
   display: flex;
-  padding: 1rem;
+  padding: 1rem 1.4rem;
   flex-direction: row;
   justify-content: space-between;
 
@@ -54,7 +60,7 @@
 
   & > label:not(:last-child) {
     margin-right: 0.5rem;
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.9rem;
   }
 
   & > label.checkedType {
@@ -83,7 +89,7 @@
     font: inherit;
     cursor: pointer;
   }
-  
+
   & > *:not(:last-child) {
     margin-right: 0.5rem;
     margin-bottom: 0.7rem;
