@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/useRedux';
-import { RootState } from '../../store/configureStore';
 
+import { RootState } from '../../store/configureStore';
 import { ReservationState, SeatLayoutProps } from '../../types/reservation';
 import { updateReservationInfo } from '../../reducers/reservation';
+
+import { SingleSelect } from './ReservationOptions';
 
 import ConfirmModal from '../common/ConfirmModal';
 import { openConfirmModal, closeConfirmModal } from '../../reducers/modal';
 
-import { SingleSelect } from './ReservationOptions';
 import SubmitModal from './SubmitModal';
 import AlertModal from './AlertModal';
 
@@ -17,8 +18,9 @@ import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
 // 더미 데이터
 // import serverDatas from './seatDatas.json';
 
-import styles from './seatLayout.module.scss';
 import axios from 'axios';
+
+import styles from './seatLayout.module.scss';
 
 const SeatLayout: React.FC = () => {
   const reservationInfo = useSelector((state: RootState) => state.reservation);
@@ -43,10 +45,6 @@ const SeatLayout: React.FC = () => {
 
   // 서버 통신
   const [serverData, setServerData] = useState<ServerResponse>({});
-
-  useEffect(() => {
-    console.log(reservationInfo.time);
-  }, []);
 
   useEffect(() => {
     // 더미데이터
@@ -342,6 +340,8 @@ const SeatLayout: React.FC = () => {
   }
 
   function ClickMeetingRoom() {
+    const [isReservationFail, setIsReservationFail] = useState(false);
+    const [isVisiterNameInput, setIsVisiterNameInput] = useState(false);
     let typeList: string[] = [];
     if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
       typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
@@ -352,6 +352,19 @@ const SeatLayout: React.FC = () => {
     }
 
     const [inputValue, setInputValue] = useState('');
+
+    const handleClickSubmit = () => {
+      if (typeList.length === 0) {
+        setIsReservationFail(true);
+        return;
+      }
+      if (inputValue === '') {
+        setIsVisiterNameInput(true);
+        return;
+      }
+
+      updateReservation({ visitors: inputValue });
+    };
 
     return (
       <div>
@@ -371,15 +384,21 @@ const SeatLayout: React.FC = () => {
           type='text'
           placeholder='필수입력*'
         />
-        <div
-          className={styles.submitButton}
-          onClick={() => {
-            dispatch(openConfirmModal());
-            updateReservation({ visitors: inputValue });
-          }}
-        >
+        <div className={styles.submitButton} onClick={handleClickSubmit}>
           예약하기
         </div>
+        {isReservationFail && (
+          <AlertModal
+            modalMessage1='예약 가능한 미팅룸이 없습니다.🥹'
+            onClick={() => setIsReservationFail(false)}
+          />
+        )}
+        {isVisiterNameInput && (
+          <AlertModal
+            modalMessage1='모든 방문자 성함을 작성해주세요.😉'
+            onClick={() => setIsVisiterNameInput(false)}
+          />
+        )}
       </div>
     );
   }
@@ -452,7 +471,7 @@ const SeatLayout: React.FC = () => {
       {clickedSubmit && <SubmitModal onClick={() => setClickedSubmit(false)} />}
       {isReservationFail && (
         <AlertModal
-          modalMessage1='좌석 예약에 실패하였습니다.'
+          modalMessage1='좌석 예약에 실패하였습니다.🥹'
           modalMessage2='새로고침 후 다시 시도해주세요.'
           onClick={() => setIsReservationFail(false)}
         />

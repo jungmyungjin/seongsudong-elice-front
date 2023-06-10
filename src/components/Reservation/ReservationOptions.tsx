@@ -12,6 +12,7 @@ import { updateReservationInfo } from '../../reducers/reservation';
 import { ReactComponent as Check } from '../../assets/Check.svg';
 
 import styles from './reservationOptions.module.scss';
+import AlertModal from './AlertModal';
 
 const DateOptions: React.FC = () => {
   const getCurrentYear = () => {
@@ -22,47 +23,26 @@ const DateOptions: React.FC = () => {
 
   const getCurrentWeekDates = () => {
     const currentDate = new Date();
-    const currentDay = currentDate.getDay(); // 일요일(0)부터 토요일(6)까지의 숫자를 반환합니다.
+    const currentDay = currentDate.getDay();
 
-    // 금요일 오후 6시 이후, 토요일, 일요일인 경우 다음주 날짜를 리턴합니다.
-    if (
-      currentDay >= 5 ||
-      (currentDay === 4 && currentDate.getHours() >= 18) ||
-      (currentDay === 3 &&
-        currentDate.getHours() === 18 &&
-        currentDate.getMinutes() >= 0)
-    ) {
-      const nextWeekDates = [];
-
-      const nextWeekStartDate = new Date(currentDate);
-      nextWeekStartDate.setDate(currentDate.getDate() + (7 - currentDay) + 1);
-
-      for (let i = 0; i < 5; i++) {
-        const date = new Date(nextWeekStartDate);
-        date.setDate(nextWeekStartDate.getDate() + i);
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const day = date.getDate().toString().padStart(2, '0');
-        const dayOfWeek = ['일', '월', '화', '수', '목', '금'][date.getDay()];
-        nextWeekDates.push(`${getCurrentYear()}.${month}.${day}(${dayOfWeek})`);
-      }
-
-      return nextWeekDates;
-    }
-
-    // 그 외의 경우 이번주 날짜를 리턴합니다.
-    const thisWeekDates = [];
-
-    const thisWeekStartDate = new Date(currentDate);
-    thisWeekStartDate.setDate(currentDate.getDate() - currentDay);
-
-    for (let i = 0; i < 5; i++) {
-      const date = new Date(thisWeekStartDate);
-      date.setDate(thisWeekStartDate.getDate() + i);
+    const getFormattedDate = (date: Date) => {
+      const year = date.getFullYear().toString().slice(-2);
       const month = (date.getMonth() + 1).toString().padStart(2, '0');
       const day = date.getDate().toString().padStart(2, '0');
-      const dayOfWeek = ['월', '화', '수', '목', '금'][date.getDay()];
-      thisWeekDates.push(`${getCurrentYear()}.${month}.${day}(${dayOfWeek})`);
-    }
+      const dayOfWeek = ['월', '화', '수', '목', '금'][date.getDay() - 1];
+      return `${year}.${month}.${day}(${dayOfWeek})`;
+    };
+
+    const thisWeekStartDate = new Date(currentDate);
+    thisWeekStartDate.setDate(
+      currentDate.getDate() - (currentDay - 1 + (currentDay === 6 ? 1 : 0)),
+    );
+
+    const thisWeekDates = Array.from({ length: 5 }, (_, index) => {
+      const date = new Date(thisWeekStartDate);
+      date.setDate(thisWeekStartDate.getDate() + index);
+      return getFormattedDate(date);
+    });
 
     return thisWeekDates;
   };
@@ -98,7 +78,7 @@ const DateOptions: React.FC = () => {
         <div className={styles.currentDate}>{currentDate}</div>
         <div className={styles.date}>
           {weekDates.map((date, index) => (
-            <div key={index}>{date.slice(5)}</div>
+            <div key={index}>{date.slice(3)}</div>
           ))}
         </div>
       </div>
@@ -106,6 +86,8 @@ const DateOptions: React.FC = () => {
   };
 
   const SelectDateContainer: React.FC = () => {
+    const [isPastDate, setIsPastDate] = useState(false);
+
     const reservationInfo = useSelector(
       (state: RootState) => state.reservation,
     );
@@ -119,48 +101,35 @@ const DateOptions: React.FC = () => {
       dispatch(updateReservationInfo(updatedReservationInfo));
     };
 
-    useEffect(() => {}, [reservationInfo.reservation_date]);
+    useEffect(() => {
+      console.log(selectedCheckbox);
+    }, [reservationInfo.reservation_date]);
 
     const [selectedCheckbox, setSelectedCheckbox] = useState(
-      reservationInfo.reservation_date.slice(-2),
+      reservationInfo.reservation_date,
     );
 
     const getCurrentWeekDates = () => {
       const currentDate = new Date();
-      const currentDay = currentDate.getDay(); // 일요일(0)부터 토요일(6)까지의 숫자를 반환합니다.
+      const currentDay = currentDate.getDay();
 
-      // 금요일 오후 6시 이후, 토요일, 일요일인 경우 다음주 날짜를 리턴합니다.
-      if (
-        currentDay >= 5 ||
-        (currentDay === 4 && currentDate.getHours() >= 18) ||
-        (currentDay === 3 &&
-          currentDate.getHours() === 18 &&
-          currentDate.getMinutes() >= 0)
-      ) {
-        const nextWeekDates = [];
+      const getNextDate = (date: Date, days: number) => {
+        const nextDate = new Date(date);
+        nextDate.setDate(date.getDate() + days);
+        const year = nextDate.getFullYear().toString();
+        const month = (nextDate.getMonth() + 1).toString().padStart(2, '0');
+        const day = nextDate.getDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      };
 
-        const nextWeekStartDate = new Date(currentDate);
-        nextWeekStartDate.setDate(currentDate.getDate() + (7 - currentDay) + 1);
-
-        for (let i = 0; i < 5; i++) {
-          const date = new Date(nextWeekStartDate);
-          date.setDate(nextWeekStartDate.getDate() + i);
-          const dateStr = date.getDate().toString().padStart(2, '0');
-          nextWeekDates.push(dateStr);
-        }
-
-        return nextWeekDates;
+      let startDate = currentDate;
+      if (currentDay === 0) {
+        startDate.setDate(currentDate.getDate() + 1); // Move to Monday
       }
 
-      // 그 외의 경우 이번주 날짜를 리턴합니다.
-      const thisWeekDates = [];
-
-      for (let i = 0; i < 5; i++) {
-        const date = new Date(currentDate);
-        date.setDate(currentDate.getDate() + i);
-        const dateStr = date.getDate().toString().padStart(2, '0');
-        thisWeekDates.push(dateStr);
-      }
+      const thisWeekDates = Array.from({ length: 5 }, (_, index) =>
+        getNextDate(startDate, index),
+      );
 
       return thisWeekDates;
     };
@@ -175,16 +144,15 @@ const DateOptions: React.FC = () => {
       // 오늘 날짜와 선택한 날짜를 비교하여 이전 날짜인 경우에만 alert 메시지를 띄웁니다.
       const date = new Date().getDate().toString().padStart(2, '0');
       if (weekDates[index] < date) {
-        alert('지난 날짜에는 예약이 불가합니다.');
+        setIsPastDate(true);
         return;
       }
       console.log(weekDates[index]);
 
       setSelectedCheckbox(weekDates[index]);
       updateReservation({
-        reservation_date: '23-06-12',
+        reservation_date: weekDates[index],
       });
-      console.log(reservationInfo.reservation_date);
     };
 
     return (
@@ -197,6 +165,12 @@ const DateOptions: React.FC = () => {
             changeHandler={handleSelectedDateChange}
           />
         ))}
+        {isPastDate && (
+          <AlertModal
+            modalMessage1='지난 날짜에는 예약이 불가합니다.🥹'
+            onClick={() => setIsPastDate(false)}
+          />
+        )}
       </div>
     );
   };
@@ -251,6 +225,7 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
   const [isClicked, setIsClicked] = useState<boolean[]>(
     typeList.map((_, index) => index === 0),
   );
+  const [isPastTime, setIsPastTime] = useState(false);
 
   const reservationInfo = useSelector((state: RootState) => state.reservation);
   const dispatch = useDispatch();
@@ -291,16 +266,32 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
     }
   }, []); // 빈 배열로 전달하여 최초 한 번만 실행되도록 설정
 
-  const handleClick = (index: number, type: string) => {
+  const handleTimeClick = (index: number, time: string) => {
     const currentTime = new Date().getHours(); // 현재 시간 가져오기
-    const [startHour] = type.split(':');
+    const [startHour] = time.split(':');
     const startTime = Number(startHour);
 
-    // 선택한 시간과 현재 시간 비교
-    if (startTime < currentTime) {
-      // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행하지 않음
-      alert('지난 시간을 예약하실 수 없습니다.');
-      return;
+    const isPastDate = (reservationDate: string): boolean => {
+      const today = new Date();
+
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const day = today.getDate();
+
+      const currentDate = `${year}.${month.toString().padStart(2, '0')}.${day
+        .toString()
+        .padStart(2, '0')}`;
+
+      return currentDate >= reservationDate;
+    };
+
+    // 선택한 날짜가 지난 경우 선택한 시간과 현재 시간 비교
+    if (isPastDate(reservationInfo.reservation_date)) {
+      if (startTime <= currentTime) {
+        // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행하지 않음
+        setIsPastTime(true);
+        return;
+      }
     }
 
     // 클릭 상태 변경
@@ -317,11 +308,17 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
           className={
             isClicked[index] ? styles.checkedType : styles.unCheckedType
           }
-          onClick={() => handleClick(index, type)}
+          onClick={() => handleTimeClick(index, type)}
         >
           {type}
         </button>
       ))}
+      {isPastTime && (
+        <AlertModal
+          modalMessage1='지난 시간을 예약하실 수 없습니다.🥹'
+          onClick={() => setIsPastTime(false)}
+        />
+      )}
     </div>
   );
 };
@@ -330,6 +327,7 @@ const ReservationOptions: React.FC = () => {
   const seatTypeList: string[] = ['개인석', '팀플석', '수료기수석', '미팅룸'];
   const TimeList = ['10:00~14:00', '14:00~18:00', '18:00~22:00'];
   const [isMeetingRoom, setIsMeetingRoom] = useState<boolean>(false);
+  const [isPastTime, setIsPastTime] = useState<boolean>(false);
 
   const reservationInfo = useSelector((state: RootState) => state.reservation);
   const dispatch = useDispatch();
@@ -354,6 +352,32 @@ const ReservationOptions: React.FC = () => {
 
   const handleMeetingRoomTimeSelect = (value: string) => {
     updateReservation({ time: value });
+    const currentTime = new Date().getHours(); // 현재 시간 가져오기
+    const [startHour] = value.split(':');
+    const startTime = Number(startHour);
+
+    const isPastDate = (reservationDate: string): boolean => {
+      const today = new Date();
+
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const day = today.getDate();
+
+      const currentDate = `${year}.${month.toString().padStart(2, '0')}.${day
+        .toString()
+        .padStart(2, '0')}`;
+
+      return currentDate >= reservationDate;
+    };
+
+    // 선택한 날짜가 지난 경우 선택한 시간과 현재 시간 비교
+    if (isPastDate(reservationInfo.reservation_date)) {
+      if (startTime <= currentTime) {
+        // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행하지 않음
+        setIsPastTime(true);
+        return;
+      }
+    }
   };
 
   return (
@@ -374,6 +398,12 @@ const ReservationOptions: React.FC = () => {
             onSelect={handleMeetingRoomTimeSelect}
           />
         </div>
+      )}
+      {isPastTime && (
+        <AlertModal
+          modalMessage1='지난 시간을 예약하실 수 없습니다.🥹'
+          onClick={() => setIsPastTime(false)}
+        />
       )}
     </>
   );

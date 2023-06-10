@@ -6,10 +6,21 @@ const getDate = () => {
   const day = today.getDay();
   const hours = today.getHours();
 
-  if (day === 0 || (day === 5 && hours >= 18) || day === 6) {
-    // 일요일(0)이거나 금요일 오후 6시 이후 또는 토요일(6)인 경우
+  // 금요일 오후 6시 이후 또는 토요일(6)인 경우
+  if ((day === 5 && hours >= 18) || day === 6) {
     const nextMonday = new Date(today);
     nextMonday.setDate(today.getDate() + (8 - day)); // 다음 주 월요일로 이동
+
+    const year = nextMonday.getFullYear();
+    const month = (nextMonday.getMonth() + 1).toString().padStart(2, '0');
+    const date = nextMonday.getDate().toString().padStart(2, '0');
+
+    const formattedDate = `${year}-${month}-${date}`;
+    return formattedDate;
+  } else if (day === 0) {
+    // 일요일(0)인 경우
+    const nextMonday = new Date(today);
+    nextMonday.setDate(today.getDate() + (1 - day)); // 다음 주 월요일로 이동
 
     const year = nextMonday.getFullYear();
     const month = (nextMonday.getMonth() + 1).toString().padStart(2, '0');
