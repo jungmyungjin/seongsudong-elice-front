@@ -6,17 +6,15 @@ export const initialState: IChat = {
   loadChatLoading: false,
   loadChatDone: false,
   loadChatError: null,
+  isOnline: false,
   chatRoomList: [],
   chatRoomDetail: {
-    roomId: 0,
-    memberName: '',
-    adminEmail: '',
-    memberEmail: '',
-    createAt: '',
-    chat: {
-      sentAt: '',
-      lastSendMsg: '',
-    },
+    room_id: 0,
+    email: '',
+    name: '',
+    generation: '',
+    message: '',
+    sentAt: '',
     chatList: [],
   },
 };
@@ -35,15 +33,8 @@ const chatSlice = createSlice({
     setChatRoomDetail: (state, action: PayloadAction<IChatRoom>) => {
       state.chatRoomDetail = action.payload;
     },
-    setChatRoomDetailChatList: (
-      state,
-      action: PayloadAction<IChatMessage[]>,
-    ) => {
-      state.chatRoomDetail.chatList = action.payload;
-    },
   },
 });
 
-export const { addChat, setChatRoomDetail, setChatRoomDetailChatList } =
-  chatSlice.actions;
+export const { addChat, setChatRoomDetail } = chatSlice.actions;
 export default chatSlice;
