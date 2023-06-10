@@ -409,6 +409,11 @@ const SeatLayout: React.FC = () => {
   };
 
   const handleModalController = async () => {
+    // 리듀서에 저장된 유저 정보
+    // const { email, username, generation } = useSelector(
+    //   (state: RootState) => state.user,
+    // );
+
     const timeArray = reservationInfo.time
       .split(', ')
       .map(time => time.split('~'));
@@ -421,6 +426,10 @@ const SeatLayout: React.FC = () => {
           member_generation: 'SW/2',
           member_name: '갤럭시',
           member_email: 'email222@gmail.com',
+          // 리듀서에 저장된 유저 정보
+          // member_generation: generation,
+          // member_name: username,
+          // member_email: email,
           reservation_date: reservationInfo.reservation_date,
           start_time: startTime[i],
           end_time: endTime[i],
