@@ -21,10 +21,7 @@ function AdminNotice() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/posts?category=공지게시판`,
-        {
-          method: 'GET',
-        },
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/posts?category=공지게시판`,
       );
 
       const res = await response.json();
