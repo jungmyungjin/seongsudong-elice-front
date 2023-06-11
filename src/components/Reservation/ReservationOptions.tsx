@@ -31,7 +31,9 @@ const DateOptions: React.FC = () => {
     // 금요일 오후 6시 이후 또는 토요일(6)인 경우
     if (isFridayAfterSixPm || isSaturday) {
       const nextMonday = new Date(today);
-      nextMonday.setDate(today.getDate() + (8 - day)); // 다음 주 월요일로 이동
+      nextMonday.setDate(
+        today.getDate() + (8 - day) + (isFridayAfterSixPm ? 3 : 2),
+      ); // 다음 주 월요일로 이동
 
       const weekDates = Array.from({ length: 5 }, (_, index) => {
         const date = new Date(nextMonday);
@@ -61,9 +63,12 @@ const DateOptions: React.FC = () => {
 
       return weekDates;
     } else {
+      const currentMonday = new Date(today);
+      currentMonday.setDate(today.getDate() + (1 - day)); // 해당 주 월요일로 이동
+
       const weekDates = Array.from({ length: 5 }, (_, index) => {
-        const date = new Date(today);
-        date.setDate(today.getDate() + index);
+        const date = new Date(currentMonday);
+        date.setDate(currentMonday.getDate() + index);
         const year = date.getFullYear();
         const month = (date.getMonth() + 1).toString().padStart(2, '0');
         const day = date.getDate().toString().padStart(2, '0');
@@ -266,28 +271,21 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
   }, []);
 
   const handleTimeClick = (index: number, time: string) => {
+    const currentDate = new Date();
+    const selectedDate = reservationInfo.reservation_date;
+
+    const isPreviousOrSameDay =
+      new Date(selectedDate).setHours(0, 0, 0, 0) <=
+      currentDate.setHours(0, 0, 0, 0);
+
     const currentTime = new Date().getHours();
     const [startHour] = time.split(':');
     const startTime = Number(startHour);
 
-    const isPastDate = (reservationDate: string): boolean => {
-      const today = new Date();
-
-      const year = today.getFullYear();
-      const month = today.getMonth() + 1;
-      const day = today.getDate();
-
-      const currentDate = `${year}.${month.toString().padStart(2, '0')}.${day
-        .toString()
-        .padStart(2, '0')}`;
-
-      return currentDate >= reservationDate;
-    };
-
-    // 선택한 날짜가 지난 경우 선택한 시간과 현재 시간 비교
-    if (isPastDate(reservationInfo.reservation_date)) {
+    // 선택한 날짜가 지났거나 당일인 경우 선택한 시간과 현재 시간 비교
+    if (isPreviousOrSameDay) {
       if (startTime <= currentTime) {
-        // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행하지 않음
+        // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행해 모당창을 띄웁니다.
         setIsPastTime(true);
         return;
       }
@@ -358,7 +356,7 @@ const ReservationOptions: React.FC = () => {
       const today = new Date();
 
       const year = today.getFullYear();
-      const month = today.getMonth() + 1;
+      const month = today.getMonth();
       const day = today.getDate();
 
       const currentDate = `${year}.${month.toString().padStart(2, '0')}.${day

@@ -4,23 +4,8 @@ import { ReservationState } from '../types/reservation';
 const getDate = () => {
   const today = new Date();
   const day = today.getDay();
-  const hours = today.getHours();
 
-  const isFridayAfterSixPm = day === 5 && hours >= 18;
-  const isSaturday = day === 6;
-
-  // 금요일 오후 6시 이후 또는 토요일(6)인 경우
-  if (isFridayAfterSixPm || isSaturday) {
-    const nextMonday = new Date(today);
-    nextMonday.setDate(today.getDate() + (8 - day)); // 다음 주 월요일로 이동
-
-    const year = nextMonday.getFullYear();
-    const month = (nextMonday.getMonth() + 1).toString().padStart(2, '0');
-    const date = nextMonday.getDate().toString().padStart(2, '0');
-
-    const formattedDate = `${year}-${month}-${date}`;
-    return formattedDate;
-  } else if (day === 0) {
+  if (day === 0) {
     // 일요일(0)인 경우
     const currentMonday = new Date(today);
     currentMonday.setDate(today.getDate() + (1 - day)); // 해당 주 월요일로 이동
@@ -31,14 +16,17 @@ const getDate = () => {
 
     const formattedDate = `${year}-${month}-${date}`;
     return formattedDate;
-  } else {
-    const year = today.getFullYear();
-    const month = (today.getMonth() + 1).toString().padStart(2, '0');
-    const date = today.getDate().toString().padStart(2, '0');
-
-    const formattedDate = `${year}-${month}-${date}`;
-    return formattedDate;
   }
+
+  const nextMonday = new Date(today);
+  nextMonday.setDate(today.getDate() + (8 - day)); // 다음 주 월요일로 이동
+
+  const year = nextMonday.getFullYear();
+  const month = (nextMonday.getMonth() + 1).toString().padStart(2, '0');
+  const date = nextMonday.getDate().toString().padStart(2, '0');
+
+  const formattedDate = `${year}-${month}-${date}`;
+  return formattedDate;
 };
 
 const getTime = (): string => {
