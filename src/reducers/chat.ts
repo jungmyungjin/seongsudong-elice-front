@@ -1,22 +1,18 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IChat, IChatMessage, IChatRoom } from 'types/chat';
-// import produce from 'immer';
 
 export const initialState: IChat = {
   loadChatLoading: false,
   loadChatDone: false,
   loadChatError: null,
-  chatRoomList: [],
+  isOnline: false,
   chatRoomDetail: {
-    roomId: 0,
-    memberName: '',
-    adminEmail: '',
-    memberEmail: '',
-    createAt: '',
-    chat: {
-      sentAt: '',
-      lastSendMsg: '',
-    },
+    room_id: 0,
+    email: '',
+    name: '',
+    generation: '',
+    message: '',
+    sentAt: '',
     chatList: [],
   },
 };
@@ -27,14 +23,14 @@ const chatSlice = createSlice({
   reducers: {
     addChat: (state, action: PayloadAction<{ chatMessage: IChatMessage }>) => {
       const { chatMessage } = action.payload;
-      state.chatRoomDetail.chatList = [
-        ...state.chatRoomDetail.chatList,
-        chatMessage,
-      ];
+      state.chatRoomDetail.chatList = state.chatRoomDetail.chatList
+        ? [...state.chatRoomDetail.chatList, chatMessage]
+        : [chatMessage];
     },
     setChatRoomDetail: (state, action: PayloadAction<IChatRoom>) => {
       state.chatRoomDetail = action.payload;
     },
+    /** 초반에 모든 메세지 불러올 때 */
     setChatRoomDetailChatList: (
       state,
       action: PayloadAction<IChatMessage[]>,
