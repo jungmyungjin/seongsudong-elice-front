@@ -67,11 +67,11 @@ function ChatModal() {
     });
 
     /**
-     * !관리자 입장: 관리자, 상대방 email ("yunzoo0915@gmail.com", chatRoomDetail.email)
-     * !일반 유저 입장: 일반유저, 관리자 이메일 (userEmail, "yunzoo0915@gmail.com")
+     * -> 프론트에서 보낼 인자값
+     * 첫번째 인자 = 엘리서, 두번째 인자 = 관리자
      */
     if (isAdmin) {
-      socket.emit('enterChatRoom', adminEmail, chatRoomDetail.email);
+      socket.emit('enterChatRoom', chatRoomDetail.email, adminEmail);
     } else {
       socket.emit('enterChatRoom', userEmail, adminEmail);
     }
@@ -105,16 +105,16 @@ function ChatModal() {
 
     /** 채팅 리스트 길이가 0이면 > createChatRoom
      * 채팅 리스트가 있으면 > message
-     * -> 프론트에서 보낼 인자값 (로그인한 사람의 email, 상대방의 email)
-     * !관리자 입장: 관리자, 상대방 email ("yunzoo0915@gmail.com", chatRoomDetail.email)
-     * !일반 유저 입장: 일반유저, 관리자 이메일 (userEmail, "yunzoo0915@gmail.com")
+     * -> 프론트에서 보낼 인자값
+     * 첫번째 인자 = 엘리서, 두번째 인자 = 관리자
      */
+
     if (chatList.length < 1) {
       if (isAdmin) {
         socket.emit(
           'createChatRoom',
-          adminEmail,
           chatRoomDetail.email,
+          adminEmail,
           inputValue,
         );
       } else {
@@ -126,7 +126,7 @@ function ChatModal() {
       });
     } else {
       if (isAdmin) {
-        socket.emit('message', adminEmail, chatRoomDetail.email, inputValue);
+        socket.emit('message', chatRoomDetail.email, adminEmail, inputValue);
       } else {
         socket.emit('message', userEmail, adminEmail, inputValue);
       }
