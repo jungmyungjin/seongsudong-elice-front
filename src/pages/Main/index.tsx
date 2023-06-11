@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './main.module.scss';
 import MainImage from 'components/MainImage';
 import MainReservationSection from './MainReservationSection';
@@ -12,14 +12,14 @@ const Main = (): React.ReactElement => {
   const [noticeBoard, setNoticeboard] = useState([]);
 
   const fetchPosts = async () => {
-    const freeBoardPromise = await axios.get(
-      `${process.env.REACT_APP_BACKEND_ADDRESS}/posts/top?category=자유게시판`,
-    );
-    const noticeBoardPromise = await axios.get(
-      `${process.env.REACT_APP_BACKEND_ADDRESS}/posts/recent?category=공지게시판`,
-    );
-
     try {
+      const freeBoardPromise = await axios.get(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/posts/top?category=자유게시판`,
+      );
+      const noticeBoardPromise = await axios.get(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/posts/recent?category=공지게시판`,
+      );
+
       const [freeBoardResponse, noticeBoardResponse] = await Promise.all([
         freeBoardPromise,
         noticeBoardPromise,
@@ -30,10 +30,13 @@ const Main = (): React.ReactElement => {
       setNoticeboard(noticeBoardData);
       setFreeboard(freeBoardData);
     } catch (error) {
-      console.log(error);
+      console.log('MainBoard Error!', error);
     }
   };
-  fetchPosts();
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   return (
     <div className={styles.MainLayout}>
