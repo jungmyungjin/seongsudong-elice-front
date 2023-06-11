@@ -47,15 +47,15 @@ const HeaderSlideMenu = (): React.ReactElement => {
     >
       <Profile />
       <ul>
-        {isAdmin && (
+        {isAdmin === true ? (
           <li>
             <button onClick={() => handleClick('/admin')}>
               <span>관리자페이지</span>{' '}
             </button>
           </li>
-        )}
+        ) : null}
 
-        {isLoggedIn && (
+        {isLoggedIn === true ? (
           <>
             <li>
               <button onClick={() => handleClick('/mypage')}>
@@ -73,7 +73,7 @@ const HeaderSlideMenu = (): React.ReactElement => {
               </button>
             </li>
           </>
-        )}
+        ) : null}
         <li>
           <button onClick={() => handleClick('/direction')}>
             <span>찾아오시는 길</span>
