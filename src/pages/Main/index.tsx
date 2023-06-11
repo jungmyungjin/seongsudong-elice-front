@@ -48,7 +48,7 @@ const Main = (): React.ReactElement => {
         <div className={styles.boardButton}>
           <CustomLink
             key={'notice'}
-            to={'/post'}
+            to={'/post/free'}
             title={'공지사항'}
             icon={'notice'}
             right={true}
