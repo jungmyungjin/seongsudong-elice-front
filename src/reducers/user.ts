@@ -36,6 +36,7 @@ const userSlice = createSlice({
     // 로그인 액션
     logIn: (state, action: PayloadAction<LogInPayload>) => {
       state.loggedIn = true;
+      state.isAdmin = action.payload.isAdmin;
       state.email = action.payload.email;
       state.username = action.payload.username;
       state.course = action.payload.course;
