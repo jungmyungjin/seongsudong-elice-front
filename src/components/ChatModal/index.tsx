@@ -5,6 +5,7 @@ import FullModal from '../common/FullModal';
 import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
+import Loading from '../common/Loading';
 
 import { addChat, setChatRoomDetailChatList } from 'reducers/chat';
 
@@ -14,6 +15,7 @@ import styles from './chatModal.module.scss';
 
 /* 소켓 객체 */
 import { io } from 'socket.io-client';
+import { set } from 'react-hook-form';
 
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
@@ -33,48 +35,46 @@ function ChatModal() {
   /****************** 소켓 테스트 위해 임의로 설정한 유저 이메일 *****************/
   const userEmail = localStorage.getItem('email');
   const adminEmail = 'yunzoo0915@gmail.com';
-  if (userEmail === adminEmail) {
-    setIsAdmin(true);
-  }
   /***********************************************************************/
 
   /****************************** 자동 스트롤 *******************************/
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (scrollContainerRef.current && chatList?.length > 0) {
+    if (scrollContainerRef.current && chatList) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
   }, [chatList]);
   /***********************************************************************/
 
-  /********************** 채팅방 첫 입성시 날짜, 소켓 연결 *************************/
+  /********* 채팅방 첫 입성시 어드민 상태, 날짜, 소켓 연결, 해당방의 채팅 리스트 *********/
   useEffect(() => {
-    console.log('채팅방 입장:', chatRoomDetail);
-    setDate(convertDate(new Date()));
+    if (userEmail === adminEmail) {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
 
+    if (isAdmin)
+      setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
+    else setModalTitle('1:1 문의 채팅방');
+
+    console.log('채팅방 정보:', chatRoomDetail);
+    setDate(convertDate(new Date()));
     /** 소켓 연결 코드 */
     socket.on('connect', () => {
       console.log('소켓 연결 성공');
+      enterChatRoom();
     });
-
-    enterChatRoom();
 
     /** 소켓 끊김 코드 */
     return () => {
       socket.disconnect();
     };
-  }, []);
+  }, [chatRoomDetail.email, isAdmin]);
+  // chatRoomDetail로 걸면 채팅리스트가 무한정으로 늘어나서
+  // chatRoomDetail.email로 명확하게 의존성배열 추가
   /***********************************************************************/
-
-  /********************** 어드민 분기에 따른 채팅방 제목 설정 *************************/
-  useEffect(() => {
-    /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
-    if (isAdmin)
-      setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
-    else setModalTitle('1:1 문의 채팅방');
-  }, [chatRoomDetail, isAdmin]);
-  /***************************************************************************/
 
   /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -107,7 +107,6 @@ function ChatModal() {
     } else {
       socket.emit('enterChatRoom', userEmail);
     }
-
     socket.on('AllMessages', data => {
       console.log('AllMessages', data);
       dispatch(setChatRoomDetailChatList(data));
@@ -115,7 +114,7 @@ function ChatModal() {
   }
 
   function createChatRoom() {
-    if (chatList.length < 1 && !isAdmin) {
+    if (chatList && !isAdmin) {
       socket.emit('createChatRoom', userEmail, inputValue);
     }
   }
@@ -147,16 +146,20 @@ function ChatModal() {
           {!isAdmin && <AdminProfile isOnline={isOnline} />}
           <div className={styles.nowDate}>{date}</div>
           <div className={styles.chatListContainer}>
-            {chatList?.map((msg, i) => (
-              <ChatMessage
-                key={i}
-                sender_email={msg.sender_email}
-                name={msg.name}
-                generation={msg.generation}
-                message={msg.message}
-                sentAt={msg.sentAt}
-              />
-            ))}
+            {chatList ? (
+              chatList.map((msg, i) => (
+                <ChatMessage
+                  key={i}
+                  sender_email={msg.sender_email}
+                  name={msg.name}
+                  generation={msg.generation}
+                  message={msg.message}
+                  sentAt={msg.sentAt}
+                />
+              ))
+            ) : (
+              <Loading />
+            )}
           </div>
         </div>
         <div className={styles.chatInputContainer}>

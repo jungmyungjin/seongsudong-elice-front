@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Loading from '../common/Loading';
 
 import { useAppDispatch } from 'hooks/useRedux';
 import { openChatModal } from 'reducers/modal';
@@ -8,12 +9,14 @@ import styles from './chatList.module.scss';
 import { calculateChatDate } from 'utils/calculateChatDate';
 
 function ChatList() {
-  const [chatList, setChatList] = useState<any>([]);
+  const [chatList, setChatList] = useState<any>(null);
 
   const dispatch = useAppDispatch();
 
-  const handleChatModalOpen = (id: number) => {
-    const selectOneChat = chatList.find((item: any) => item.room_id === id);
+  const handleChatModalOpen = async (id: number) => {
+    const selectOneChat = await chatList.find(
+      (item: any) => item.room_id === id,
+    );
     if (selectOneChat) dispatch(setChatRoomDetail(selectOneChat));
     dispatch(openChatModal());
   };
@@ -38,23 +41,27 @@ function ChatList() {
 
   return (
     <ol className={styles.chatList}>
-      {chatList.map((item: any) => (
-        <li
-          key={item.room_id}
-          className={styles.chatItem}
-          onClick={() => handleChatModalOpen(item.room_id)}
-        >
-          <div className={styles.chatInfo}>
-            <span>
-              {item.name}[{item.generation}]
-            </span>
+      {chatList === null ? (
+        <Loading />
+      ) : (
+        chatList.map((item: any) => (
+          <li
+            key={item.room_id}
+            className={styles.chatItem}
+            onClick={() => handleChatModalOpen(item.room_id)}
+          >
+            <div className={styles.chatInfo}>
+              <span>
+                [{item.generation}] {item.name}
+              </span>
 
-            <span>{calculateChatDate(item.sentAt)}</span>
-          </div>
+              <span>{calculateChatDate(item.sentAt)}</span>
+            </div>
 
-          <div className={styles.chat}>{item.message}</div>
-        </li>
-      ))}
+            <div className={styles.chat}>{item.message}</div>
+          </li>
+        ))
+      )}
     </ol>
   );
 }

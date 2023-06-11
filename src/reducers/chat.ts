@@ -13,7 +13,7 @@ export const initialState: IChat = {
     generation: '',
     message: '',
     sentAt: '',
-    chatList: [],
+    chatList: null,
   },
 };
 
