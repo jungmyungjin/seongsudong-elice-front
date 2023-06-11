@@ -6,12 +6,7 @@ import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
-import {
-  addChat,
-  setChatRoomDetail,
-  setChatRoomDetailChatList,
-} from 'reducers/chat';
-import { online } from 'actions/access';
+import { addChat, setChatRoomDetailChatList } from 'reducers/chat';
 
 import { IChatMessage } from 'types/chat';
 import { convertDate, chatTime } from 'utils/convertDate';
@@ -32,32 +27,29 @@ function ChatModal() {
   const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
   const chatRoomDetail = useAppSelector(state => state.chat.chatRoomDetail);
 
-  /** 소켓 테스트 위해 임의로 설정한 유저 이메일 */
-  const userEmail = localStorage.getItem('email');
-  const adminEmail = 'yunzoo0915@gmail.com';
-
-  /** 보내는 이메일 잘 생각해야해 > 로그인한 유저가 관리자면 보내는 이메일은 채팅방의 상대방 이메일을 보내야하고,
-   * 로그인한 유저가 일반 유저면 보내는 이메일은 현재 로그인한 유저의 이메일임 */
-
-  /** 자동 스크롤 */
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-  /** socket선언은 꼭꼭 사용하는 컴포넌트 내에서 선언해야 인식을 한다. */
-
+  /** 소켓 객체 선언 */
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`);
 
-  /** 자동 스크롤 */
+  /****************** 소켓 테스트 위해 임의로 설정한 유저 이메일 *****************/
+  const userEmail = localStorage.getItem('email');
+  const adminEmail = 'yunzoo0915@gmail.com';
+  if (userEmail === adminEmail) {
+    setIsAdmin(true);
+  }
+  /***********************************************************************/
+
+  /****************************** 자동 스트롤 *******************************/
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (scrollContainerRef.current && chatList?.length > 0) {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
   }, [chatList]);
+  /***********************************************************************/
 
-  /** 채팅방 첫 입성시 날짜, 어드민 여부 */
+  /********************** 채팅방 첫 입성시 날짜, 소켓 연결 *************************/
   useEffect(() => {
-    if (userEmail === adminEmail) {
-      setIsAdmin(true);
-    }
     console.log('채팅방 입장:', chatRoomDetail);
     setDate(convertDate(new Date()));
 
@@ -66,76 +58,36 @@ function ChatModal() {
       console.log('소켓 연결 성공');
     });
 
-    /**
-     * -> 프론트에서 보낼 인자값
-     * 첫번째 인자 = 엘리서, 두번째 인자 = 관리자
-     */
-    if (isAdmin) {
-      socket.emit('enterChatRoom', chatRoomDetail.email, adminEmail);
-    } else {
-      socket.emit('enterChatRoom', userEmail, adminEmail);
-    }
+    enterChatRoom();
 
-    socket.on('AllMessages', data => {
-      console.log('AllMessages', data);
-      dispatch(setChatRoomDetailChatList(data));
-    });
+    /** 소켓 끊김 코드 */
     return () => {
       socket.disconnect();
     };
   }, []);
+  /***********************************************************************/
 
-  /** 어드민 분기 실행*/
+  /********************** 어드민 분기에 따른 채팅방 제목 설정 *************************/
   useEffect(() => {
     /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
     if (isAdmin)
       setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
   }, [chatRoomDetail, isAdmin]);
+  /***************************************************************************/
 
+  /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(e.target.value);
   }
 
-  /** 채팅 보내는 이벤트 */
   function handleSend() {
     if (inputValue.trim().length === 0) {
       return;
     }
-
-    /** 채팅 리스트 길이가 0이면 > createChatRoom
-     * 채팅 리스트가 있으면 > message
-     * -> 프론트에서 보낼 인자값
-     * 첫번째 인자 = 엘리서, 두번째 인자 = 관리자
-     */
-
-    if (chatList.length < 1) {
-      if (isAdmin) {
-        socket.emit(
-          'createChatRoom',
-          chatRoomDetail.email,
-          adminEmail,
-          inputValue,
-        );
-      } else {
-        socket.emit('createChatRoom', userEmail, adminEmail, inputValue);
-      }
-      socket.off('message').on('message', data => {
-        dispatch(addChat({ chatMessage: data }));
-        console.log(data);
-      });
-    } else {
-      if (isAdmin) {
-        socket.emit('message', chatRoomDetail.email, adminEmail, inputValue);
-      } else {
-        socket.emit('message', userEmail, adminEmail, inputValue);
-      }
-      socket.off('message').on('message', data => {
-        dispatch(addChat({ chatMessage: data }));
-        console.log(data);
-      });
-    }
-
+    createChatRoom();
+    message();
+    getOnline();
     setInputValue('');
   }
 
@@ -145,6 +97,48 @@ function ChatModal() {
       handleSend();
     }
   }
+
+  /***************************************************************************/
+
+  /***************************** 소켓 관련 함수 코드임 ***************************/
+  function enterChatRoom() {
+    if (isAdmin) {
+      socket.emit('enterChatRoom', chatRoomDetail.email);
+    } else {
+      socket.emit('enterChatRoom', userEmail);
+    }
+
+    socket.on('AllMessages', data => {
+      console.log('AllMessages', data);
+      dispatch(setChatRoomDetailChatList(data));
+    });
+  }
+
+  function createChatRoom() {
+    if (chatList.length < 1 && !isAdmin) {
+      socket.emit('createChatRoom', userEmail, inputValue);
+    }
+  }
+
+  function message() {
+    if (isAdmin) {
+      socket.emit('message', adminEmail, chatRoomDetail.email, inputValue);
+    } else {
+      socket.emit('message', userEmail, userEmail, inputValue);
+    }
+    socket.off('message').on('message', data => {
+      dispatch(addChat({ chatMessage: data }));
+      console.log(data);
+    });
+  }
+
+  function getOnline() {
+    socket.emit('isOnline');
+    socket.off('isOnline').on('isOnline', data => {
+      console.log(data);
+    });
+  }
+  /***********************************************************************/
 
   return (
     <FullModal title={modalTitle} modalType='chat'>
