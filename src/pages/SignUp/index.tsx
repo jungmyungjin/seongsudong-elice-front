@@ -46,11 +46,7 @@ const SignUp = (): React.ReactElement => {
       email,
     };
     try {
-      const res = await axios.post(api, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.post(api, data);
 
       if (res.status === 201) {
         navigate('/');
