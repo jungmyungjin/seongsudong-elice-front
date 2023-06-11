@@ -270,20 +270,54 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
     }
   }, []);
 
-  const handleTimeClick = (index: number, time: string) => {
+  useEffect(() => {
     const currentDate = new Date();
-    const selectedDate = reservationInfo.reservation_date;
+    const selectedDate = new Date(reservationInfo.reservation_date);
 
     const isPreviousOrSameDay =
-      new Date(selectedDate).setHours(0, 0, 0, 0) <=
-      currentDate.setHours(0, 0, 0, 0);
+      currentDate.toDateString() >= selectedDate.toDateString();
+
+    if (isPreviousOrSameDay) {
+      const getTime = (): string => {
+        const currentHour = new Date().getHours();
+
+        if (currentHour >= 10 && currentHour < 14) {
+          return '14:00~18:00';
+        } else if (currentHour >= 14 && currentHour < 18) {
+          return '18:00~22:00';
+        } else {
+          return '10:00~14:00';
+        }
+      };
+      const initialSelectedIndex = typeList.findIndex(
+        time => time === getTime(),
+      );
+      if (initialSelectedIndex !== -1) {
+        const updatedClickedState = typeList.map(
+          (_, index) => index === initialSelectedIndex,
+        );
+        setIsClicked(updatedClickedState);
+      }
+      updateReservation({ time: getTime() });
+    }
+  }, [reservationInfo.reservation_date]);
+
+  const handleTimeClick = (index: number, time: string) => {
+    const currentDate = new Date();
+    const selectedDate = new Date(reservationInfo.reservation_date);
+    currentDate.setHours(0, 0, 0, 0);
+    selectedDate.setHours(0, 0, 0, 0);
+
+    const isSameDay = selectedDate <= currentDate;
+
+    console.log(isSameDay);
 
     const currentTime = new Date().getHours();
     const [startHour] = time.split(':');
     const startTime = Number(startHour);
 
-    // 선택한 날짜가 지났거나 당일인 경우 선택한 시간과 현재 시간 비교
-    if (isPreviousOrSameDay) {
+    // 선택한 당일인 경우 선택한 시간과 현재 시간 비교
+    if (isSameDay) {
       if (startTime <= currentTime) {
         // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행해 모당창을 띄웁니다.
         setIsPastTime(true);
