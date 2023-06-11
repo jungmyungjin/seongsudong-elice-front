@@ -30,5 +30,5 @@ export interface IChatRoom {
   generation: string;
   message: string;
   sentAt: string;
-  chatList: IChatMessage[];
+  chatList: IChatMessage[] | null;
 }
