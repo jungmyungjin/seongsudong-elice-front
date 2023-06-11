@@ -7,6 +7,8 @@ export interface IChat {
 }
 
 export interface IChatMessage {
+  message_id?: number;
+  room_id?: number;
   sender_email: string | null;
   name: string;
   generation?: string;

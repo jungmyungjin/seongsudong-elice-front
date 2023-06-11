@@ -11,6 +11,7 @@ function ChatMessage({
 }: IChatMessage) {
   const [chatFromMe, setChatFromMe] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
+  const userEmail = localStorage.getItem('email');
   // const onlineUserList = ['test1@example.com', 'email2@gmail.com'];
 
   // const isOnlineFunc = () => {
@@ -22,7 +23,6 @@ function ChatMessage({
       ? setIsOnline(true)
       : setIsOnline(false);
 
-    const userEmail = localStorage.getItem('email');
     if (userEmail === sender_email) {
       setChatFromMe(true);
     } else {

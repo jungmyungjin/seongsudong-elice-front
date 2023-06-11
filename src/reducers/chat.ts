@@ -30,8 +30,16 @@ const chatSlice = createSlice({
     setChatRoomDetail: (state, action: PayloadAction<IChatRoom>) => {
       state.chatRoomDetail = action.payload;
     },
+    /** 초반에 모든 메세지 불러올 때 */
+    setChatRoomDetailChatList: (
+      state,
+      action: PayloadAction<IChatMessage[]>,
+    ) => {
+      state.chatRoomDetail.chatList = action.payload;
+    },
   },
 });
 
-export const { addChat, setChatRoomDetail } = chatSlice.actions;
+export const { addChat, setChatRoomDetail, setChatRoomDetailChatList } =
+  chatSlice.actions;
 export default chatSlice;

@@ -6,7 +6,11 @@ import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 
-import { addChat, setChatRoomDetail } from 'reducers/chat';
+import {
+  addChat,
+  setChatRoomDetail,
+  setChatRoomDetailChatList,
+} from 'reducers/chat';
 import { online } from 'actions/access';
 
 import { IChatMessage } from 'types/chat';
@@ -30,6 +34,10 @@ function ChatModal() {
 
   /** 소켓 테스트 위해 임의로 설정한 유저 이메일 */
   const userEmail = localStorage.getItem('email');
+  const adminEmail = 'yunzoo0915@gmail.com';
+
+  /** 보내는 이메일 잘 생각해야해 > 로그인한 유저가 관리자면 보내는 이메일은 채팅방의 상대방 이메일을 보내야하고,
+   * 로그인한 유저가 일반 유저면 보내는 이메일은 현재 로그인한 유저의 이메일임 */
 
   /** 자동 스크롤 */
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -37,6 +45,7 @@ function ChatModal() {
 
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`);
 
+  /** 자동 스크롤 */
   useEffect(() => {
     if (scrollContainerRef.current && chatList?.length > 0) {
       scrollContainerRef.current.scrollTop =
@@ -44,55 +53,88 @@ function ChatModal() {
     }
   }, [chatList]);
 
-  /** 어드민 여부 */
+  /** 채팅방 첫 입성시 날짜, 어드민 여부 */
   useEffect(() => {
-    if (userEmail === 'yunzoo0915@gmail.com') {
+    if (userEmail === adminEmail) {
       setIsAdmin(true);
     }
-    const onlineUserList = ['test1@example.com', 'email2@gmail.com'];
-    // onlineUserList.find(user => user === sender_email)
-    //   ? setIsOnline(true)
-    //   : setIsOnline(false);
-  }, []);
-
-  /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
-  useEffect(() => {
     console.log('채팅방 입장:', chatRoomDetail);
+    setDate(convertDate(new Date()));
+
+    /** 소켓 연결 코드 */
     socket.on('connect', () => {
       console.log('소켓 연결 성공');
     });
-    setDate(convertDate(new Date()));
+
+    /**
+     * !관리자 입장: 관리자, 상대방 email ("yunzoo0915@gmail.com", chatRoomDetail.email)
+     * !일반 유저 입장: 일반유저, 관리자 이메일 (userEmail, "yunzoo0915@gmail.com")
+     */
+    if (isAdmin) {
+      socket.emit('enterChatRoom', adminEmail, chatRoomDetail.email);
+    } else {
+      socket.emit('enterChatRoom', userEmail, adminEmail);
+    }
+
+    socket.on('AllMessages', data => {
+      console.log('AllMessages', data);
+      dispatch(setChatRoomDetailChatList(data));
+    });
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  /** 어드민 분기 실행*/
+  useEffect(() => {
     /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
     if (isAdmin)
       setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
-  }, [chatRoomDetail, isAdmin, chatList]);
-
-  /** 모든 메세지 받는 */
-  socket.off('AllMessages').on('AllMessages', data => {
-    console.log(data);
-    // dispatch(addChat({ chatMessage: newOtherChat }));
-  });
+  }, [chatRoomDetail, isAdmin]);
 
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
     setInputValue(e.target.value);
   }
 
+  /** 채팅 보내는 이벤트 */
   function handleSend() {
     if (inputValue.trim().length === 0) {
       return;
     }
-    socket.emit('checkChatRoom', userEmail, inputValue);
-    // 소켓에서 받아온 메세지 형태가 아래와 같음.
-    const newMyChat = {
-      sender_email: userEmail, // 현재 로그인한 유저
-      name: chatRoomDetail.name, // 룸 디테일에 저장된 이름
-      generation: chatRoomDetail.generation, // 룸 디테일에 저장된 제네레이션
-      message: inputValue, // 메세지
-      sentAt: chatTime(new Date()), // 시간
-    };
 
-    dispatch(addChat({ chatMessage: newMyChat }));
+    /** 채팅 리스트 길이가 0이면 > createChatRoom
+     * 채팅 리스트가 있으면 > message
+     * -> 프론트에서 보낼 인자값 (로그인한 사람의 email, 상대방의 email)
+     * !관리자 입장: 관리자, 상대방 email ("yunzoo0915@gmail.com", chatRoomDetail.email)
+     * !일반 유저 입장: 일반유저, 관리자 이메일 (userEmail, "yunzoo0915@gmail.com")
+     */
+    if (chatList.length < 1) {
+      if (isAdmin) {
+        socket.emit(
+          'createChatRoom',
+          adminEmail,
+          chatRoomDetail.email,
+          inputValue,
+        );
+      } else {
+        socket.emit('createChatRoom', userEmail, adminEmail, inputValue);
+      }
+      socket.off('message').on('message', data => {
+        dispatch(addChat({ chatMessage: data }));
+        console.log(data);
+      });
+    } else {
+      if (isAdmin) {
+        socket.emit('message', adminEmail, chatRoomDetail.email, inputValue);
+      } else {
+        socket.emit('message', userEmail, adminEmail, inputValue);
+      }
+      socket.off('message').on('message', data => {
+        dispatch(addChat({ chatMessage: data }));
+        console.log(data);
+      });
+    }
 
     setInputValue('');
   }
