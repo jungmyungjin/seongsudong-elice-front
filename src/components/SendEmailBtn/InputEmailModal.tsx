@@ -83,7 +83,7 @@ function InputEmailModal() {
                 </div>
               </div>
               <div className={styles.modalMessage}>
-                예약정보를 공유할 이메일을 입력해주세요.📮
+                💡 예약정보를 공유할 이메일을 입력해주세요.
               </div>
               <input
                 className={styles.emailInput}
