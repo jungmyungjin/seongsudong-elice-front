@@ -4,7 +4,7 @@ import styles from './signUp.module.scss';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SignUpSelectBtn from 'components/SignUpSelectBtn';
 
-const api = process.env.REACT_APP_BACKEND_ADDRESS + '/api/members/register';
+const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/register';
 
 const SignUp = (): React.ReactElement => {
   const navigate = useNavigate();
@@ -14,10 +14,18 @@ const SignUp = (): React.ReactElement => {
   const [name, setName] = useState('');
   const [course, setCourse] = useState('');
   const [classNumber, setClassNumber] = useState('');
+  const [email, setEmail] = useState('');
 
-  if (token === '') {
-    alert('토큰이 없습니다.');
-  }
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (!state?.email) {
+      navigate('/');
+      alert('잘못된 접근입니다.');
+    } else {
+      setEmail(state.email);
+    }
+  }, [state]);
 
   const courseInfo: { [key: string]: string[] } = {
     SW: [...Array(6).keys()].map(i => i + 1 + ''),
@@ -40,13 +48,10 @@ const SignUp = (): React.ReactElement => {
       token: token, // id_token(credential)
       name: name, // 이름
       generation: `${course}/${classNumber}`, // 기수
+      email,
     };
     try {
-      const res = await axios.post(api, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.post(api, data);
 
       if (res.status === 201) {
         navigate('/');

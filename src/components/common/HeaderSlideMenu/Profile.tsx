@@ -78,10 +78,10 @@ const Profile = (): React.ReactElement => {
     async (e: MouseEvent<HTMLButtonElement>) => {
       const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/logout';
       try {
-        await axios.post(api);
-        navigate('/');
+        await axios.post(api, { withCredentials: true });
         dispatch(closeMenu());
         dispatch(logOut());
+        navigate('/');
       } catch (error) {
         console.log('Logout Error : ', error);
       }

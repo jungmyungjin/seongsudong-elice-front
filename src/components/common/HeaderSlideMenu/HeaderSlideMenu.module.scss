@@ -25,6 +25,11 @@
     font-size: medium;
     font-weight: 100;
   }
+  ul > li > button {
+    width: 100%;
+    height: 100%;
+    text-align: left;
+  }
 }
 
 /* SlideMenu가 열릴 때에 대한 스타일 */

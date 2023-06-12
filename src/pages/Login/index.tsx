@@ -34,9 +34,12 @@ const Login = (): React.ReactElement => {
       const api =
         process.env.REACT_APP_BACKEND_ADDRESS + '/members/login' || '';
       try {
-        const response: ResponseType = await axios.post(api, code);
+        const response: ResponseType = await axios.post(api, code, {
+          withCredentials: true,
+        });
         if (response.status === 200) {
           const { isAdmin, email, name, generation } = response.data;
+
           dispatch(
             logIn({
               isAdmin: isAdmin,
@@ -48,9 +51,13 @@ const Login = (): React.ReactElement => {
           );
           dispatch(online(email));
           navigate('/');
-        } else if (response.status === 204) {
+        } else if (response.status === 201) {
           // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
-          navigate('/signUp');
+          const { email } = response.data;
+
+          navigate('/signUp', {
+            state: { email },
+          });
         } else {
           console.log('status error : ' + response.status);
         }
