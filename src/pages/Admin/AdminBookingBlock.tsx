@@ -323,7 +323,11 @@ function AdminBookingBlock() {
 
         const data = await response.json();
 
-        setBookingData(data.reservations);
+        const dataSortedBySeatNumber = data.reservations.sort(
+          (a: any, b: any) => parseInt(a.seat_number) - parseInt(b.seat_number),
+        );
+
+        setBookingData(dataSortedBySeatNumber);
       } catch (err) {
         console.log(err);
       }
@@ -364,13 +368,13 @@ function AdminBookingBlock() {
   }, [bookingData]);
 
   const cancelHandler = async () => {
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     // 날짜 선택 필요
     if (date === '') {
@@ -415,20 +419,71 @@ function AdminBookingBlock() {
       seatArr = getSeatRange(seatStartNumber, seatEndNumber);
     }
 
-    // try {
-    //   const response = await Promise.all(
-    //     seatArr.map((seat: number | string) => {
-    //       return fetch(
-    //         `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/delete-reservation/${}`,
-    //         {
-    //           method: 'DELETE',
-    //         },
-    //       );
-    //     }),
-    //   );
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    const [startTime, endTime] = getTimeOfReservation();
+
+    let filtering: any[] = [];
+
+    seatArr.map(seat => {
+      const filteredData = bookingData.filter(
+        (data: any) =>
+          data.reservation_date === date &&
+          data.start_time === startTime &&
+          data.end_time === endTime &&
+          data.seat_type === zoneState &&
+          parseInt(data.seat_number) === seat,
+      );
+
+      filtering.push(...filteredData);
+    });
+
+    try {
+      const response = await Promise.all(
+        filtering.map(reservation => {
+          return fetch(
+            `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/delete-reservation/${reservation.reservation_id}`,
+            {
+              method: 'DELETE',
+              credentials: 'include',
+            },
+          );
+        }),
+      );
+
+      await Promise.all(
+        response.map(async res => {
+          if (!res.ok) {
+            throw new Error('좌석 해제 중 에러가 발생했습니다.');
+          }
+        }),
+      );
+
+      // API는 성공적으로 되는데, 화면이 안 바뀜.
+      // filter 필요할듯?
+      // filter 쓰기가 애매한데...여러 개를 제거해야하기 때문에..
+      // 그냥 조회 API를 다시 불러오는걸로 일단 해결.
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
+        {
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error('예약 조회 중 에러가 발생했습니다.');
+      }
+
+      const data = await res.json();
+
+      const dataSortedBySeatNumber = data.reservations.sort(
+        (a: any, b: any) => parseInt(a.seat_number) - parseInt(b.seat_number),
+      );
+
+      setBookingData(dataSortedBySeatNumber);
+
+      alert('좌석이 해제되었습니다.');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
