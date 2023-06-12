@@ -116,10 +116,7 @@ src
 ┣ routes
 ┣ store
 ┣ styles
-┣ types
-┣ App.tsx
-┣ index.tsx
-┗ react-app-env.d.ts
+┗ types
 ```
 
 **Server**
