@@ -53,7 +53,7 @@ export const sendEmail = createAsyncThunk(
   async ({ email, reservationId }: sendEmailData) => {
     try {
       const body = {
-        email,
+        newEmail: email,
         reservationId,
       };
       const response = await axios.post(
