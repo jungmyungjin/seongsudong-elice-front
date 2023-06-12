@@ -40,7 +40,7 @@ function App() {
           <Header />
           <Routes>
             <Route path='/' element={<Main />} />
-            <Route path='/admin' element={<Admin />} />
+            {/* <Route path='/admin' element={<Admin />} />
             <Route path='/admin/booking' element={<AdminBooking />} />
             <Route
               path='/admin/booking/racer'
@@ -50,9 +50,9 @@ function App() {
               path='/admin/booking/block'
               element={<AdminBookingBlock />}
             />
-            <Route path='/admin/notice' element={<AdminNotice />} />
+            <Route path='/admin/notice' element={<AdminNotice />} /> */}
             <Route path='/post/free' element={<Board />} />
-            <Route path='/post/free/:id' element={<PostsDetail />} />
+            {/* <Route path='/post/free/:id' element={<PostsDetail />} />
             <Route path='/post/free/create' element={<CreatePost />} />
             <Route path='/post/free/editPost/:id' element={<PostUpdate />} />
             <Route path='/reservation' element={<Reservation />} />
@@ -60,15 +60,15 @@ function App() {
             <Route path='/mypage/mypost' element={<MyPost />} />
             <Route path='/mypage/myreservation' element={<MyReservation />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/signUp' element={<SignUp />} />
+            <Route path='/signUp' element={<SignUp />} /> */}
             <Route path='/direction' element={<EliceDirection />} />
 
-            {/* <Route element={<AlreadyLoggedInRoutes />}>
+            <Route element={<AlreadyLoggedInRoutes />}>
               <Route path='/login' element={<Login />} />
               <Route path='/signUp' element={<SignUp />} />
-            </Route> */}
+            </Route>
 
-            {/* <Route element={<UserRoutes />}>
+            <Route element={<UserRoutes />}>
               <Route path='/post/free/:id' element={<PostsDetail />} />
               <Route path='/post/free/create' element={<CreatePost />} />
               <Route path='/post/free/editPost/:id' element={<PostUpdate />} />
@@ -76,9 +76,9 @@ function App() {
               <Route path='/mypage' element={<MyPage />} />
               <Route path='/mypage/mypost' element={<MyPost />} />
               <Route path='/mypage/myreservation' element={<MyReservation />} />
-            </Route> */}
+            </Route>
 
-            {/* <Route element={<AdminRoutes />}>
+            <Route element={<AdminRoutes />}>
               <Route path='/admin' element={<Admin />} />
               <Route path='/admin/booking' element={<AdminBooking />} />
               <Route
@@ -90,7 +90,7 @@ function App() {
                 element={<AdminBookingBlock />}
               />
               <Route path='/admin/notice' element={<AdminNotice />} />
-            </Route> */}
+            </Route>
 
             <Route path='/*' element={<Unvalid />} />
           </Routes>
