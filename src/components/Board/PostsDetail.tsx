@@ -53,8 +53,8 @@ const PostDetail: React.FC = () => {
       const response = await axios.post(`http://localhost:5000/api/comments/${id}`, { 
         comment: newComment,
       }, {withCredentials: true});
-      console.log(response.data);
-        setComments([response.data, ...comments]);
+        // 최신 댓글일수록 밑에 쌓임   
+        setComments([...comments, response.data]);
         setNewComment('');
       
     } catch (error) {
@@ -221,18 +221,28 @@ const PostDetail: React.FC = () => {
                 )}
               </div>
               <div className={styles.updateBtnPosition}>
+                {/* 댓글 삭제 버튼 및 수정 버튼 */}
                 <div className={styles.commentUpdateBtn}>
-                  {/* 댓글 수정 버튼 */}
-                  {comment.isEditing ? (
-                    <button onClick={() => editComment(comment.id, editingComment[comment.id])}>확인</button>
-                  ) : (
+                  {comment.author_email === loginUserEmail ? (
+                    comment.isEditing ? (
+                      <button onClick={() => editComment(comment.id, editingComment[comment.id])}>확인</button>
+                    ) : (
+                      <div>
+                        <button
+                          onClick={() => {
+                            setComments(comments.map(c => c.id === comment.id ? {...c, isEditing: true} : c));
+                            setEditingComment({ ...editingComment, [comment.id]: comment.content });
+                          }}
+                        >
+                          수정
+                        </button>
+                        <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id)}>삭제</button>
+                      </div>
+                    )
+                  ) : null}
+                  {loginUserIsAdmin && comment.author_email !== loginUserEmail && (
                     <div>
-                      <button onClick={() => {
-                        setComments(comments.map(c => c.id === comment.id ? {...c, isEditing: true} : c));
-                        setEditingComment({ ...editingComment, [comment.id]: comment.content });
-                      }}>수정</button>
-                      {/* 댓글 삭제 버튼 */}
-                      <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id)}>삭제</button>  
+                      <button className={styles.commentDeleteBtn} onClick={() => deleteComment(comment.id)}>삭제</button>
                     </div>
                   )}
                 </div>
