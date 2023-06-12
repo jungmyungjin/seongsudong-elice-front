@@ -34,11 +34,12 @@ const EliceDirection: React.FC = () => {
 
         // 카카오맵 길찾기 URL 생성
         const url = `https://map.kakao.com/link/to/성수 엘리스 랩,37.54683016184554,127.06628648846453/from/${latitude},${longitude}`;
-        console.log(url);
-        setMapUrl(url);
+        // console.log(url);
+        // setMapUrl(url);
+        window.open(url, "_blank");
         
         // 모달을 연다
-        setIsModalOpen(true);
+        // setIsModalOpen(true);
       });
     } else {
       alert("Geolocation is not supported by this browser.");
