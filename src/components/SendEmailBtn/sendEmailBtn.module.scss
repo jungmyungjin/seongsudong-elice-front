@@ -2,7 +2,7 @@
 @import '../../styles/mixins';
 
 @include mobile {
-  .KakaoShareText {
+  .sendEmailText {
     text-align: center;
 
     svg {
@@ -14,7 +14,7 @@
   }
 }
 
-.kakaoButton {
+.sendEmailBtn {
   width: 100%;
   height: 55px;
   padding: 5px 40px 5px 40px;
@@ -23,7 +23,7 @@
   border-radius: 15px;
   box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
 
-  .KakaoShareText {
+  .sendEmailText {
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -42,13 +42,10 @@
 
     transition: all 0.3s ease-in-out;
 
-    .KakaoShareText {
+    .sendEmailText {
       color: $MAIN_PURPLE;
       svg {
         stroke: $MAIN_PURPLE;
-        & > path {
-          fill: $MAIN_PURPLE;
-        }
       }
     }
   }
