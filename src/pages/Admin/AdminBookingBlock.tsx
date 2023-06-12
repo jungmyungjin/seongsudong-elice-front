@@ -21,7 +21,7 @@ function AdminBookingBlock() {
   const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
   const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
   const email = useSelector((state: RootState) => state.user.email);
-  const generation = useSelector((state: RootState) => state.user.generation);
+  const generation = useSelector((state: RootState) => state.user.course);
   const name = useSelector((state: RootState) => state.user.username);
 
   const dateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
