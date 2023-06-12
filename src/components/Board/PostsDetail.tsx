@@ -5,6 +5,8 @@ import styles from './postsDetail.module.scss';
 import ConfirmModal from 'components/common/ConfirmModal';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { openConfirmModal, closeConfirmModal } from 'reducers/modal';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 
 interface Post {
@@ -42,7 +44,8 @@ const PostDetail: React.FC = () => {
   const navigate = useNavigate(); // useNavigate hook을 가져옵니다.
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const dispatch = useAppDispatch();
-  const isAdmin = 0;
+  const loginUserEmail = useSelector((state: RootState) => state.user.email);
+  const loginUserIsAdmin = useSelector((state: RootState) => state.user.isAdmin);
   
   // 댓글 생성 api 연결
   const addComment = async () => {
@@ -82,7 +85,7 @@ const PostDetail: React.FC = () => {
   // 관리자가 아닌 경우 자신이 작성한 댓글만 삭제할 수 있다.
   const deleteComment = async (commentId: number) => {
     try {
-      const url = isAdmin ? 
+      const url = loginUserIsAdmin ? 
       `http://localhost:5000/api/comments/admin/${id}/${commentId}` :
       `http://localhost:5000/api/comments/${id}/${commentId}`;
 
@@ -164,18 +167,33 @@ const PostDetail: React.FC = () => {
         ))}
       </div>
       <div className={styles.updateAndDeleteBtn}>
-        <button className={styles.updateBtn} onClick={handleEdit}>
-          수정
-        </button>
-        <div>
-          {isConfirmModalOpen && (
-          <ConfirmModal
-            modalMessage='게시물을 삭제하시겠습니까?'
-            modalController={modalController}
-          />
-          )}
-          <button className={styles.deleteBtn} onClick={handleOpenModal}>삭제</button>
-        </div>
+        {(post.email === loginUserEmail) && (
+          <>
+            <button className={styles.updateBtn} onClick={handleEdit}>
+              수정
+            </button>
+            <div>
+              {isConfirmModalOpen && (
+                <ConfirmModal
+                  modalMessage='게시물을 삭제하시겠습니까?'
+                  modalController={modalController}
+                />
+              )}
+              <button className={styles.deleteBtn} onClick={handleOpenModal}>삭제</button>
+            </div>
+          </>
+        )}
+        {loginUserIsAdmin && post.email !== loginUserEmail && (
+          <div>
+            {isConfirmModalOpen && (
+              <ConfirmModal
+                modalMessage='게시물을 삭제하시겠습니까?'
+                modalController={modalController}
+              />
+            )}
+            <button className={styles.deleteBtn} onClick={handleOpenModal}>삭제</button>
+          </div>
+        )}
       </div>
       {/* 댓글 부분 */}
       <div className={styles.underLine}>
