@@ -5,8 +5,9 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   margin: 1rem 0;
+  font-size: 1.1rem;
 
-  > div {
+  > article {
     display: flex;
     align-items: center;
 
@@ -26,7 +27,7 @@
     }
 
     &:nth-child(3) .box {
-      background-color: #9169ff;
+      background-color: #8a7cda;
     }
 
     .kindText {
@@ -40,8 +41,9 @@
   border-radius: 10px;
   background-color: #f2effb;
   height: 2000px;
+  font-size: 1.2rem;
 
-  > section {
+  section {
     width: 90%;
     margin-left: auto;
     margin-top: 5%;
@@ -54,13 +56,13 @@
     height: 102px;
     overflow: hidden;
 
-    > .graduateSeat:last-child {
+    .graduateSeat:last-child {
       height: 100px;
       transform: translateY(-50px);
     }
   }
 
-  > .entrance {
+  .entrance {
     z-index: 1;
     display: flex;
     justify-content: center;
@@ -72,32 +74,32 @@
     position: absolute;
     transform: translateY(-715%) translateX(-11%);
     border: none;
-    font-size: 17px;
+    font-size: 1.2rem;
     background-color: #f2effb;
   }
 
-  > .possible > .visible {
+  .possible > .visible {
     background-color: #c6b3ff;
     cursor: pointer;
-
-    &:not(.alreadyReserved):hover {
-      background-color: #393ff5ab;
-      color: white;
-    }
   }
 
   .impossible > .visible {
     background-color: #b3b3b3;
   }
 
-  .group.possible:last-child.visible,
-  .graduateSeat.possible:last-child.visible {
-    background-color: #9169ff;
+  .group.possible > div:last-child.visible,
+  .possible > div:last-child.graduateSeat {
+    background-color: #8a7cda;
   }
 
-  .possible > .visible.alreadyReserved {
+  section.group.possible > div.visible.alreadyReserved {
     background-color: #b3b3b3;
     cursor: initial;
+  }
+
+  section.possible > div.visible:not(.alreadyReserved):hover {
+    background-color: #c6ccffe8;
+    color: $MAIN_PURPLE;
   }
 }
 
