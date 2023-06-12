@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Pagination from 'components/common/Pagination';
+import Loading from 'components/common/Loading';
 import { usePaginate } from 'hooks/usePaginate';
 
 import styles from './myReservation.module.scss';
@@ -21,18 +22,23 @@ function MyReservationPage() {
   const [showUpcomingReservations, setShowUpcomingReservations] =
     useState(true);
 
-  const { pastReservations, upcomingReservations } = useAppSelector(
-    state => state.myReservation,
-  );
+  const {
+    pastReservations,
+    upcomingReservations,
+    loadMyReservationLoading,
+    loadMyReservationDone,
+    loadMyReservationError,
+  } = useAppSelector(state => state.myReservation);
   const { email } = useAppSelector(state => state.user);
+  const { isMyRevervationModalOpen } = useAppSelector(state => state.modal);
+
+  const dispatch = useAppDispatch();
 
   const myReservationList = showUpcomingReservations
     ? upcomingReservations
     : pastReservations;
 
-  const { isMyRevervationModalOpen } = useAppSelector(state => state.modal);
   const postsPerPage = 10;
-  const dispatch = useAppDispatch();
 
   const {
     currentItems: currentReservation,
@@ -80,7 +86,7 @@ function MyReservationPage() {
         <div className={styles.lengthBox}>
           <p>전체 {myReservationList.length}개</p>
         </div>
-        {currentReservation.length === 0 && (
+        {(currentReservation.length === 0 || loadMyReservationError) && (
           <div className={styles.noReservationBox}>
             <div className={styles.noReservation}>예약이 없습니다.</div>
             <Link to='/reservation' className={styles.Link}>
@@ -89,13 +95,15 @@ function MyReservationPage() {
           </div>
         )}
         <div className={styles.listBox}>
-          {currentReservation.map((item, _) => (
-            <ReservationList
-              key={item.reservation_id}
-              reservation={item}
-              onClick={() => handleOpenReservationModal(item.reservation_id)}
-            />
-          ))}
+          {loadMyReservationLoading && <Loading />}
+          {loadMyReservationDone &&
+            currentReservation.map((item, _) => (
+              <ReservationList
+                key={item.reservation_id}
+                reservation={item}
+                onClick={() => handleOpenReservationModal(item.reservation_id)}
+              />
+            ))}
         </div>
         <Pagination
           postsPerPage={postsPerPage}
