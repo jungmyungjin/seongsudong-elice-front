@@ -1,9 +1,7 @@
 .MainLayout {
   display: flex;
   flex-direction: column;
-  .imageSlider {
-    height: 500px;
-  }
+  position: relative;
 
   .noticeBoard {
     padding: 40px 0px;
