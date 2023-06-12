@@ -9,6 +9,9 @@ export interface ImyReservation {
   cancelMyReservationLoading: boolean;
   cancelMyReservationDone: boolean;
   cancelMyReservationError: null | string;
+  sendEmailLoading: boolean;
+  sendEmailDone: boolean;
+  sendEmailError: null | string;
 }
 
 export interface MyReservation {

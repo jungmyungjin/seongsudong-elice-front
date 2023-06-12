@@ -63,7 +63,8 @@ export const sendEmail = createAsyncThunk(
       console.log('이메일 전송 성공');
       return response.data;
     } catch (error) {
-      return console.error(error);
+      console.error('이메일 전송 에러: ', error);
+      throw error;
     }
   },
 );

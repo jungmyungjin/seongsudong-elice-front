@@ -1,17 +1,28 @@
 import { useState, useRef } from 'react';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
-import { closeSendInputModal } from 'reducers/modal';
+import {
+  closeSendInputModal,
+  openConfirmModal,
+  closeConfirmModal,
+} from 'reducers/modal';
 import { sendEmail } from 'actions/myReservation';
 
 import { ReactComponent as MailFast } from 'assets/MailFast.svg';
 import { ReactComponent as Send } from 'assets/Send.svg';
 import styles from './inputEmailModal.module.scss';
 
+import ConfirmModal from 'components/common/ConfirmModal';
+
 function InputEmailModal() {
-  const { isSendInputModalOpen } = useAppSelector(state => state.modal);
+  const { isSendInputModalOpen, isConfirmModalOpen } = useAppSelector(
+    state => state.modal,
+  );
   const { reservation_id } = useAppSelector(
     state => state.myReservation.myReservationDetail,
+  );
+  const { sendEmailDone, sendEmailError } = useAppSelector(
+    state => state.myReservation,
   );
   const [email, setEmail] = useState<string>('');
   const dispatch = useAppDispatch();
@@ -36,11 +47,28 @@ function InputEmailModal() {
       reservationId: reservation_id,
     };
     dispatch(sendEmail(data));
+    dispatch(openConfirmModal());
     setEmail('');
   };
 
   return (
     <>
+      {sendEmailDone && isConfirmModalOpen && (
+        <ConfirmModal
+          modalMessage='이메일이 전송되었습니다!😉'
+          modalController={() => {
+            dispatch(closeConfirmModal());
+          }}
+        />
+      )}
+      {sendEmailError && isConfirmModalOpen && (
+        <ConfirmModal
+          modalMessage='이메일 전송 중에 오류가 발생했습니다.🥹'
+          modalController={() => {
+            dispatch(closeConfirmModal());
+          }}
+        />
+      )}
       {isSendInputModalOpen && (
         <div
           ref={modalRef}

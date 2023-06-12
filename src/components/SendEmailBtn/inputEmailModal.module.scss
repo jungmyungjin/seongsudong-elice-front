@@ -68,7 +68,7 @@
 .modalMessage {
   display: flex;
   justify-content: center;
-  padding: 30px 0 35px 0;
+  padding: 23px 0 23px 0;
   font-size: 15px;
 }
 
@@ -82,7 +82,7 @@
     justify-content: center;
     align-items: center;
 
-    color: black;
+    color: #000000;
     background-color: $BRIGHT_PURPLE;
     border: 2px solid $MAIN_PURPLE;
 
@@ -98,6 +98,7 @@
     svg {
       stroke-width: 2;
       size: 28;
+      stroke: #000000;
     }
 
     &:hover {
@@ -113,19 +114,16 @@
     }
   }
 }
-
-// .inputWrapper {
-//   max-width: 300px;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   .emailInput {
-//     // align-items: center;
-//     max-width: 300px;
-//   }
-// }
-
 .emailInput {
-  // max-width: 390px;
-  margin: 0 auto; /* 가운데 정렬을 위해 margin 속성을 추가합니다. */
+  margin: 0 auto;
+  width: 280px;
+  margin-bottom: 20px;
+
+  padding: 8px 10px 8px 15px;
+  border-radius: 50px;
+  outline: none;
+  border: none;
+  resize: none;
+  background-color: $CHATGRAY;
+  box-shadow: inset 0px 0px 4px rgba(0, 0, 0, 0.25);
 }
