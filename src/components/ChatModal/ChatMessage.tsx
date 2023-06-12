@@ -12,6 +12,8 @@ function ChatMessage({
 }: IChatMessage) {
   const [chatFromMe, setChatFromMe] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
+
+  const adminEmail = 'elliseusobanggwan@gmail.com';
   const userEmail = useAppSelector(state => state.user.email);
 
   // const isOnlineFunc = () => {
@@ -23,7 +25,11 @@ function ChatMessage({
     //   ? setIsOnline(true)
     //   : setIsOnline(false);
 
-    setChatFromMe(userEmail === sender_email);
+    if (userEmail === sender_email) {
+      setChatFromMe(true);
+    } else {
+      setChatFromMe(false);
+    }
   }, [userEmail, sender_email]);
 
   return (
@@ -42,7 +48,7 @@ function ChatMessage({
             <div className={isOnline ? styles.isOnline : ''} />
           </div>
           <div className={styles.contentContainerFromOther}>
-            {!chatFromMe ? (
+            {userEmail === adminEmail ? (
               <div className={styles.chatName}>
                 [{generation}]{name}
               </div>
