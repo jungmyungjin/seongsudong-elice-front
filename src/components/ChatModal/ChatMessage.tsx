@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './chatMessage.module.scss';
 import { IChatMessage } from 'types/chat';
+import { useAppSelector } from 'hooks/useRedux';
 
 function ChatMessage({
   sender_email,
@@ -11,24 +12,20 @@ function ChatMessage({
 }: IChatMessage) {
   const [chatFromMe, setChatFromMe] = useState(false);
   const [isOnline, setIsOnline] = useState(true);
-  const userEmail = localStorage.getItem('email');
-  // const onlineUserList = ['test1@example.com', 'email2@gmail.com'];
+  const userEmail = useAppSelector(state => state.user.email);
 
   // const isOnlineFunc = () => {
   //   onlineUserList.find(user => user === sender_email) ? setIsOnline(true) : setIsOnline(false)
   // }
   useEffect(() => {
-    const onlineUserList = ['test1@example.com', 'email2@gmail.com'];
-    onlineUserList.find(user => user === sender_email)
-      ? setIsOnline(true)
-      : setIsOnline(false);
+    // const onlineUserList = ['test1@example.com', 'email2@gmail.com'];
+    // onlineUserList.find(user => user === sender_email)
+    //   ? setIsOnline(true)
+    //   : setIsOnline(false);
 
-    if (userEmail === sender_email) {
-      setChatFromMe(true);
-    } else {
-      setChatFromMe(false);
-    }
-  }, []);
+    setChatFromMe(userEmail === sender_email);
+  }, [userEmail, sender_email]);
+
   return (
     <>
       {chatFromMe ? (
@@ -45,8 +42,7 @@ function ChatMessage({
             <div className={isOnline ? styles.isOnline : ''} />
           </div>
           <div className={styles.contentContainerFromOther}>
-            {/* 현재는 윤주님 이메일로 체킹중 */}
-            {sender_email !== 'yunzoo0915@gmail.com' ? (
+            {!chatFromMe ? (
               <div className={styles.chatName}>
                 [{generation}]{name}
               </div>

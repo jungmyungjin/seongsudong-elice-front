@@ -6,6 +6,7 @@ import { closeMyReservationModal } from 'reducers/modal';
 import FullModal from '../common/FullModal';
 import KakaoShareButton from 'components/KakaoShareButton';
 import CancelReservationBtn from 'components/CancelReservationBtn';
+import SendEmailBtn from 'components/SendEmailBtn';
 
 import { ProgrammingZone, MeetingRoom } from './SeatLayout';
 
@@ -76,7 +77,11 @@ function MyReservationModal() {
         </section>
 
         <section className={styles.buttonContainer}>
-          <KakaoShareButton />
+          <div className={styles.shareButtonWrapper}>
+            <SendEmailBtn />
+            <KakaoShareButton />
+          </div>
+
           <CancelReservationBtn />
         </section>
       </div>

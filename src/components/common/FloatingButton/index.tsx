@@ -18,11 +18,10 @@ function FloatingButton() {
   const [hidden, setHidden] = useState(false);
   const dispatch = useAppDispatch();
   const location = useLocation();
-  const userEmail = localStorage.getItem('email');
+  const userEmail = useAppSelector(state => state.user.email);
 
   const handleOpenChatModal = () => {
-    if (userEmail === 'yunzoo0915@gmail.com') {
-      // setIsAdmin(true);
+    if (userEmail === 'elliseusobanggwan@gmail.com') {
       dispatch(openChatListModal());
     }
     // if (isAdmin) dispatch(openChatListModal());
@@ -62,7 +61,9 @@ function FloatingButton() {
               <img src='/images/rabbit.png' alt='rabbit-icon' />
             </div>
             <div className={styles.floatingButtonText}>
-              {userEmail === 'yunzoo0915@gmail.com' ? '문의관리' : '문의하기'}
+              {userEmail === 'elliseusobanggwan@gmail.com'
+                ? '문의관리'
+                : '문의하기'}
             </div>
           </button>
         </div>

@@ -21,13 +21,14 @@ function ConfirmModal({
   };
 
   const handleCloseModal = () => {
-    dispatch(closeConfirmModal());
     if (
       (type === 'successCancelMyReservation' ||
         type === 'errorCancelMyReservation') &&
       closeController
     ) {
       closeController();
+    } else {
+      dispatch(closeConfirmModal());
     }
   };
 
