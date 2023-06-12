@@ -52,13 +52,10 @@ export const sendEmail = createAsyncThunk(
   'myReservation/sendEmail',
   async ({ email, reservationId }: sendEmailData) => {
     try {
-      const body = {
-        newEmail: email,
-        reservationId,
-      };
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/send-email`,
-        { data: body, withCredentials: true },
+        { email: email, reservationId: reservationId },
+        { withCredentials: true },
       );
       console.log('이메일 전송 성공');
       return response.data;
