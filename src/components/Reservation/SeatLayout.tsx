@@ -21,7 +21,6 @@ import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
 import axios, { AxiosRequestConfig } from 'axios';
 
 import styles from './seatLayout.module.scss';
-import { getNearestAvailableTime } from 'utils/getDate';
 
 interface ResponseDataType {
   member_generation: string;
@@ -44,7 +43,7 @@ const SeatLayout: React.FC = () => {
   const [checkReservation, setCheckReservation] = useState<string>('');
   const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
   const [isReservationFail, setIsReservationFail] = useState<boolean>(false);
-  const { email, username, generation } = useSelector(
+  const { email, username, course, generation } = useSelector(
     (state: RootState) => state.user,
   );
   const reservationInfo = useSelector((state: RootState) => state.reservation);
@@ -71,7 +70,8 @@ const SeatLayout: React.FC = () => {
         setServerData(serverDatas);
         const seats = findAvailableSeats(serverDatas, '10:00~14:00');
         setCanReservationSeat(seats);
-        // console.log(serverDatas);
+        console.log(serverDatas);
+        console.log(reservationInfo.reservation_date);
       } catch (error) {
         // 에러 처리
         console.error(error);
@@ -357,28 +357,31 @@ const SeatLayout: React.FC = () => {
   }
 
   function ClickMeetingRoom() {
+    // console.log(canReservationSeat);
     const [isReservationFail, setIsReservationFail] = useState(false);
     const [isVisiterNameInput, setIsVisiterNameInput] = useState(false);
+    let meetingRoomNumber: string = '';
     let typeList: string[] = [];
     if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
       typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
+      meetingRoomNumber = 'A';
     } else if (canReservationSeat.includes('A')) {
       typeList = ['미팅룸A (최대 6인)'];
+      meetingRoomNumber = 'A';
     } else if (canReservationSeat.includes('B')) {
       typeList = ['미팅룸B (최대 10인)'];
+      meetingRoomNumber = 'B';
+    } else {
+      typeList = [];
     }
+    console.log(canReservationSeat);
 
     const [inputValue, setInputValue] = useState('');
 
     const handleMeetingRoomType = (value: string) => {
       // updateReservation({ seat_number: value.charAt(3) });
-      console.log(value);
-      console.log(reservationInfo);
-      console.log('클릭!');
-      console.log(typeof value.charAt(3));
-      const meetingRoomType = value.charAt(3);
-      console.log(meetingRoomType);
-      // updateReservation({ seat_number: meetingRoomType });
+      meetingRoomNumber = value.charAt(3);
+      console.log(meetingRoomNumber);
     };
 
     const handleClickSubmit = async () => {
@@ -393,31 +396,10 @@ const SeatLayout: React.FC = () => {
 
       const startTime = reservationInfo.time.split('~')[0];
       const endTime = reservationInfo.time.split('~')[1];
+      dispatch(openConfirmModal());
 
       try {
-        const request = {
-          member_generation: generation,
-          member_name: username,
-          member_email: email,
-          reservation_date: reservationInfo.reservation_date,
-          start_time: startTime,
-          end_time: endTime,
-          visitors: inputValue,
-          seat_type: reservationInfo.seat_type,
-          seat_number: reservationInfo.seat_number,
-        };
-
-        const response = await axios.post<ResponseDataType>(
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
-          request,
-          {
-            credentials: 'include',
-          } as CustomAxiosRequestConfig<ResponseDataType>,
-        );
-
-        setClickedSubmit(true);
-        console.log(request); // 요청(request) 정보 출력
-        console.log(response.data);
+        updateReservation({ seat_number: meetingRoomNumber });
       } catch (error) {
         setIsReservationFail(true);
         console.error(error);
@@ -476,7 +458,7 @@ const SeatLayout: React.FC = () => {
       for (let i = 0; i < timeArray.length; i++) {
         const request = {
           // 리듀서에 저장된 유저 정보
-          member_generation: generation,
+          member_generation: `${course}/${generation}`,
           member_name: username,
           member_email: email,
           reservation_date: reservationInfo.reservation_date,

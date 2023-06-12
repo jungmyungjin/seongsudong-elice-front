@@ -13,6 +13,7 @@ import {
   getWeekdayDates,
   isSameDay,
   getNearestAvailableTime,
+  isPassedTime,
 } from '../../utils/getDate';
 
 import { ReactComponent as Check } from '../../assets/Check.svg';
@@ -302,29 +303,25 @@ const ReservationOptions: React.FC = () => {
 
   const handleSeatTypeSelect = (value: string) => {
     if (value === '미팅룸') {
-      updateReservation({ seat_type: value });
+      updateReservation({ seat_type: value, time: getNearestAvailableTime() });
       setIsMeetingRoom(true);
     } else {
-      setIsMeetingRoom(false);
       updateReservation({ seat_type: value });
+      setIsMeetingRoom(false);
     }
   };
 
   const handleMeetingRoomTimeSelect = (value: string) => {
+    const timeParts = value.split('~');
+    const [endHour] = timeParts[1].split(':');
+    const endTime = Number(endHour);
     updateReservation({ time: value });
+    console.log(reservationInfo.time);
 
-    const currentTime = new Date().getHours();
-    const [startHour] = value.split(':');
-    const startTime = Number(startHour);
-
-    // 선택한 당일인 경우 선택한 시간과 현재 시간 비교
-    if (isSameDay(reservationInfo.reservation_date)) {
-      if (startTime <= currentTime) {
-        // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행해 모당창을 띄웁니다.
-        setIsPastTime(true);
-        return;
-      }
+    function checkIsPassedTime() {
+      setIsPastTime(true);
     }
+    isPassedTime(endTime, reservationInfo.reservation_date, checkIsPassedTime);
   };
 
   return (
