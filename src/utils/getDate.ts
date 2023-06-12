@@ -144,5 +144,25 @@ export function getNearestAvailableTime(): string {
 }
 
 /**
- * props로 입력받은 시간와 현재 시간을 비교해 해당 시간이 지났는지 확인하는 함수
+ * props로 입력받은 날짜가 당일인지 확인 후
+ * 입력받은 시간와 현재 시간을 비교해 해당 시간이 지났는지 확인하는 함수
+ * @param time : number 형식의 현재 시간과 비교할 시간 데이터 (ex. 14)
+ * @param date : string 형식의 비교할 날짜 데이터
+ * @param callbackFnc : 해당 시간이 지났을 경우 실행할 콜백 함수
+ * @returns void
  */
+export function isPassedTime(
+  time: number,
+  date: string,
+  callbackFnc: () => void,
+): void {
+  const currentTime = new Date().getHours();
+
+  // 선택한 당일인 경우 선택한 시간과 현재 시간 비교
+  if (isSameDay(date)) {
+    if (time <= currentTime) {
+      callbackFnc();
+      return;
+    }
+  }
+}
