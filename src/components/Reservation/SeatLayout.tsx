@@ -18,11 +18,35 @@ import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
 // 더미 데이터
 // import serverDatas from './seatDatas.json';
 
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 import styles from './seatLayout.module.scss';
+import { getNearestAvailableTime } from 'utils/getDate';
+
+interface ResponseDataType {
+  member_generation: string;
+  member_name: string;
+  member_email: string;
+  reservation_date: string;
+  start_time: string;
+  end_time: string;
+  visitors: string;
+  seat_type: string;
+  seat_number: string;
+}
+
+interface CustomAxiosRequestConfig<T> extends AxiosRequestConfig {
+  credentials?: 'include';
+}
 
 const SeatLayout: React.FC = () => {
+  const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
+  const [checkReservation, setCheckReservation] = useState<string>('');
+  const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
+  const [isReservationFail, setIsReservationFail] = useState<boolean>(false);
+  const { email, username, generation } = useSelector(
+    (state: RootState) => state.user,
+  );
   const reservationInfo = useSelector((state: RootState) => state.reservation);
   const dispatch = useAppDispatch();
 
@@ -34,35 +58,20 @@ const SeatLayout: React.FC = () => {
     };
     dispatch(updateReservationInfo(updatedReservationInfo));
   };
-
-  const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
-  const [checkReservation, setCheckReservation] = useState<string>('');
-  const [clickedSubmit, setClickedSubmit] = useState<boolean>(false);
-  const [isReservationFail, setIsReservationFail] = useState<boolean>(false);
-
-  // 더미데이터
-  // const [serverData, setServerData] = useState<ServerResponse>(serverDatas);
-
   // 서버 통신
   const [serverData, setServerData] = useState<ServerResponse>({});
 
   useEffect(() => {
-    // 더미데이터
-    // setServerData(serverDatas);
-
-    // 서버 통신
-    // fetchServerData(reservationInfo.time);
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-          `http://localhost:8080/api/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
         );
         const serverDatas = response.data;
         setServerData(serverDatas);
         const seats = findAvailableSeats(serverDatas, '10:00~14:00');
         setCanReservationSeat(seats);
-        console.log(serverDatas);
+        // console.log(serverDatas);
       } catch (error) {
         // 에러 처리
         console.error(error);
@@ -74,10 +83,8 @@ const SeatLayout: React.FC = () => {
   }, [reservationInfo.reservation_date]);
 
   useEffect(() => {
-    // console.log(reservationInfo.time);
     const seats = findAvailableSeats(serverData, reservationInfo.time);
     setCanReservationSeat(seats);
-    // console.log(canReservationSeat);
   }, [reservationInfo.time]);
 
   useEffect(() => {
@@ -363,7 +370,18 @@ const SeatLayout: React.FC = () => {
 
     const [inputValue, setInputValue] = useState('');
 
-    const handleClickSubmit = () => {
+    const handleMeetingRoomType = (value: string) => {
+      // updateReservation({ seat_number: value.charAt(3) });
+      console.log(value);
+      console.log(reservationInfo);
+      console.log('클릭!');
+      console.log(typeof value.charAt(3));
+      const meetingRoomType = value.charAt(3);
+      console.log(meetingRoomType);
+      // updateReservation({ seat_number: meetingRoomType });
+    };
+
+    const handleClickSubmit = async () => {
       if (typeList.length === 0) {
         setIsReservationFail(true);
         return;
@@ -373,16 +391,45 @@ const SeatLayout: React.FC = () => {
         return;
       }
 
-      updateReservation({ visitors: inputValue });
+      const startTime = reservationInfo.time.split('~')[0];
+      const endTime = reservationInfo.time.split('~')[1];
+
+      try {
+        const request = {
+          member_generation: generation,
+          member_name: username,
+          member_email: email,
+          reservation_date: reservationInfo.reservation_date,
+          start_time: startTime,
+          end_time: endTime,
+          visitors: inputValue,
+          seat_type: reservationInfo.seat_type,
+          seat_number: reservationInfo.seat_number,
+        };
+
+        const response = await axios.post<ResponseDataType>(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
+          request,
+          {
+            credentials: 'include',
+          } as CustomAxiosRequestConfig<ResponseDataType>,
+        );
+
+        setClickedSubmit(true);
+        console.log(request); // 요청(request) 정보 출력
+        console.log(response.data);
+      } catch (error) {
+        setIsReservationFail(true);
+        console.error(error);
+      }
     };
 
     return (
       <section>
         <SingleSelect
           typeList={typeList}
-          onSelect={(value: string) => {
-            updateReservation({ seat_number: value.charAt(3) });
-          }}
+          name='meetingRoomType'
+          onSelect={handleMeetingRoomType}
         />
         <div className={styles.visitor}>모든 방문자 성함을 작성해주세요.</div>
         <input
@@ -419,11 +466,6 @@ const SeatLayout: React.FC = () => {
   };
 
   const handleModalController = async () => {
-    // 리듀서에 저장된 유저 정보
-    // const { email, username, generation } = useSelector(
-    //   (state: RootState) => state.user,
-    // );
-
     const timeArray = reservationInfo.time
       .split(', ')
       .map(time => time.split('~'));
@@ -433,13 +475,10 @@ const SeatLayout: React.FC = () => {
     try {
       for (let i = 0; i < timeArray.length; i++) {
         const request = {
-          member_generation: 'SW/2',
-          member_name: '갤럭시',
-          member_email: 'email222@gmail.com',
           // 리듀서에 저장된 유저 정보
-          // member_generation: generation,
-          // member_name: username,
-          // member_email: email,
+          member_generation: generation,
+          member_name: username,
+          member_email: email,
           reservation_date: reservationInfo.reservation_date,
           start_time: startTime[i],
           end_time: endTime[i],
@@ -448,10 +487,12 @@ const SeatLayout: React.FC = () => {
           seat_number: reservationInfo.seat_number,
         };
 
-        const response = await axios.post(
-          // `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
-          `http://localhost:8080/api/reservations`,
+        const response = await axios.post<ResponseDataType>(
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
           request,
+          {
+            credentials: 'include',
+          } as CustomAxiosRequestConfig<ResponseDataType>,
         );
 
         setClickedSubmit(true);
