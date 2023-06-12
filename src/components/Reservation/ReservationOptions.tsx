@@ -15,11 +15,10 @@ import {
   getNearestAvailableTime,
   isPassedTime,
 } from '../../utils/getDate';
+import AlertModal from './AlertModal';
 
 import { ReactComponent as Check } from '../../assets/Check.svg';
-
 import styles from './reservationOptions.module.scss';
-import AlertModal from './AlertModal';
 
 const DateOptions: React.FC = () => {
   const SelectDate: React.FC<SelectDateProps> = ({
@@ -242,23 +241,23 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
   }, [reservationInfo.reservation_date]);
 
   const handleTimeClick = (index: number, time: string) => {
-    const currentTime = new Date().getHours();
     const timeParts = time.split('~');
     const [endHour] = timeParts[1].split(':');
     const endTime = Number(endHour);
 
-    // 선택한 당일인 경우 선택한 시간과 현재 시간 비교
-    if (isSameDay(reservationInfo.reservation_date)) {
-      if (endTime <= currentTime) {
-        // 선택한 시간이 현재 시간을 지났을 경우 클릭 이벤트 실행해 모당창을 띄웁니다.
-        setIsPastTime(true);
-        return;
-      }
-    }
-
     const updatedClickedState = [...isClicked];
     updatedClickedState[index] = !updatedClickedState[index];
-    setIsClicked(updatedClickedState);
+
+    function checkIsPassedTime() {
+      setIsPastTime(true);
+      updatedClickedState[index] = !updatedClickedState[index];
+      setIsClicked(updatedClickedState);
+    }
+    isPassedTime(endTime, reservationInfo.reservation_date, checkIsPassedTime);
+
+    if (!isPastTime) {
+      setIsClicked(updatedClickedState);
+    }
   };
 
   return (
@@ -288,6 +287,9 @@ const ReservationOptions: React.FC = () => {
   const seatTypeList: string[] = ['개인석', '팀플석', '수료기수석', '미팅룸'];
   const TimeList = ['10:00~14:00', '14:00~18:00', '18:00~22:00'];
   const [isMeetingRoom, setIsMeetingRoom] = useState<boolean>(false);
+  const [selectedType, setSelectedType] = useState<string>(
+    getNearestAvailableTime(),
+  );
   const [isPastTime, setIsPastTime] = useState<boolean>(false);
 
   const reservationInfo = useSelector((state: RootState) => state.reservation);
@@ -311,16 +313,20 @@ const ReservationOptions: React.FC = () => {
     }
   };
 
-  const handleMeetingRoomTimeSelect = (value: string) => {
-    const timeParts = value.split('~');
+  const handleMeetingRoomTimeSelect = (time: string) => {
+    const timeParts = time.split('~');
     const [endHour] = timeParts[1].split(':');
     const endTime = Number(endHour);
-    updateReservation({ time: value });
-    console.log(reservationInfo.time);
+
+    setSelectedType(time);
+    updateReservation({ time: time });
 
     function checkIsPassedTime() {
+      updateReservation({ time: getNearestAvailableTime() });
+      setSelectedType(getNearestAvailableTime());
       setIsPastTime(true);
     }
+
     isPassedTime(endTime, reservationInfo.reservation_date, checkIsPassedTime);
   };
 
@@ -336,11 +342,28 @@ const ReservationOptions: React.FC = () => {
         <TimeSelector typeList={TimeList} />
       ) : (
         <div className={styles.meetingRoomTimeSelector}>
-          <SingleSelect
-            typeList={TimeList}
-            name='time'
-            onSelect={handleMeetingRoomTimeSelect}
-          />
+          <div className={styles.typeSelector}>
+            {TimeList.map(time => (
+              <label
+                key={time}
+                className={
+                  selectedType === time
+                    ? styles.checkedType
+                    : styles.unCheckedType
+                }
+              >
+                <input
+                  type='radio'
+                  name='meetingRoomTimeList'
+                  value={time}
+                  checked={selectedType === time}
+                  onClick={() => handleMeetingRoomTimeSelect(time)}
+                  className={styles.checkboxInput}
+                />
+                {time}
+              </label>
+            ))}
+          </div>
         </div>
       )}
       {isPastTime && (

@@ -14,8 +14,8 @@ export interface SelectDateProps {
 
 export interface SingleSelectProps {
   typeList: string[];
-  name?: string;
-  onSelect?: (value: string) => void;
+  name: string;
+  onSelect: (value: string) => void;
 }
 
 export interface MultiSelectorProps {
