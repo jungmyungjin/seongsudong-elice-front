@@ -1,19 +1,108 @@
 @import 'styles/colors';
 
 .mainImage {
-  background-color: red;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
 
   .mainVideo {
+    width: 100%;
   }
-  .title {
-    position: absolute;
+}
+
+.todayInfo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  animation: 1s 4s fadeIn forwards;
+
+  & > div {
+    margin-right: 2vh;
+    width: 10em;
+    height: 5em;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .infoTitle {
+      color: $MAIN_INFO_TITLE;
+      font-size: 1em;
+    }
+    .infoValue {
+      font-size: 1.5em;
+      color: $MAIN_INFO_VALUE;
+      & > span:last-child {
+        padding-left: 0.2em;
+        font-size: 0.5em;
+        color: $MAIN_INFO_VALUE_UNIT;
+      }
+    }
+  }
+}
+
+// 타이틀 타이핑
+.titleLayout {
+  position: absolute;
+  .typing {
+    font-size: 6vh;
     color: $MAIN_PURPLE;
-    font-size: 5vh;
-    z-index: 1;
     text-shadow: 0px 0px 20px $BRIGHT_GRAY;
+
+    width: 9.2ch;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 0.4vh solid;
+    animation: typing 1.2s steps(9), blink 0.5s step-end infinite alternate 0.5s,
+      fadeOut 1s 3s forwards;
+  }
+}
+
+// keyframes
+@keyframes typing {
+  from {
+    width: 0;
+  }
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    border-color: transparent;
+  }
+  50% {
+    border-color: $MAIN_PURPLE;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-200%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(1turn);
   }
 }

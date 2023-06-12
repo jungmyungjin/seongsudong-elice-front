@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState } from 'react';
 import styles from './cancelReservationBtn.module.scss';
 import ConfirmModal from 'components/common/ConfirmModal';
 
@@ -18,6 +18,7 @@ function CancelReservationBtn() {
   );
   const { email } = useAppSelector(state => state.user);
   const dispatch = useAppDispatch();
+  const [modalName, setModalName] = useState<string>('');
   const myReservationDetail = useAppSelector(
     state => state.myReservation.myReservationDetail,
   );
@@ -28,6 +29,7 @@ function CancelReservationBtn() {
   };
 
   const handleOpenModal = () => {
+    setModalName('cancelConfirm');
     dispatch(openConfirmModal());
   };
 
@@ -43,7 +45,7 @@ function CancelReservationBtn() {
 
   return (
     <>
-      {isConfirmModalOpen && (
+      {modalName === 'cancelConfirm' && isConfirmModalOpen && (
         <ConfirmModal
           modalMessage='해당 예약을 취소하시겠습니까?'
           modalController={handleCancelReservation}

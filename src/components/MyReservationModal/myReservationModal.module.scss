@@ -61,7 +61,14 @@
   .buttonContainer {
     margin-top: 20px;
     button:nth-child(1) {
-      margin-bottom: 20px;
+      margin-bottom: 30px;
+    }
+    .shareButtonWrapper {
+      display: flex;
+      flex-direction: row;
+      button:nth-child(1) {
+        margin-right: 30px;
+      }
     }
   }
 }

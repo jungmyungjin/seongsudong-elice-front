@@ -22,7 +22,7 @@ const menuArr = [
     id: 3,
     to: 'booking',
     icon: 'booking',
-    title: '예약 관리',
+    title: '좌석/예약 관리',
     right: true,
   },
 ];

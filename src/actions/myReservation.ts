@@ -43,6 +43,29 @@ export const cancelMyReservation = createAsyncThunk(
   },
 );
 
+export interface sendEmailData {
+  email: string | null;
+  reservationId: string;
+}
+
+export const sendEmail = createAsyncThunk(
+  'myReservation/sendEmail',
+  async ({ email, reservationId }: sendEmailData) => {
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/send-email`,
+        { email: email, reservationId: reservationId },
+        { withCredentials: true },
+      );
+      console.log('이메일 전송 성공');
+      return response.data;
+    } catch (error) {
+      console.error('이메일 전송 에러: ', error);
+      throw error;
+    }
+  },
+);
+
 export const setMyReservationDetail = createAction<MyReservation>(
   'myReservation/setMyReservationDetail',
 );
