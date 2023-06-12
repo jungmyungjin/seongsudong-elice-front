@@ -29,7 +29,7 @@ function MyPage() {
           <img src='/images/rabbit_profile.png' alt='profile' />
         </div>
         <div className={styles.myName}>
-          [{course}/{generation}] {username}
+          [{course}/{generation}]{username}
         </div>
       </div>
       <div className={styles.myPageMenuContainer}>
