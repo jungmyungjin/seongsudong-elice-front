@@ -43,6 +43,30 @@ const Main = (): React.ReactElement => {
       <section className={styles.imageSlider}>
         <MainImage />
       </section>
+      <section
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <button
+          onClick={() => {
+            localStorage.setItem('email', 'email2@gmail.com');
+            window.location.reload();
+          }}
+        >
+          email2@gmail.com
+        </button>
+        <button
+          onClick={() => {
+            localStorage.setItem('email', 'yunzoo0915@gmail.com');
+            window.location.reload();
+          }}
+        >
+          관리자
+        </button>
+      </section>
 
       <section className={styles.noticeBoard}>
         <div className={styles.boardButton}>
