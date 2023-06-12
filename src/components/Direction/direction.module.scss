@@ -93,7 +93,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: auto;
     border-radius: 10px; // 모달의 모서리를 둥글게 만듭니다.
-  
+
     // iframe 스타일
     iframe {
       width: 100%;
@@ -106,8 +106,8 @@
       width: 80px;
       height: 50px;
       position: absolute;
-      margin-top: 46%;
-      right: 130px;
+      // margin-top: 40%;
+      right: 5%;
       background-color: red;
       color: white;
       border: none;

@@ -13,14 +13,19 @@ function FloatingButton() {
   );
   /* isAdmin전역 저장 성공하면 아래 주석 철회, 일단은 state로 왔다갔다 하면서 테스트 */
   // const {isAdmin} = useAppSelector(state => state.user);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hidden, setHidden] = useState(false);
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const userEmail = localStorage.getItem('email');
 
   const handleOpenChatModal = () => {
-    if (isAdmin) dispatch(openChatListModal());
+    if (userEmail === 'yunzoo0915@gmail.com') {
+      // setIsAdmin(true);
+      dispatch(openChatListModal());
+    }
+    // if (isAdmin) dispatch(openChatListModal());
     else dispatch(openChatModal());
   };
 
@@ -57,7 +62,7 @@ function FloatingButton() {
               <img src='/images/rabbit.png' alt='rabbit-icon' />
             </div>
             <div className={styles.floatingButtonText}>
-              {isAdmin ? '문의관리' : '문의하기'}
+              {userEmail === 'yunzoo0915@gmail.com' ? '문의관리' : '문의하기'}
             </div>
           </button>
         </div>

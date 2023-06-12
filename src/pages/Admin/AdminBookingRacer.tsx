@@ -35,13 +35,13 @@ function AdminBookingRacer() {
   };
 
   const goodbyeHandler = (bookingId: number) => {
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     const isLeave = window.confirm('퇴실 처리를 진행하시겠습니까?');
 
@@ -55,6 +55,7 @@ function AdminBookingRacer() {
           `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/delete-reservation/${bookingId}`,
           {
             method: 'DELETE',
+            credentials: 'include',
           },
         );
 
@@ -90,18 +91,22 @@ function AdminBookingRacer() {
       return;
     }
 
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     const getReservationData = async () => {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
+          {
+            method: 'GET',
+            credentials: 'include',
+          },
         );
 
         if (!response.ok) {

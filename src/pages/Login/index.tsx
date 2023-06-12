@@ -16,7 +16,7 @@ interface ResponseType {
   token: string;
   status: number;
   data: {
-    isAdmin: boolean;
+    isAdmin: number;
     name: string;
     email: string;
     generation: string;
@@ -42,7 +42,7 @@ const Login = (): React.ReactElement => {
 
           dispatch(
             logIn({
-              isAdmin: isAdmin,
+              isAdmin: isAdmin === 1 ? true : false,
               email: email,
               username: name,
               course: generation.split('/')[0],

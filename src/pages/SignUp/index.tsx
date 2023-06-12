@@ -19,7 +19,12 @@ const SignUp = (): React.ReactElement => {
   const { state } = useLocation();
 
   useEffect(() => {
-    setEmail(state.email);
+    if (!state?.email) {
+      navigate('/');
+      alert('잘못된 접근입니다.');
+    } else {
+      setEmail(state.email);
+    }
   }, [state]);
 
   const courseInfo: { [key: string]: string[] } = {

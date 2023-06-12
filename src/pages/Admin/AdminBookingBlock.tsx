@@ -20,6 +20,9 @@ function AdminBookingBlock() {
 
   const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
   const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const email = useSelector((state: RootState) => state.user.email);
+  const generation = useSelector((state: RootState) => state.user.generation);
+  const name = useSelector((state: RootState) => state.user.username);
 
   const dateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
@@ -196,13 +199,13 @@ function AdminBookingBlock() {
   };
 
   const blockHandler = async () => {
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     // 날짜 선택 필요
     if (date === '') {
@@ -253,10 +256,9 @@ function AdminBookingBlock() {
       const response = await Promise.all(
         seatArr.map((seat: number | string) => {
           const data = {
-            // member_generation: '관리자',
-            member_generation: 'SW4기',
-            member_name: '엄윤주',
-            member_email: 'yunzoo0915@gmail.com',
+            member_generation: generation,
+            member_name: name,
+            member_email: email,
             reservation_date: date,
             start_time: startTime,
             end_time: endTime,
@@ -273,6 +275,7 @@ function AdminBookingBlock() {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify(data),
+              credentials: 'include',
             },
           );
         }),
@@ -297,18 +300,21 @@ function AdminBookingBlock() {
       return;
     }
 
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     const getReservationData = async () => {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
+          {
+            credentials: 'include',
+          },
         );
 
         if (!response.ok) {
