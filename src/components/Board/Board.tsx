@@ -8,6 +8,8 @@ import styles from './board.module.scss';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ReactComponent as PostBtn } from 'assets/Create.svg';
 import { Post } from 'types/post';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]); // 게시물 목록을 저장하는 상태 변수
@@ -15,8 +17,7 @@ const Posts: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호를 저장하는 상태 변수
   const [postsPerPage] = useState(10); // 페이지 당 보여줄 게시물 수를 저장하는 상태 변수
   const [searchTerm, setSearchTerm] = useState(''); // 검색어를 저장하는 상태 변수
-  // const [selectedTab, setSelectedTab] = useState('자유'); // 선택된 탭을 저장하는 상태 변수
-  const [isAdmin, setIsAdmin] = useState(true); // isAdmin 상태 변수 (임의로 true로 설정)
+  const loginUserIsAdmin = useSelector((state: RootState) => state.user.isAdmin);
 
   const navigate = useNavigate();
 
@@ -67,7 +68,7 @@ const Posts: React.FC = () => {
           <p>자유</p>
         </Link>
         <Link
-          to='/post/notice'
+          to='/post/free'
           className={classNames(styles.freePost, {
             [styles.selected]: selectedTab === '공지',
           })}
@@ -75,7 +76,7 @@ const Posts: React.FC = () => {
         >
           <p>공지</p>
         </Link>
-        {((isAdmin && selectedTab) === '공지' || selectedTab === '자유') && ( // isAdmin이 true이고 선택된 탭이 '공지'인 경우에만 버튼을 렌더링합니다.
+        {((loginUserIsAdmin && selectedTab === '공지') || selectedTab === '자유') && ( // isAdmin이 true이고 선택된 탭이 '공지'인 경우에만 버튼을 렌더링합니다.
           <Link
             to='/post/free/create'
             className={styles.createBtn}
