@@ -60,25 +60,25 @@ const SeatLayout: React.FC = () => {
   // 서버 통신
   const [serverData, setServerData] = useState<ServerResponse>({});
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
-        );
-        const serverDatas = response.data;
-        setServerData(serverDatas);
-        const seats = findAvailableSeats(serverDatas, '10:00~14:00');
-        setCanReservationSeat(seats);
-        console.log(serverDatas);
-        console.log(reservationInfo.reservation_date);
-      } catch (error) {
-        // 에러 처리
-        console.error(error);
-      }
-    };
+  const fetchData = async (date: string) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
+      );
+      const serverDatas = response.data;
+      setServerData(serverDatas);
+      const seats = findAvailableSeats(serverDatas, date);
+      setCanReservationSeat(seats);
+      console.log(serverDatas);
+      console.log(reservationInfo.reservation_date);
+    } catch (error) {
+      // 에러 처리
+      console.error(error);
+    }
+  };
 
-    fetchData();
+  useEffect(() => {
+    fetchData('10:00~14:00');
     // console.log(canReservationSeat);
   }, [reservationInfo.reservation_date]);
 
@@ -393,11 +393,7 @@ const SeatLayout: React.FC = () => {
         setIsVisiterNameInput(true);
         return;
       }
-
-      const startTime = reservationInfo.time.split('~')[0];
-      const endTime = reservationInfo.time.split('~')[1];
       dispatch(openConfirmModal());
-
       try {
         updateReservation({ seat_number: meetingRoomNumber });
       } catch (error) {
@@ -481,6 +477,7 @@ const SeatLayout: React.FC = () => {
         console.log(request); // 요청(request) 정보 출력
         console.log(response.data);
       }
+      fetchData(reservationInfo.reservation_date);
     } catch (error) {
       setIsReservationFail(true);
       console.error(error);
@@ -514,8 +511,11 @@ const SeatLayout: React.FC = () => {
       {isReservationFail && (
         <AlertModal
           modalMessage1='좌석 예약에 실패하였습니다.🥹'
-          modalMessage2='새로고침 후 다시 시도해주세요.'
-          onClick={() => setIsReservationFail(false)}
+          modalMessage2='다시 시도해주세요.'
+          onClick={() => {
+            setIsReservationFail(false);
+            fetchData(reservationInfo.reservation_date);
+          }}
         />
       )}
     </>

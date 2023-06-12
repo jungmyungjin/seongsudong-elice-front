@@ -5,7 +5,7 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   margin: 1rem 0;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
 
   > article {
     display: flex;
@@ -41,7 +41,8 @@
   border-radius: 10px;
   background-color: #f2effb;
   height: 2000px;
-  font-size: 1.2rem;
+  font-size: 1.7rem;
+  color: black;
 
   section {
     width: 90%;
@@ -92,14 +93,15 @@
     background-color: #8a7cda;
   }
 
-  section.group.possible > div.visible.alreadyReserved {
-    background-color: #b3b3b3;
-    cursor: initial;
-  }
-
   section.possible > div.visible:not(.alreadyReserved):hover {
     background-color: #c6ccffe8;
     color: $MAIN_PURPLE;
+  }
+
+  section.possible > div.visible.alreadyReserved,
+  section.group.possible > div.visible.alreadyReserved {
+    background-color: #b3b3b3;
+    cursor: initial;
   }
 }
 

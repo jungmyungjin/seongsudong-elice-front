@@ -1,24 +1,25 @@
 .dateContainer {
   margin: 10px 0;
-  font-size: 1.5rem;
 
   .currentDate {
     margin-top: 1rem;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    font-weight: bold;
   }
 }
 .date {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.5rem;
+  margin-top: 10px;
   time {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
+    font-weight: bold;
   }
 }
 
 .checkbox {
   display: flex;
-  padding: 1rem 1.4rem;
+  padding: 0.5rem 1.4rem 1.5rem 1.4rem;
   flex-direction: row;
   justify-content: space-between;
 
@@ -44,7 +45,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: bold;
 
   & > label {
     background-color: #f0f1f3;
@@ -80,7 +82,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
+  font-weight: bold;
 
   & > * {
     background-color: #f0f1f3;
