@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomLink from 'components/common/Link';
 import ConfirmModal from 'components/common/ConfirmModal';
@@ -29,10 +29,13 @@ const myPageMenu = [
 
 function MyPage() {
   const [modalType, setModalType] = useState<string>('');
+
+  const { isConfirmModalOpen } = useAppSelector(state => state.modal);
   const { username, course, generation, email } = useAppSelector(
     state => state.user,
   );
-  const { isConfirmModalOpen } = useAppSelector(state => state.modal);
+  const { logoutDone, logoutError, deleteUserDone, deleteUserError } =
+    useAppSelector(state => state.user);
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -42,27 +45,41 @@ function MyPage() {
     dispatch(openConfirmModal());
   };
 
-  const handleLogout = () => {
-    dispatch(logOut());
-    dispatch(offline(email));
-    dispatch(closeConfirmModal());
-    setModalType('');
-    navigate('/');
-    dispatch(logout());
-  };
-
   const onClickDeleteUserButton = () => {
     setModalType('deleteUser');
     dispatch(openConfirmModal());
   };
 
-  const handleDeleteUser = () => {
-    dispatch(logOut());
+  const handleLogout = () => {
     dispatch(offline(email));
     dispatch(closeConfirmModal());
     setModalType('');
-    navigate('/');
-    dispatch(deleteUser());
+    dispatch(logout());
+    if (logoutDone) {
+      dispatch(logOut());
+      navigate('/');
+    } else if (logoutError) {
+      setModalType('logoutAlert');
+      dispatch(openConfirmModal());
+    }
+  };
+
+  const handleDeleteUser = () => {
+    dispatch(offline(email));
+    dispatch(closeConfirmModal());
+    setModalType('');
+    dispatch(deleteUser(email));
+    if (deleteUserDone) {
+      dispatch(logOut());
+      navigate('/');
+    } else if (deleteUserError) {
+      setModalType('deleteUserAlert');
+      dispatch(openConfirmModal());
+    }
+  };
+
+  const handleClose = () => {
+    dispatch(closeConfirmModal());
   };
 
   return (
@@ -79,6 +96,20 @@ function MyPage() {
           modalController={handleDeleteUser}
         />
       )}
+      {logoutError && modalType === 'logoutAlert' && isConfirmModalOpen && (
+        <ConfirmModal
+          modalMessage='로그아웃 중에 오류가 발생했습니다.'
+          modalController={handleClose}
+        />
+      )}
+      {deleteUserError &&
+        modalType === 'deleteUserAlert' &&
+        isConfirmModalOpen && (
+          <ConfirmModal
+            modalMessage='탈퇴 중에 오류가 발생했습니다.'
+            modalController={handleClose}
+          />
+        )}
       <div className={styles.myPageContainer}>
         <div className={styles.header}>
           <div className={styles.headerImage}>
