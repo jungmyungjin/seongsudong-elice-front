@@ -107,7 +107,7 @@ function AdminBookingBlock() {
       return true;
     }
 
-    if (zoneState === '단체석') {
+    if (zoneState === '팀플석') {
       if (
         start < groupStart1 ||
         (start > groupEnd1 && start < groupdStart2) ||
@@ -289,7 +289,31 @@ function AdminBookingBlock() {
         }),
       );
 
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
+        {
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error('예약 조회 중 에러가 발생했습니다.');
+      }
+
+      const data = await res.json();
+
+      const dataSortedBySeatNumber = data.reservations.sort(
+        (a: any, b: any) => parseInt(a.seat_number) - parseInt(b.seat_number),
+      );
+
+      setBookingData(dataSortedBySeatNumber);
+
       alert('예약 제한이 완료되었습니다.');
+
+      setZoneState('');
+      setSeatStartNumber('');
+      setSeatEndNumber('');
+      setCheckedLabel('');
     } catch (err) {
       console.log(err);
     }
@@ -457,10 +481,6 @@ function AdminBookingBlock() {
         }),
       );
 
-      // API는 성공적으로 되는데, 화면이 안 바뀜.
-      // filter 필요할듯?
-      // filter 쓰기가 애매한데...여러 개를 제거해야하기 때문에..
-      // 그냥 조회 API를 다시 불러오는걸로 일단 해결.
       const res = await fetch(
         `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
         {
@@ -481,6 +501,11 @@ function AdminBookingBlock() {
       setBookingData(dataSortedBySeatNumber);
 
       alert('좌석이 해제되었습니다.');
+
+      setZoneState('');
+      setSeatStartNumber('');
+      setSeatEndNumber('');
+      setCheckedLabel('');
     } catch (err) {
       console.log(err);
     }
