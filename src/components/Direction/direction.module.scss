@@ -3,6 +3,9 @@
     margin: 60px auto 0 auto;
     font-size: 50px;
     color: #682BE0;
+    white-space: nowrap; /* 줄바꿈을 방지하고, 내용이 한 줄로 표시됩니다. */
+    overflow: hidden; /* 넘치는 부분은 숨김 처리합니다. */
+    text-overflow: ellipsis; /* 넘치는 부분에 생략 부호 (...)를 표시합니다. */
 }
 
 .mapTitle {
@@ -12,6 +15,11 @@
     align-items: center;
     
     p {
+        // margin-top: auto;
+        // margin-bottom: auto;
+        white-space: nowrap; /* 줄바꿈을 방지하고, 내용이 한 줄로 표시됩니다. */
+        overflow: hidden; /* 넘치는 부분은 숨김 처리합니다. */
+        text-overflow: ellipsis; /* 넘치는 부분에 생략 부호 (...)를 표시합니다. */
         margin-left: 10px;
         font-size: 25px;
         color: #682BE0;
@@ -93,7 +101,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: auto;
     border-radius: 10px; // 모달의 모서리를 둥글게 만듭니다.
-
+  
     // iframe 스타일
     iframe {
       width: 100%;
@@ -106,7 +114,7 @@
       width: 80px;
       height: 50px;
       position: absolute;
-      // margin-top: 40%;
+      // margin-top: 46%;
       right: 5%;
       background-color: red;
       color: white;

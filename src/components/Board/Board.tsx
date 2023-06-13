@@ -25,12 +25,14 @@ const Posts: React.FC = () => {
 
   const [selectedTab, setSelectedTab] = useState(state ? '공지' : '자유');
 
+  const backendUrl = process.env.REACT_APP_BACKEND_ADDRESS;
+
   // 카테고리별 게시물 리스트 조회 api
   useEffect(() => {
     const fetchPosts = async () => {
       const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
       const response = await axios.get(
-        `http://localhost:5000/api/posts?category=${category}`,
+        `${backendUrl}/posts?category=${category}`,
       );
       // 선택된 탭에 따라 게시물을 필터링합니다.
       console.log(response.data);

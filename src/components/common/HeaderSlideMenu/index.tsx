@@ -62,18 +62,18 @@ const HeaderSlideMenu = (): React.ReactElement => {
                 <span>마이페이지</span>
               </button>
             </li>
-            <li>
-              <button onClick={() => handleClick('/reservation')}>
-                <span>예약하기</span>
-              </button>
-            </li>
-            <li>
-              <button onClick={() => handleClick('/post/free')}>
-                <span>게시판</span>
-              </button>
-            </li>
           </>
         ) : null}
+        <li>
+          <button onClick={() => handleClick('/reservation')}>
+            <span>예약하기</span>
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleClick('/post/free')}>
+            <span>게시판</span>
+          </button>
+        </li>
         <li>
           <button onClick={() => handleClick('/direction')}>
             <span>찾아오시는 길</span>
