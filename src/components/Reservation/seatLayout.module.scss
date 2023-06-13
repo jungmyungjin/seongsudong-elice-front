@@ -7,7 +7,7 @@
   margin: 1rem 0;
   font-size: 1.2rem;
 
-  > article {
+  article {
     display: flex;
     align-items: center;
 
@@ -121,6 +121,7 @@
 }
 
 .visitor {
+  font-size: 1.4rem;
   margin: 1rem 0;
 }
 
@@ -141,8 +142,9 @@
   color: white;
   position: fixed;
   width: 720px;
-  text-align: center;
-  padding-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transform: translateX(-20px);
   cursor: pointer;
 }
@@ -160,12 +162,12 @@
 .group {
   height: 100px;
 
-  > div:first-child {
+  div:first-child {
     width: calc(4 / 5 * 100%);
     height: 100px;
   }
 
-  > div:last-child {
+  div:last-child {
     width: calc(1 / 5 * 100%);
     height: 100px;
   }

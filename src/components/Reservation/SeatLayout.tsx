@@ -466,7 +466,7 @@ const SeatLayout: React.FC = () => {
         };
 
         const response = await axios.post<ResponseDataType>(
-          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations`,
+          `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/`,
           request,
           {
             credentials: 'include',
@@ -514,7 +514,7 @@ const SeatLayout: React.FC = () => {
           modalMessage2='다시 시도해주세요.'
           onClick={() => {
             setIsReservationFail(false);
-            fetchData(reservationInfo.reservation_date);
+            // fetchData(reservationInfo.reservation_date);
           }}
         />
       )}

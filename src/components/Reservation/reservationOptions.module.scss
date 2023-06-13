@@ -23,11 +23,11 @@
   flex-direction: row;
   justify-content: space-between;
 
-  & > .checkboxInput {
+  .checkboxInput {
     display: none;
   }
 
-  & > .checkboxLabel {
+  .checkboxLabel {
     height: 30px;
     width: 30px;
     border: 2px solid #9c9c9c;
@@ -35,7 +35,7 @@
     cursor: pointer;
   }
 
-  & > input:checked + .checkboxLabel {
+  input:checked + .checkboxLabel {
     background-color: #524fa1;
     border: 2px solid #524fa1;
   }
@@ -48,7 +48,7 @@
   font-size: 1.3rem;
   font-weight: bold;
 
-  & > label {
+  label {
     background-color: #f0f1f3;
     border: 2px solid #9c9c9c;
     border-radius: 8px;
@@ -62,12 +62,12 @@
     justify-content: center;
   }
 
-  & > label:not(:last-child) {
+  label:not(:last-child) {
     margin-right: 0.5rem;
     margin-bottom: 0.9rem;
   }
 
-  & > label.checkedType {
+  label.checkedType {
     background-color: #524fa1;
     border: 2px solid #524fa1;
     color: #e2e1ff;
@@ -85,7 +85,7 @@
   font-size: 1.3rem;
   font-weight: bold;
 
-  & > * {
+  * {
     background-color: #f0f1f3;
     border: 2px solid #9c9c9c;
     border-radius: 8px;
@@ -96,12 +96,12 @@
     cursor: pointer;
   }
 
-  & > *:not(:last-child) {
+  *:not(:last-child) {
     margin-right: 0.5rem;
     margin-bottom: 0.7rem;
   }
 
-  & > .checkedType {
+  .checkedType {
     background-color: #e2e1ff;
     border: 2px solid #524fa1;
     color: #524fa1;
