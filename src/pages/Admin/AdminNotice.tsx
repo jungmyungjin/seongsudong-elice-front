@@ -45,7 +45,7 @@ function AdminNotice() {
       />
 
       <div className={styles.btnDiv}>
-        <Link to='/post/free/create' className={styles.addBtn}>
+        <Link to='/post/free/create' className={styles.addBtn} state={{ selectedTab: "공지" }}>
           추가
         </Link>
       </div>

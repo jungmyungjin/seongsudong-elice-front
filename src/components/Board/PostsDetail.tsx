@@ -104,7 +104,7 @@ const PostDetail: React.FC = () => {
   useEffect(() => {
     console.log("run");
     const fetchPost = async () => {
-      const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+      const response = await axios.get(`http://localhost:5000/api/posts/${id}`,{withCredentials: true});
       setPost(response.data.postData);
       setComments(response.data?.commentsData?.filter((comment: Comment) => comment.post_id === Number(id)));
     };
@@ -123,7 +123,7 @@ const PostDetail: React.FC = () => {
 
   const modalController = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/posts/${id}`);
+      const response = await axios.delete(`http://localhost:5000/api/posts/${id}`,{withCredentials: true});
       if(response.status === 200) {
         dispatch(closeConfirmModal());
         navigate("/post/free");
