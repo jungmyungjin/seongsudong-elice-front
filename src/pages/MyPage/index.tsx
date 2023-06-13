@@ -50,29 +50,30 @@ function MyPage() {
     dispatch(openConfirmModal());
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     dispatch(offline(email));
     dispatch(closeConfirmModal());
     setModalType('');
-    dispatch(logout());
-    if (logoutDone) {
-      navigate('/');
+
+    try {
+      await dispatch(logout()).unwrap();
       dispatch(logOut());
-    } else if (logoutError) {
+      navigate('/');
+    } catch (error) {
       setModalType('logoutAlert');
       dispatch(openConfirmModal());
     }
   };
 
-  const handleDeleteUser = () => {
+  const handleDeleteUser = async () => {
     dispatch(offline(email));
     dispatch(closeConfirmModal());
     setModalType('');
-    dispatch(deleteUser(email));
-    if (deleteUserDone) {
-      navigate('/');
+    try {
+      await dispatch(deleteUser(email)).unwrap();
       dispatch(logOut());
-    } else if (deleteUserError) {
+      navigate('/');
+    } catch (error) {
       setModalType('deleteUserAlert');
       dispatch(openConfirmModal());
     }
