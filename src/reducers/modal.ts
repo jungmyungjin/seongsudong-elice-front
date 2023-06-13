@@ -7,6 +7,8 @@ export const initialState: ModalState = {
   isMyRevervationModalOpen: false,
   isChatListModalOpen: false,
   isSendInputModalOpen: false,
+  isLogOutModalOpen : false,
+  isDeleteAccoutModalOpen : false,
 };
 
 const modalSlice = createSlice({
@@ -43,6 +45,18 @@ const modalSlice = createSlice({
     closeSendInputModal: state => {
       state.isSendInputModalOpen = false;
     },
+    openLogOuttModal: state => {
+      state.isLogOutModalOpen = true;
+    },
+    closeLogOutModal: state => {
+      state.isLogOutModalOpen = false;
+    },
+    openDeleteAccoutModal: state => {
+      state.isDeleteAccoutModalOpen = true;
+    },
+    closeDeleteAccoutModal: state => {
+      state.isDeleteAccoutModalOpen = false;
+    },
   },
 });
 
@@ -57,5 +71,9 @@ export const {
   closeChatListModal,
   openSendInputModal,
   closeSendInputModal,
+  openLogOuttModal,
+  closeLogOutModal,
+  openDeleteAccoutModal,
+  closeDeleteAccoutModal,
 } = modalSlice.actions;
 export default modalSlice;

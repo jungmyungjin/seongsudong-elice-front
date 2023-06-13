@@ -7,7 +7,12 @@ import styles from './myPage.module.scss';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { logOut } from 'reducers/user';
 import { logout } from 'actions/user';
-import { openConfirmModal, closeConfirmModal } from 'reducers/modal';
+import {
+  openLogOuttModal,
+  closeLogOutModal,
+  openDeleteAccoutModal,
+  closeDeleteAccoutModal,
+} from 'reducers/modal';
 import { offline } from 'actions/access';
 
 const myPageMenu = [
@@ -31,29 +36,66 @@ function MyPage() {
   const { username, course, generation, email } = useAppSelector(
     state => state.user,
   );
-  const { isConfirmModalOpen } = useAppSelector(state => state.modal);
+  const { isLogOutModalOpen, isDeleteAccoutModalOpen } = useAppSelector(
+    state => state.modal,
+  );
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleLogout = () => {
+  // Login
+  const handleNextLogout = () => {
     dispatch(logOut());
     dispatch(offline(email));
-    dispatch(closeConfirmModal());
+    dispatch(closeLogOutModal());
     navigate('/');
     dispatch(logout());
   };
-
+  const handlePrevLogout = () => {
+    dispatch(closeLogOutModal());
+  };
   const onClickLogoutButton = () => {
-    dispatch(openConfirmModal());
+    dispatch(openLogOuttModal());
+  };
+
+  // DeleteAccount
+  const handleNextDeleteAccout = () => {
+    // 회원 삭제 API 추가
+    console.log('사용자 삭제 API');
+    // 로그아웃 적용
+    console.log('로그아웃 적용');
+
+    dispatch(closeDeleteAccoutModal());
+  };
+  const onClickDeleteAccount = () => {
+    dispatch(openDeleteAccoutModal());
+  };
+  const handlePrevDeleteAccout = () => {
+    dispatch(closeDeleteAccoutModal());
   };
 
   return (
     <>
-      {isConfirmModalOpen && (
+      {isLogOutModalOpen && (
         <ConfirmModal
+          isOpen={isLogOutModalOpen}
+          type='LogOut'
           modalMessage='로그아웃 하시겠습니까?'
-          modalController={handleLogout}
+          modalController={handleNextLogout}
+          closeController={handlePrevLogout}
+        />
+      )}
+      {isDeleteAccoutModalOpen && (
+        <ConfirmModal
+          isOpen={isDeleteAccoutModalOpen}
+          type='DeleteAccout'
+          modalMessage='회원 탈퇴를 하시겠습니까?'
+          modalSubMessages={[
+            '회원 탈퇴시 복구가 불가능 하며,',
+            '작성하신 모든 게시물 및 댓글이 삭제됩니다.',
+          ]}
+          modalController={handleNextDeleteAccout}
+          closeController={handlePrevDeleteAccout}
         />
       )}
       <div className={styles.myPageContainer}>
@@ -79,6 +121,11 @@ function MyPage() {
         <div className={styles.logoutBtnContainer}>
           <button className={styles.logoutBtn} onClick={onClickLogoutButton}>
             로그아웃
+          </button>
+        </div>
+        <div className={styles.logoutBtnContainer}>
+          <button className={styles.logoutBtn} onClick={onClickDeleteAccount}>
+            회원탈퇴
           </button>
         </div>
       </div>

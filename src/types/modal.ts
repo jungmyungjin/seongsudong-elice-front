@@ -4,6 +4,8 @@ export interface ModalState {
   isMyRevervationModalOpen: boolean;
   isChatListModalOpen: boolean;
   isSendInputModalOpen: boolean;
+  isLogOutModalOpen: boolean;
+  isDeleteAccoutModalOpen: boolean;
 }
 
 /**
@@ -11,7 +13,9 @@ export interface ModalState {
  * @props {()=>void} modalController 추후 확인 버튼을 통해 api 연동할 때 넘겨줄 함수
  */
 export interface ModalProps {
+  isOpen?: boolean;
   modalMessage: string;
+  modalSubMessages?: string[];
   type?: string;
   modalController?: () => void;
   closeController?: () => void;

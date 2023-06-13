@@ -6,24 +6,29 @@ import { ModalProps } from 'types/modal';
 import { ReactComponent as AlertCircle } from 'assets/AlertCircle.svg';
 
 function ConfirmModal({
+  isOpen,
   modalMessage,
+  modalSubMessages,
   type,
   modalController,
   closeController,
 }: ModalProps) {
+
   const { isConfirmModalOpen } = useAppSelector(state => state.modal);
+  isOpen = isOpen ? isOpen : isConfirmModalOpen;
   const dispatch = useAppDispatch();
   const modalRef = useRef<HTMLDivElement>(null);
 
   const onClickBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current === e.target && isConfirmModalOpen)
+    if (modalRef.current === e.target && isOpen)
       dispatch(closeConfirmModal());
   };
-
   const handleCloseModal = () => {
     if (
       (type === 'successCancelMyReservation' ||
-        type === 'errorCancelMyReservation') &&
+        type === 'errorCancelMyReservation' ||
+        type === 'DeleteAccout' ||
+        type === 'LogOut') &&
       closeController
     ) {
       closeController();
@@ -32,9 +37,10 @@ function ConfirmModal({
     }
   };
 
+
   return (
     <>
-      {isConfirmModalOpen && (
+      {isOpen && (
         <div
           ref={modalRef}
           onClick={onClickBackdrop}
@@ -42,20 +48,27 @@ function ConfirmModal({
         >
           <div className={styles.modalContainer}>
             <div className={styles.overlay}>
-              <div className={styles.modalTop}>
+              <div className={`${styles.modalTop} ${type === 'DeleteAccout' ? styles.modalTopDeleteAccout : ''}`}>
                 <div className={styles.modalTitle}>
                   <AlertCircle />
                 </div>
               </div>
-              <div className={styles.modalMessage}>{modalMessage}</div>
+
+              <div
+                className={`${styles.modalMessage} ${type === 'DeleteAccout' ? styles.modalMessageDeleteAccount : ''}`}>
+                {modalMessage}
+                <div className={styles.modalSubMessage}>{modalSubMessages?.map((msg, idx) => <span key={idx}>{msg}</span>)}
+                </div>
+              </div>
               <div className={styles.modalButtonContainer}>
                 <button
-                  className={styles.confirmBtn}
+                  className={`${styles.confirmBtn} ${type === 'DeleteAccout' ? styles.confirmDeleteAccoutBtn : ''}`}
                   onClick={handleCloseModal}
                 >
                   취소
                 </button>
-                <button className={styles.confirmBtn} onClick={modalController}>
+                <button className={`${styles.confirmBtn} ${type === 'DeleteAccout' ? styles.confirmDeleteAccoutBtn : ''}`}
+                  onClick={modalController}>
                   확인
                 </button>
               </div>
