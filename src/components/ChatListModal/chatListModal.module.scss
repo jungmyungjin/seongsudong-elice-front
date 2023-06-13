@@ -1,6 +1,8 @@
 .chatListModalWrapper {
   padding: 30px 20px;
-
+  ::-webkit-scrollbar {
+    display: none;
+  }
   .headerContainer {
     color: black;
     display: flex;

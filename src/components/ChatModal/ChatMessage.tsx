@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './chatMessage.module.scss';
 import { IChatMessage } from 'types/chat';
 import { useAppSelector } from 'hooks/useRedux';
+import useOnlineStatus from '../../hooks/useOnlineStatus';
 
 function ChatMessage({
   sender_email,
@@ -10,27 +11,27 @@ function ChatMessage({
   message,
   sentAt,
 }: IChatMessage) {
-  const [chatFromMe, setChatFromMe] = useState(false);
-  const [isOnline, setIsOnline] = useState(true);
+  const [chatFromMe, setChatFromMe] = useState<boolean>(false);
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+  const isOnline = useOnlineStatus(sender_email);
 
   const adminEmail = 'elliseusobanggwan@gmail.com';
   const userEmail = useAppSelector(state => state.user.email);
+  const getEmailList = useAppSelector(state => state.chat.onlineList);
 
-  // const isOnlineFunc = () => {
-  //   onlineUserList.find(user => user === sender_email) ? setIsOnline(true) : setIsOnline(false)
-  // }
   useEffect(() => {
-    // const onlineUserList = ['test1@example.com', 'email2@gmail.com'];
-    // onlineUserList.find(user => user === sender_email)
-    //   ? setIsOnline(true)
-    //   : setIsOnline(false);
-
+    console.log('getEmailList: ', getEmailList);
     if (userEmail === sender_email) {
       setChatFromMe(true);
     } else {
       setChatFromMe(false);
     }
-  }, [userEmail, sender_email]);
+    if (userEmail === adminEmail) {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  }, [userEmail, sender_email, getEmailList, isAdmin]);
 
   return (
     <>
@@ -48,7 +49,7 @@ function ChatMessage({
             <div className={isOnline ? styles.isOnline : ''} />
           </div>
           <div className={styles.contentContainerFromOther}>
-            {userEmail === adminEmail ? (
+            {isAdmin ? (
               <div className={styles.chatName}>
                 [{generation}]{name}
               </div>

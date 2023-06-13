@@ -7,9 +7,15 @@ import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
 import Loading from '../common/Loading';
 
-import { addChat, setChatRoomDetailChatList } from 'reducers/chat';
+import useOnlineStatus from 'hooks/useOnlineStatus';
 
-import { IChatMessage } from 'types/chat';
+import {
+  addChat,
+  setChatRoomDetailChatList,
+  setOnlineEmailList,
+} from 'reducers/chat';
+
+import { IChatMessage, emailList } from 'types/chat';
 import { convertDate, chatTime } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
@@ -18,7 +24,6 @@ import { io } from 'socket.io-client';
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-  const [isOnline, setIsOnline] = useState<boolean>(true);
   const [inputValue, setInputValue] = useState<string>('');
   const [date, setDate] = useState<string>('');
 
@@ -26,13 +31,14 @@ function ChatModal() {
   const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
   const chatRoomDetail = useAppSelector(state => state.chat.chatRoomDetail);
 
-  // const { isChatModalOpen } = useAppSelector(state => state.modal);
-  const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`);
+  const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
+    reconnection: false,
+  });
 
   /****************** 소켓 위해 지정한 관리자 이메일 *****************/
   const adminEmail = 'elliseusobanggwan@gmail.com';
   const userEmail = useAppSelector(state => state.user.email);
-
+  const isOnline = useOnlineStatus(userEmail);
   /***********************************************************************/
 
   /****************************** 자동 스트롤 *******************************/
@@ -56,29 +62,26 @@ function ChatModal() {
     if (isAdmin)
       setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
-
     setDate(convertDate(new Date()));
 
-    socket.on('connect', () => {
-      enterChatRoom();
-    });
-  }, [chatRoomDetail.email, isAdmin]);
+    /** 소켓 **/
+    enterChatRoom();
+
+    return () => {
+      socket.off('enterChatRoom');
+      socket.off('AllMessages');
+    };
+  }, [chatRoomDetail.email, isAdmin, userEmail, adminEmail]);
   /***********************************************************************/
 
-  // 이게 한 번만 실행되게 조건을 걸어보는 방향으로
   useEffect(() => {
     onMessage();
+    getOnline();
+    return () => {
+      socket.off('message');
+      socket.off('onlineStatus');
+    };
   }, []);
-  // useEffect(() => {
-  //   if (isChatModalOpen) {
-  //     onMessage();
-  //   } else {
-  //     socket.disconnect();
-  //   }
-  //   // return () => {
-  //   //   socket.disconnect();
-  //   // };
-  // }, [isChatModalOpen]);
 
   /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -90,6 +93,7 @@ function ChatModal() {
       return;
     }
     sendMessage(inputValue);
+    sendOnline();
     setInputValue('');
   }
 
@@ -136,17 +140,30 @@ function ChatModal() {
       console.log('newChat: ', newChatMessage);
       dispatch(addChat({ chatMessage: newChatMessage }));
     });
-    getOnline();
+  }
+
+  function sendOnline() {
+    console.log('start to get isOnline');
+    if (isAdmin) {
+      console.log('Admin인 경우');
+      console.log(
+        'userEmail : ',
+        chatRoomDetail.email,
+        'adminEmail: ',
+        adminEmail,
+      );
+      socket.emit('isOnlineStatus', chatRoomDetail.email, adminEmail);
+    } else {
+      console.log('isAdmin가 아닌 경우');
+      console.log('userEmail : ', userEmail, 'adminEmail: ', adminEmail);
+      socket.emit('isOnlineStatus', userEmail, adminEmail);
+    }
   }
 
   function getOnline() {
-    if (isAdmin) {
-      socket.emit('isOnline', chatRoomDetail.email, adminEmail);
-    } else {
-      socket.emit('isOnline', userEmail, userEmail);
-    }
-    socket.on('isOnline', data => {
+    socket.on('onlineStatus', (data: emailList[]) => {
       console.log(data);
+      dispatch(setOnlineEmailList(data));
     });
   }
   /***********************************************************************/
@@ -171,10 +188,10 @@ function ChatModal() {
                   />
                 ))
               ) : (
-                ''
+                <Loading />
               )
             ) : (
-              <Loading />
+              <></>
             )}
           </div>
         </div>
