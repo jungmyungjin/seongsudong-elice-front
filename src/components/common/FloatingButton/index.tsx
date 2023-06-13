@@ -1,5 +1,5 @@
 // import Draggable, { DraggableData } from 'react-draggable';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { openChatModal, openChatListModal } from 'reducers/modal';
@@ -18,14 +18,17 @@ function FloatingButton() {
   const [hidden, setHidden] = useState(false);
   const dispatch = useAppDispatch();
   const location = useLocation();
+  const navigate = useNavigate();
   const userEmail = useAppSelector(state => state.user.email);
 
   const handleOpenChatModal = () => {
+    if (!userEmail) {
+      navigate('/login');
+      return;
+    }
     if (userEmail === 'elliseusobanggwan@gmail.com') {
       dispatch(openChatListModal());
-    }
-    // if (isAdmin) dispatch(openChatListModal());
-    else dispatch(openChatModal());
+    } else dispatch(openChatModal());
   };
 
   // const handleOnDrag = (data: DraggableData) => {
