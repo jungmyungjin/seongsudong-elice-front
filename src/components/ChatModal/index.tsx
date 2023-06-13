@@ -26,6 +26,7 @@ function ChatModal() {
   const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
   const chatRoomDetail = useAppSelector(state => state.chat.chatRoomDetail);
 
+  // const { isChatModalOpen } = useAppSelector(state => state.modal);
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`);
 
   /****************** 소켓 위해 지정한 관리자 이메일 *****************/
@@ -64,9 +65,20 @@ function ChatModal() {
   }, [chatRoomDetail.email, isAdmin]);
   /***********************************************************************/
 
+  // 이게 한 번만 실행되게 조건을 걸어보는 방향으로
   useEffect(() => {
     onMessage();
   }, []);
+  // useEffect(() => {
+  //   if (isChatModalOpen) {
+  //     onMessage();
+  //   } else {
+  //     socket.disconnect();
+  //   }
+  //   // return () => {
+  //   //   socket.disconnect();
+  //   // };
+  // }, [isChatModalOpen]);
 
   /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -99,6 +111,7 @@ function ChatModal() {
       socket.emit('enterChatRoom', userEmail);
     }
     socket.on('AllMessages', data => {
+      console.log('모든 메세지: ', data);
       dispatch(setChatRoomDetailChatList(data));
     });
   }
@@ -120,16 +133,22 @@ function ChatModal() {
         message: data[0].message,
         sentAt: data[0].sentAt,
       };
+      console.log('newChat: ', newChatMessage);
       dispatch(addChat({ chatMessage: newChatMessage }));
     });
+    getOnline();
   }
 
-  // function getOnline() {
-  //   socket.emit('isOnline');
-  //   socket.off('isOnline').on('isOnline', data => {
-  //     console.log(data);
-  //   });
-  // }
+  function getOnline() {
+    if (isAdmin) {
+      socket.emit('isOnline', chatRoomDetail.email, adminEmail);
+    } else {
+      socket.emit('isOnline', userEmail, userEmail);
+    }
+    socket.on('isOnline', data => {
+      console.log(data);
+    });
+  }
   /***********************************************************************/
 
   return (

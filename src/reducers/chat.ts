@@ -21,6 +21,7 @@ const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
+    // 1. set으로 추가 > 2. useEffect 중복 실행 원인 >
     addChat: (state, action: PayloadAction<{ chatMessage: IChatMessage }>) => {
       const { chatMessage } = action.payload;
       state.chatRoomDetail.chatList = state.chatRoomDetail.chatList
