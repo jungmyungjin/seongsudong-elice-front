@@ -59,7 +59,7 @@
 -   Figma : 초반 기획시 빠른 레이아웃을 잡기 위해 사용  
     🔗[피그마 링크](https://www.figma.com/file/UsjJ6jb7183EYkwycY9BGW/%EC%84%B1%EC%88%98%EB%8F%99-%EC%97%98%EB%A6%AC%EC%8A%A4?type=design&node-id=11%3A1428&t=xfZgTkdHcgXADYNf-1)
 -   Notion : API 명세서, API DOCS 등 활용  
-    🔗[노션 링크](%5Bhttps://www.notion.so/rki0/c10edb826f394906b73ab477e092e296%5D(https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296))
+    🔗[노션 링크](https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296%5D(https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296))
 -   Discord : 팀원간 커뮤니케이션 및 매일 아침 스크럼 진행
 -   Gitlab : Code Repository
 -   Gitlab Issue : Trouble Shooting 내역 기제
