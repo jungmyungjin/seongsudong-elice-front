@@ -41,7 +41,6 @@ function ChatModal() {
       scrollContainerRef.current.scrollTop =
         scrollContainerRef.current.scrollHeight;
     }
-    console.log('chatList:', chatList);
   }, [chatList]);
   /***********************************************************************/
 
@@ -60,7 +59,6 @@ function ChatModal() {
     setDate(convertDate(new Date()));
 
     socket.on('connect', () => {
-      console.log('소켓 연결 성공');
       enterChatRoom();
     });
   }, [chatRoomDetail.email, isAdmin]);
@@ -68,7 +66,7 @@ function ChatModal() {
 
   useEffect(() => {
     onMessage();
-  }, [socket, chatList]);
+  }, []);
 
   /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -79,8 +77,7 @@ function ChatModal() {
     if (inputValue.trim().length === 0) {
       return;
     }
-    sendMessage();
-    getOnline();
+    sendMessage(inputValue);
     setInputValue('');
   }
 
@@ -95,7 +92,6 @@ function ChatModal() {
 
   /***************************** 소켓 관련 함수 코드임 ***************************/
 
-  // onMessage();
   function enterChatRoom() {
     if (isAdmin) {
       socket.emit('enterChatRoom', chatRoomDetail.email);
@@ -103,43 +99,39 @@ function ChatModal() {
       socket.emit('enterChatRoom', userEmail);
     }
     socket.on('AllMessages', data => {
-      console.log('AllMessages', data);
       dispatch(setChatRoomDetailChatList(data));
     });
   }
 
-  function sendMessage() {
+  function sendMessage(message: string) {
     if (isAdmin) {
-      socket.emit('message', chatRoomDetail.email, adminEmail, inputValue);
+      socket.emit('message', chatRoomDetail.email, adminEmail, message);
     } else {
-      socket.emit('message', userEmail, userEmail, inputValue);
+      socket.emit('message', userEmail, userEmail, message);
     }
   }
 
-  function messageHandler(data: IChatMessage[]) {
-    const newChatMessage = {
-      sender_email: data[0].sender_email,
-      name: data[0].name,
-      generation: data[0].generation,
-      message: data[0].message,
-      sentAt: data[0].sentAt,
-    };
-    dispatch(addChat({ chatMessage: newChatMessage }));
-  }
-
   function onMessage() {
-    socket.off('message').on('message', (data: IChatMessage[]) => {
-      messageHandler(data);
+    socket.on('message', (data: IChatMessage[]) => {
+      const newChatMessage = {
+        sender_email: data[0].sender_email,
+        name: data[0].name,
+        generation: data[0].generation,
+        message: data[0].message,
+        sentAt: data[0].sentAt,
+      };
+      dispatch(addChat({ chatMessage: newChatMessage }));
     });
   }
 
-  function getOnline() {
-    socket.emit('isOnline');
-    socket.off('isOnline').on('isOnline', data => {
-      console.log(data);
-    });
-  }
+  // function getOnline() {
+  //   socket.emit('isOnline');
+  //   socket.off('isOnline').on('isOnline', data => {
+  //     console.log(data);
+  //   });
+  // }
   /***********************************************************************/
+
   return (
     <FullModal title={modalTitle} modalType='chat'>
       <div className={styles.chatModalContainer}>

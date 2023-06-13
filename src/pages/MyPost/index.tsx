@@ -5,6 +5,8 @@ import Pagination from 'components/common/Pagination';
 import SearchBox from 'components/common/SearchBox';
 import PostList from 'components/common/PostList';
 
+import Loading from 'components/common/Loading';
+
 import styles from './myPost.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
@@ -14,7 +16,9 @@ import { loadMyPost } from 'actions/myPost';
 
 function MyPost() {
   const { email } = useAppSelector(state => state.user);
-  const { myPost } = useAppSelector(state => state.myPost);
+  const { myPost, loadMyPostLoading, loadMyPostDone, loadMyPostError } =
+    useAppSelector(state => state.myPost);
+
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPosts, setFilteredPosts] = useState<myPost[]>([]);
   const postsPerPage = 10;
@@ -48,11 +52,13 @@ function MyPost() {
       <div className={styles.lengthBox}>
         <p>전체 {filteredPosts.length}개</p>
       </div>
-      {filteredPosts.length === 0 && (
-        <div className={styles.noPost}>등록된 게시물이 없습니다.</div>
-      )}
+      {filteredPosts.length === 0 ||
+        (loadMyPostError && (
+          <div className={styles.noPost}>등록된 게시물이 없습니다.</div>
+        ))}
       <div className={styles.postList}>
-        <PostList posts={currentItems} />
+        {loadMyPostLoading && <Loading />}
+        {loadMyPostDone && <PostList posts={currentItems} />}
       </div>
       {filteredPosts.length > 0 && (
         <Pagination
