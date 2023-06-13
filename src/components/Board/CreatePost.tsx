@@ -39,11 +39,11 @@ const CreatePost: React.FC = () => {
 
       const category = selectedTab === '자유' ? '자유게시판' : '공지게시판';
       formData.append('category', category);
-      formData.append('author_email', 'test1@example.com');
       const response = await axios.post('http://localhost:5000/api/posts/write', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
-        }
+        },
+        withCredentials: true
       });
       // console.log(response);
       if (response.status === 201) {
