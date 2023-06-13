@@ -12,6 +12,8 @@ interface Post {
   description: string;
 }
 
+const backendUrl = process.env.REACT_APP_BACKEND_ADDRESS;
+
 const EditPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<Post | null>(null);
@@ -29,7 +31,7 @@ const EditPost: React.FC = () => {
   // api 테스트
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await axios.get(`http://localhost:5000/api/posts/${id}`, {withCredentials: true});
+      const response = await axios.get(`${backendUrl}/posts/${id}`, {withCredentials: true});
       setPost(response.data.postData);
       setTitle(response.data.postData.title);
       setDescription(response.data.postData.description);
@@ -66,7 +68,7 @@ const EditPost: React.FC = () => {
       }
     }
 
-    await axios.patch(`http://localhost:5000/api/posts/${id}`, formData, {
+    await axios.patch(`${backendUrl}/posts/${id}`, formData, {
       withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
