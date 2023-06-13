@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { IChat, IChatMessage, IChatRoom } from 'types/chat';
+import { IChat, IChatMessage, IChatRoom, emailList } from 'types/chat';
 
 export const initialState: IChat = {
   loadChatLoading: false,
@@ -15,13 +15,13 @@ export const initialState: IChat = {
     sentAt: '',
     chatList: null,
   },
+  onlineList: [],
 };
 
 const chatSlice = createSlice({
   name: 'chat',
   initialState,
   reducers: {
-    // 1. set으로 추가 > 2. useEffect 중복 실행 원인 >
     addChat: (state, action: PayloadAction<{ chatMessage: IChatMessage }>) => {
       const { chatMessage } = action.payload;
       state.chatRoomDetail.chatList = state.chatRoomDetail.chatList
@@ -31,16 +31,25 @@ const chatSlice = createSlice({
     setChatRoomDetail: (state, action: PayloadAction<IChatRoom>) => {
       state.chatRoomDetail = action.payload;
     },
-    /** 초반에 모든 메세지 불러올 때 */
     setChatRoomDetailChatList: (
       state,
       action: PayloadAction<IChatMessage[]>,
     ) => {
       state.chatRoomDetail.chatList = action.payload;
     },
+    setOnlineEmailList: (state, action: PayloadAction<emailList[]>) => {
+      return {
+        ...state,
+        onlineList: action.payload,
+      };
+    },
   },
 });
 
-export const { addChat, setChatRoomDetail, setChatRoomDetailChatList } =
-  chatSlice.actions;
+export const {
+  addChat,
+  setChatRoomDetail,
+  setChatRoomDetailChatList,
+  setOnlineEmailList,
+} = chatSlice.actions;
 export default chatSlice;
