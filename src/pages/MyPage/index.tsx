@@ -56,8 +56,8 @@ function MyPage() {
     setModalType('');
     dispatch(logout());
     if (logoutDone) {
-      dispatch(logOut());
       navigate('/');
+      dispatch(logOut());
     } else if (logoutError) {
       setModalType('logoutAlert');
       dispatch(openConfirmModal());
@@ -70,8 +70,8 @@ function MyPage() {
     setModalType('');
     dispatch(deleteUser(email));
     if (deleteUserDone) {
-      dispatch(logOut());
       navigate('/');
+      dispatch(logOut());
     } else if (deleteUserError) {
       setModalType('deleteUserAlert');
       dispatch(openConfirmModal());
