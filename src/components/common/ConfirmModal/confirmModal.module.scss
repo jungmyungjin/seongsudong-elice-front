@@ -72,8 +72,10 @@
 
 .modalMessage {
   display: flex;
+  white-space: pre-line;
   justify-content: center;
-  padding: 30px 0 35px 0;
+  text-align: center;
+  padding: 30px 0 30px 0;
   font-size: 15px;
 }
 
@@ -82,6 +84,7 @@
   flex-direction: row;
   justify-content: center;
   align-items: flex-start;
+  margin-bottom: 35px;
 }
 
 .confirmBtn {

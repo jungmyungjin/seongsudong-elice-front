@@ -1,12 +1,12 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomLink from 'components/common/Link';
 import ConfirmModal from 'components/common/ConfirmModal';
-
 import styles from './myPage.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { logOut } from 'reducers/user';
-import { logout } from 'actions/user';
+import { logout, deleteUser } from 'actions/user';
 import { openConfirmModal, closeConfirmModal } from 'reducers/modal';
 import { offline } from 'actions/access';
 
@@ -28,6 +28,7 @@ const myPageMenu = [
 ];
 
 function MyPage() {
+  const [modalType, setModalType] = useState<string>('');
   const { username, course, generation, email } = useAppSelector(
     state => state.user,
   );
@@ -36,24 +37,46 @@ function MyPage() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const onClickLogoutButton = () => {
+    setModalType('logout');
+    dispatch(openConfirmModal());
+  };
+
   const handleLogout = () => {
     dispatch(logOut());
     dispatch(offline(email));
     dispatch(closeConfirmModal());
+    setModalType('');
     navigate('/');
     dispatch(logout());
   };
 
-  const onClickLogoutButton = () => {
+  const onClickDeleteUserButton = () => {
+    setModalType('deleteUser');
     dispatch(openConfirmModal());
+  };
+
+  const handleDeleteUser = () => {
+    dispatch(logOut());
+    dispatch(offline(email));
+    dispatch(closeConfirmModal());
+    setModalType('');
+    navigate('/');
+    dispatch(deleteUser());
   };
 
   return (
     <>
-      {isConfirmModalOpen && (
+      {modalType === 'logout' && isConfirmModalOpen && (
         <ConfirmModal
           modalMessage='로그아웃 하시겠습니까?'
           modalController={handleLogout}
+        />
+      )}
+      {modalType === 'deleteUser' && isConfirmModalOpen && (
+        <ConfirmModal
+          modalMessage={`모든 계정 정보는 즉시 삭제됩니다.\n탈퇴하시겠습니까?`}
+          modalController={handleDeleteUser}
         />
       )}
       <div className={styles.myPageContainer}>
@@ -64,6 +87,12 @@ function MyPage() {
           <div className={styles.myName}>
             [{course}/{generation}] {username}
           </div>
+          <button
+            className={styles.deleteUserBtn}
+            onClick={onClickDeleteUserButton}
+          >
+            회원 탈퇴
+          </button>
         </div>
         <div className={styles.myPageMenuContainer}>
           {myPageMenu.map(item => (
@@ -76,7 +105,7 @@ function MyPage() {
             />
           ))}
         </div>
-        <div className={styles.logoutBtnContainer}>
+        <div className={styles.userAccessBtnContainer}>
           <button className={styles.logoutBtn} onClick={onClickLogoutButton}>
             로그아웃
           </button>
