@@ -10,11 +10,6 @@ import ChatList from 'components/ChatList';
 
 function ChatListModal() {
   const { isChatModalOpen } = useAppSelector(state => state.modal);
-  const { chatRoomDetail } = useAppSelector(state => state.chat);
-
-  useEffect(() => {
-    console.log(chatRoomDetail);
-  }, [chatRoomDetail]);
 
   return (
     <>
