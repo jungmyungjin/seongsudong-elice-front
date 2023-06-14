@@ -1,7 +1,9 @@
 # **시켜줘,  엘리스 명예 소방관**
 
 <img src="/public/images/img%20copy.jpg" width="1148" height="675">
+
 <br><br>
+
 ## **1\. 기획의도 & 목적**
 
 
