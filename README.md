@@ -114,7 +114,7 @@
 ### 🪄 **기술 명세서**
 <br><br>
 
-### 🧬 **Entity Relationship Diagram(ERD)**
+### 🧬 **ERD(Entity Relationship Diagram)**
 <br><br>
 
 
