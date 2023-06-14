@@ -45,32 +45,38 @@ const MainImage = (): React.ReactElement => {
         onLoadedData={() => setIsVideoLoaded(true)}
       />
       <div className={styles.titleLayout}>
-        <p className={(styles.title, styles.typing)}>성수동 엘리스</p>
+        <img
+          src='/images/seongsudong_elice_banner.png'
+          alt='성수동엘리스'
+          className={(styles.title, styles.typing)}
+        />
+        {/* <p className={(styles.title, styles.typing)}>성수동 엘리스</p> */}
       </div>
-
-      <div className={styles.todayInfo}>
-        <div className={styles.todayVisitor}>
-          <div className={styles.infoTitle}>오늘 이용자 수</div>
-          <div className={styles.infoValue}>
-            <span>
-              <CountUp delay={5} end={195} />
-            </span>
-            <span>명</span>
+      <div className={styles.textContainer}>
+        <div className={styles.todayInfo}>
+          <div className={styles.todayVisitor}>
+            <div className={styles.infoTitle}>오늘 이용자 수</div>
+            <div className={styles.infoValue}>
+              <span>
+                <CountUp delay={5} end={195} />
+              </span>
+              <span>명</span>
+            </div>
           </div>
-        </div>
 
-        <div className={styles.todaySeat}>
-          <div className={styles.infoTitle}>잔여 좌석 수</div>
-          <div className={styles.infoValue}>
-            <span>
-              <CountUp
-                key={remainSeat}
-                delay={4.5}
-                duration={4.75}
-                end={remainSeat}
-              />
-            </span>
-            <span>명</span>
+          <div className={styles.todaySeat}>
+            <div className={styles.infoTitle}>잔여 좌석 수</div>
+            <div className={styles.infoValue}>
+              <span>
+                <CountUp
+                  key={remainSeat}
+                  delay={4.5}
+                  duration={4.75}
+                  end={remainSeat}
+                />
+              </span>
+              <span>좌석</span>
+            </div>
           </div>
         </div>
       </div>

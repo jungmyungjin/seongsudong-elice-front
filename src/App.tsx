@@ -9,7 +9,7 @@ import PostsDetail from './components/Board/PostsDetail';
 import CreatePost from './components/Board/CreatePost';
 import PostUpdate from './components/Board/PostUpdate';
 import Reservation from 'components/Reservation';
-import Main from './pages/Main';
+import Main from './pages/Main2';
 import FloatingButton from 'components/common/FloatingButton';
 import Admin from 'pages/Admin/Admin';
 import AdminBooking from 'pages/Admin/AdminBooking';

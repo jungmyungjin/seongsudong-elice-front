@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styles from './main2.module.scss';
+import darkStyles from './main2Dark.module.scss';
 import MainImage from 'components/MainImage2';
 import MainReservationSection from './MainReservationSection';
 
@@ -8,6 +9,8 @@ import axios from 'axios';
 
 import CustomLink from 'components/common/Link';
 import PostList from 'components/common/PostList';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 const CategoryBtn = ({ name }: { name: string }): JSX.Element => {
   return (
@@ -54,6 +57,14 @@ const Main = (): React.ReactElement => {
     fetchPosts();
   }, []);
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div className={styles.MainLayout}>
       <section className={styles.imageSlider}>
@@ -71,15 +82,15 @@ const Main = (): React.ReactElement => {
             state={{
               tab: '공지',
             }}
-            className={styles.link}
+            className={selectedStyles.link}
           >
-            공지사항
+            NOTICE
           </Link>
           <PostList posts={noticeBoard} />
         </section>
         <section className={styles.freeBoard}>
-          <Link to={'/post/free'} className={styles.link}>
-            자유 게시판
+          <Link to={'/post/free'} className={selectedStyles.link}>
+            HOT POSTS
           </Link>
           <PostList posts={freeBoard} />
         </section>

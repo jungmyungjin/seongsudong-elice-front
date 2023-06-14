@@ -7,12 +7,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
+  font-weight: 600;
+  font-style: normal;
+}
+
 /* box-sizing */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  font-family: 'EliceDigitalBaeum-Bd';
+  font-family: 'Pretendard-Regular', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -25,7 +33,7 @@ html,
 body,
 #root {
   height: 100%;
-  font-family: 'EliceDigitalBaeum-Bd';
+  font-family: 'Pretendard-Regular', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

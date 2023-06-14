@@ -105,7 +105,7 @@ const Posts: React.FC = () => {
       </div>
       {/* 검색 컴포넌트 불러옴. */}
       <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <div className={styles.lengthBox}>
+      <div className={selectedStyles.lengthBox}>
         <p>전체 {filteredPosts.length}개</p>
       </div>
       {/* PostList 컴포넌트 불러옴 */}

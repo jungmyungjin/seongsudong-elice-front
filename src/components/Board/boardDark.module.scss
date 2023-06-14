@@ -24,8 +24,15 @@
   display: flex;
   align-items: center;
 
+  * {
+    width: 50px;
+    padding: 0 5px;
+  }
+
   .selected {
     border-bottom: 3px solid #e2e1ff;
+    padding-bottom: 6px;
+    transform: translateY(5px);
   }
 
   .freePost {
@@ -43,5 +50,18 @@
     svg {
       stroke: white;
     }
+  }
+}
+
+.lengthBox {
+  width: 90%;
+  padding-bottom: 5px;
+  margin: 90px auto 15px auto;
+  box-shadow: inset 0px -1px 0px #e1e2e4;
+
+  p {
+    line-height: 18px;
+    color: white;
+    font-size: 14px;
   }
 }
