@@ -96,14 +96,17 @@
 
 ### 🎨  **협업 도구**
 #### 구경하고 싶다면 아이콘 클릭!!
-[<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">](https://www.figma.com/file/UsjJ6jb7183EYkwycY9BGW/%EC%84%B1%EC%88%98%EB%8F%99-%EC%97%98%EB%A6%AC%EC%8A%A4?type=design&node-id=11%3A1428&t=xfZgTkdHcgXADYNf-1) : 초반 기획시 빠른 레이아웃을 잡기 위해 사용
-<br>
-[<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">](https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296%5D(https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296)) : API 명세서, API DOCS등 활용  
-##### -   Discord : 팀원간 커뮤니케이션 및 매일 아침 스크럼 진행
-##### -   Gitlab : Code Repository
-##### -   Gitlab Issue : Trouble Shooting 내역 기제
-##### -   Gitlab Wiki : 🔗[프로젝트 과정 기록]
-##### -   Postman Teams : API 테스트 진행
+##### [<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">](https://www.figma.com/file/UsjJ6jb7183EYkwycY9BGW/%EC%84%B1%EC%88%98%EB%8F%99-%EC%97%98%EB%A6%AC%EC%8A%A4?type=design&node-id=11%3A1428&t=xfZgTkdHcgXADYNf-1) : 초반 기획시 빠른 레이아웃을 잡기 위해 사용
+<br><br>
+##### [<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">](https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296%5D(https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296)) : API 명세서, API DOCS등 활용  
+<br><br>
+##### <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white"> : 팀원간 커뮤니케이션 및 매일 아침 스크럼 진행
+<br><br>
+##### <img src="https://img.shields.io/badge/Gitlab-FC6D26?style=for-the-badge&logo=Gitlab&logoColor=white"> : Code Repository, Trouble Shooting 내역 기제
+<br><br>
+##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> : API 테스트 진행
+<br><br>
+
 <br><br>
 
 ### 📌  **스크럼**
