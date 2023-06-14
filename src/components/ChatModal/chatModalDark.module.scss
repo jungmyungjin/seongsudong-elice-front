@@ -1,0 +1,33 @@
+.chatModalContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  z-index: 9999;
+}
+.nowDate {
+  margin: 15px;
+  font-size: 10px;
+  text-align: center;
+  color: #999999;
+}
+.scrollContainer {
+  overflow: auto;
+  flex-grow: 1;
+  padding: 20px;
+}
+.chatListContainer {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.chatInputContainer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 15px;
+  background-color: transparent;
+  button {
+    margin: 0;
+  }
+}

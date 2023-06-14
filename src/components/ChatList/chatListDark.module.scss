@@ -1,9 +1,12 @@
+@import '../../styles/colors.scss';
+
 .chatList {
   width: 100%;
 }
 
 .chatItem {
-  border-bottom: 2px solid #faf4ff;
+  color: $BRIGHT_GRAY;
+  border-bottom: 2px solid $DARK_MODEㅡPURPLE_FONT;
   border-radius: 8px;
   padding: 5px;
   transition: all 500ms;
@@ -14,7 +17,7 @@
 
   &:hover {
     cursor: pointer;
-    background-color: #faf4ff;
+    background-color: $DARK_MODEㅡPURPLE_FONT;
   }
 }
 
@@ -27,7 +30,7 @@
 
 .chat {
   width: 100%;
-  color: #767474;
+  color: white;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;

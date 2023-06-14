@@ -4,7 +4,6 @@
   .currentDate {
     margin-top: 1rem;
     font-size: 2rem;
-    font-weight: bold;
   }
 }
 .date {
@@ -13,7 +12,6 @@
   margin-top: 10px;
   time {
     font-size: 1.5rem;
-    font-weight: bold;
   }
 }
 
@@ -63,7 +61,7 @@
   }
 
   label:not(:last-child) {
-    margin-right: 0.5rem;
+    margin-right: 1rem;
     margin-bottom: 0.9rem;
   }
 
@@ -97,7 +95,7 @@
   }
 
   & > *:not(:last-child) {
-    margin-right: 0.5rem;
+    margin-right: 1rem;
     margin-bottom: 0.7rem;
   }
 

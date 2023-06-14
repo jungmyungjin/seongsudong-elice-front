@@ -23,15 +23,17 @@
     border-bottom: $DARK_MODEㅡBORDER solid;
   }
   span {
-    font-family: 'EliceDigitalBaeum-Bd';
     font-size: medium;
-    font-weight: 100;
     color: $DARK_MODEㅡFONT;
   }
   ul > li > button {
     width: 100%;
     height: 100%;
     text-align: left;
+
+    span {
+      font-weight: 500;
+    }
   }
 }
 

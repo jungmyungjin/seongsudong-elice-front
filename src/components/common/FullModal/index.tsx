@@ -37,12 +37,12 @@ function FullModal({ children, title, modalType }: FullModalProps) {
     if (modalType === 'adminChatListModal') dispatch(closeChatListModal());
   };
 
-  let overlayClass = styles.overlay;
+  let overlayClass = selectedStyles.overlay;
 
   if (modalType === 'chat') {
     overlayClass = `${overlayClass} ${selectedStyles.chat}`;
   } else if (modalType === 'adminChatListModal') {
-    overlayClass = `${overlayClass} ${selectedStyles.adminChatList}`;
+    overlayClass = `${overlayClass} ${styles.adminChatList}`;
   }
 
   return (

@@ -46,17 +46,17 @@ function ChatMessage({
   return (
     <>
       {chatFromMe ? (
-        <div className={styles.containerFromMe}>
-          <div className={styles.contentContainerFromMe}>
-            <div className={styles.chatFromMe}>{message}</div>
-            <div className={styles.chatTimeFromMe}>{sentAt}</div>
+        <div className={selectedStyles.containerFromMe}>
+          <div className={selectedStyles.contentContainerFromMe}>
+            <div className={selectedStyles.chatFromMe}>{message}</div>
+            <div className={selectedStyles.chatTimeFromMe}>{sentAt}</div>
           </div>
         </div>
       ) : (
-        <div className={styles.containerFromOther}>
-          <div className={styles.imgContainer}>
+        <div className={selectedStyles.containerFromOther}>
+          <div className={selectedStyles.imgContainer}>
             <img src='/images/rabbit.png' alt='profile' />
-            <div className={isOnline ? styles.isOnline : ''} />
+            <div className={isOnline ? selectedStyles.isOnline : ''} />
           </div>
           <div className={selectedStyles.contentContainerFromOther}>
             {isAdmin ? (

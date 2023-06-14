@@ -22,9 +22,9 @@ function ChatInput({
   }, [isDarkMode]);
 
   return (
-    <div className={styles.chatInputContainer}>
+    <div className={selectedStyles.chatInputContainer}>
       <textarea
-        className={styles.chatInput}
+        className={selectedStyles.chatInput}
         value={inputValue}
         maxLength={500}
         onChange={handleInputChange}

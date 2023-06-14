@@ -5,22 +5,6 @@
   border-radius: 10px;
   background-color: $BRIGHT_GRAY;
   height: 2000px;
-  font-size: 1.7rem;
-  color: black;
-}
-
-.entrance {
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  writing-mode: vertical-lr;
-  margin-top: 0;
-  height: 120px;
-  width: 29px;
-  position: absolute;
-  transform: translateY(-715%) translateX(-11%);
-  border: none;
   font-size: 1.2rem;
-  background-color: $BRIGHT_GRAY;
+  color: black;
 }

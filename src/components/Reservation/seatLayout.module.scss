@@ -5,7 +5,6 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   margin: 1rem 0;
-  font-size: 1.2rem;
 
   article {
     display: flex;
@@ -41,7 +40,7 @@
   border-radius: 10px;
   background-color: #f2effb;
   height: 2000px;
-  font-size: 1.7rem;
+  font-size: 1.2rem;
   color: black;
 }
 
@@ -78,7 +77,7 @@
   transform: translateY(-715%) translateX(-11%);
   border: none;
   font-size: 1.2rem;
-  background-color: #f2effb;
+  background-color: inherit;
 }
 
 .possible > .visible {
@@ -122,7 +121,7 @@ section.group.possible > div.visible.alreadyReserved {
 }
 
 .visitor {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   margin: 1rem 0;
 }
 
