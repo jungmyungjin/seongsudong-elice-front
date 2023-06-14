@@ -26,8 +26,16 @@ export function convertDate(now?: Date): string {
  *
  * @returns {string} "오전 1:11"
  */
-export function chatTime(date: Date) {
-  const nowDate = convertDate(new Date());
-  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
-  return time;
+export function stringToTime(dateTimeString: string) {
+  const date = new Date(dateTimeString);
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+
+  const formattedHours = hours > 12 ? `오후 ${hours - 12}` : `오전 ${hours}`;
+
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  const formattedTime = `${formattedHours}:${formattedMinutes}`;
+
+  return formattedTime;
 }

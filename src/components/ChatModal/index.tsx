@@ -16,7 +16,7 @@ import {
 } from 'reducers/chat';
 
 import { IChatMessage, emailList } from 'types/chat';
-import { convertDate, chatTime } from 'utils/convertDate';
+import { convertDate, stringToTime } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
 import { io } from 'socket.io-client';
@@ -57,9 +57,7 @@ function ChatModal() {
     else setModalTitle('1:1 문의 채팅방');
     setDate(convertDate(new Date()));
 
-    /** 소켓 **/
     enterChatRoom();
-
     return () => {
       socket.off('enterChatRoom');
       socket.off('AllMessages');
@@ -73,6 +71,7 @@ function ChatModal() {
     return () => {
       socket.off('message');
       socket.off('onlineStatus');
+      socket.off('latestMessage');
     };
   }, []);
 
@@ -104,13 +103,11 @@ function ChatModal() {
   function enterChatRoom() {
     if (userEmail === adminEmail) {
       socket.emit('enterChatRoom', chatRoomDetail.email);
-      console.log('enterChatRoom(isAdmin) : ', chatRoomDetail.email);
     } else {
       socket.emit('enterChatRoom', userEmail);
-      console.log('enterChatRoom(user) : ', userEmail);
     }
     socket.on('AllMessages', data => {
-      console.log('모든 메세지: ', data);
+      console.log(data);
       dispatch(setChatRoomDetailChatList(data));
     });
   }
@@ -130,7 +127,7 @@ function ChatModal() {
         name: data[0].name,
         generation: data[0].generation,
         message: data[0].message,
-        sentAt: data[0].sentAt,
+        sentAt: stringToTime(data[0].sentAt),
       };
       console.log('newChat: ', newChatMessage);
       dispatch(addChat({ chatMessage: newChatMessage }));
@@ -138,19 +135,9 @@ function ChatModal() {
   }
 
   function sendOnline() {
-    console.log('start to get isOnline');
     if (userEmail === adminEmail) {
-      console.log('Admin인 경우');
-      console.log(
-        'userEmail : ',
-        chatRoomDetail.email,
-        'adminEmail: ',
-        adminEmail,
-      );
       socket.emit('isOnlineStatus', chatRoomDetail.email, adminEmail);
     } else {
-      console.log('isAdmin가 아닌 경우');
-      console.log('userEmail : ', userEmail, 'adminEmail: ', adminEmail);
       socket.emit('isOnlineStatus', userEmail, adminEmail);
     }
   }
