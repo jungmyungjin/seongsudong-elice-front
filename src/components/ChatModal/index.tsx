@@ -35,7 +35,8 @@ function ChatModal() {
 
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
     reconnection: false,
-    path: '/socket.io',
+    path: '/socket.io/',
+    transports: ['websocket'],
   });
 
   /****************** 소켓 위해 지정한 관리자 이메일 *****************/
@@ -110,7 +111,6 @@ function ChatModal() {
       socket.emit('enterChatRoom', userEmail);
     }
     socket.on('AllMessages', data => {
-      console.log(data);
       dispatch(setChatRoomDetailChatList(data));
     });
   }
@@ -133,7 +133,6 @@ function ChatModal() {
         message: data[0].message,
         sentAt: data[0].sentAt,
       };
-      console.log('newChat: ', newChatMessage);
       dispatch(addChat({ chatMessage: newChatMessage }));
     });
   }
