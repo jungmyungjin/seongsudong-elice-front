@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './chatMessage.module.scss';
+import darkStyles from './chatMessageDark.module.scss';
 import { IChatMessage } from 'types/chat';
 import { useAppSelector } from 'hooks/useRedux';
 import useOnlineStatus from '../../hooks/useOnlineStatus';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 function ChatMessage({
   sender_email,
@@ -32,6 +35,14 @@ function ChatMessage({
     }
   }, [userEmail, sender_email, getEmailList, isAdmin]);
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <>
       {chatFromMe ? (
@@ -47,17 +58,17 @@ function ChatMessage({
             <img src='/images/rabbit.png' alt='profile' />
             <div className={isOnline ? styles.isOnline : ''} />
           </div>
-          <div className={styles.contentContainerFromOther}>
+          <div className={selectedStyles.contentContainerFromOther}>
             {isAdmin ? (
-              <div className={styles.chatName}>
+              <div className={selectedStyles.chatName}>
                 [{generation}]{name}
               </div>
             ) : (
-              <div className={styles.chatName}>{name}</div>
+              <div className={selectedStyles.chatName}>{name}</div>
             )}
-            <div className={styles.contentFromOther}>
-              <div className={styles.chatFromOther}>{message}</div>
-              <div className={styles.chatTimeFromOther}>{sentAt}</div>
+            <div className={selectedStyles.contentFromOther}>
+              <div className={selectedStyles.chatFromOther}>{message}</div>
+              <div className={selectedStyles.chatTimeFromOther}>{sentAt}</div>
             </div>
           </div>
         </div>
