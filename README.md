@@ -1,72 +1,134 @@
 # **시켜줘,  엘리스 명예 소방관**
 
-<img src="/public/images/img%20copy.jpg" width="1148" height="675">
+<p align="center">
+  <img src="/public/images/img%20copy.jpg" width="1196" height="615">
+</p>
 
+<br><br><br>
 
 ## **1\. 기획의도 & 목적**
 
 
 #### "엘리스 수강생들이 더 편리하게 사용할 수 있는 서비스가 없을까?"
 
-> 엘리스 수강생들을 위한 커뮤니티 최종본!  
-> 레이서들을 위한 커뮤니티 및 엘리스랩 좌석예약을 더욱 편리하게 이용하기 위한 모바일 기반 웹서비스입니다.
+##### > 엘리스 수강생들을 위한 커뮤니티 최종본!  
+##### > 레이서들을 위한 커뮤니티 및 엘리스랩 좌석예약을 더욱 편리하게 이용하기 위한 모바일 기반 웹서비스입니다.
+
+<br>
+
+### [😀 엘리스 명예 소방관 페이지 구경하러 가기 😀](https://web-2-project-team06-fire-front.vercel.app)
 
 <br/><br/><br/>
 
 ## **2\. 웹 서비스의 최종적인 메인 기능과 서브 기능 설명**
 
 
-**✨ 메인기능**
+### **✨ 메인기능**
 
--   SNS
--   엘리스 좌석 예약
--   실시간 채팅 기능
--   게시판
+##### -   SNS
+##### -   엘리스 좌석 예약
+##### -   실시간 채팅 기능
+##### -   게시판
 
-**✨ 서브기능**
+<br>
 
--   메인페이지
--   마이페이지
--   관리자페이지
--   찾아오시는길 페이지
+### **✨ 서브기능**
+##### -   로그인/회원가입
+##### -   메인페이지
+##### -   마이페이지
+##### -   관리자페이지
+##### -   찾아오시는길 페이지
 <br/><br/><br/>
 
 ## **3\. 프로젝트만의 차별점, 기대 효과**
-<br/><br/><br/>
+
+### **🔥 기존에 있는 엘리스랩 페이지에서 수강생들이 더 편하게 페이지를 이용할 수 있도록 웹서비스를 만들었습니다.**
+
+##### -   디스코드 DM 대신 플랫폼에서 바로 소통가능
+##### -   기존의 엘리스랩 예약 방식과 차별화된 편리한 예약 시스템(잔여좌석 확인이 가능한 레이아웃)
+##### -   동시에 가능한 플랫폼 이용과 채팅
+##### -   게시판을 통해 유저들끼리 자유롭게 소통 및 공지사항에서도 댓글을 통해 질문 가능
+##### -   약도로만 엘리스랩의 위치를 보여주는 것이 아닌 카카오맵을 통한 길찾기 기능
+##### <br/><br/><br/>
+
+## **4\. 스토리보드 및 유저 시나리오**
+
+### **⭐️ 사용자**
+
+##### -   사용자는 로그인하면 메인페이지로 이동한다.
+##### -   사용자는 메인페이지에서 자유게시판을 조회수 순으로 게시물을 볼 수 있으며 클릭 시 자유게시판으로 이동한다.
+##### -   사용자는 메인페이지에서 예약하러가기 버튼을 클릭하여 바로 예약페이지로 이동할 수 있다.
+##### -   사용자는 메인페이지에서 공지게시판을 최신순으로 게시물을 볼 수 있으며 클릭 시 공지게시판으로 이동한다.
+##### -   사용자는 메뉴 슬라이드를 통해 예약페이지로 이동하여 원하는 날짜, 이용할 좌석종류, 시간을 선택한 후 좌석을 직접 레이아웃에서 선택하여 예약할 수 있다.
+##### -   사용자는 마이페이지에서 예약조회를 할 수 있으며 입실시간 전에 취소또한 가능하다.
+##### -   사용자는 메뉴 슬라이드를 통해 게시판 페이지로 이동하여 자유게시판에서 게시물을 작성할 수 있다.
+##### -   사용자는 원하는 게시물에 들어가서 댓글을 남길 수 있다.
+##### -   사용자는 마이페이지에서 내가 쓴 게시물을 확인 및 수정, 삭제가 가능하다.
+##### -   사용자는 마이페이지에서 회원탈퇴가 가능하다.
+##### -   사용자는 메뉴 슬라이드를 통해 찾아오시는 길 페이지로 이동하여 길찾기 버튼을 클릭하면 카카오맵을 통해 성수엘리스랩까지의 경로를 확인할 수 있다.
+
+### **🌙 관리자**
+
+##### -   관리자는 메뉴 슬라이드를 통해 관리자페이지로 이동할 수 있다.
+##### -   관리자는 공지사항을 작성 및 수정, 삭제가 가능하다.
+##### -   관리자는 사용자들이 작성한 게시물,댓글들을 삭제 할 수 있다.
+##### -   관리자는 관리자페이지에서 공지사항을 관리할 수 있다.
+##### -   관리자는 관리자페이지에서 좌석/예약을 관리할 수 있다.
+##### -   관리자는 원하는 경우 특정 좌석에 이용제한을 적용할 수 있다.
+<br><br><br>
 
 
-## **4\. 프로젝트 구성**
+## **5\. 프로젝트 구성**
 
 
-#### **🔧 기술 스택**
+### **🔧 기술 스택**
 
-**Front-end**
+#### **Front-end**
 
--   React
--   TypeScript
--   Sass
--   redux-toolkit
+<img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
+<img src="https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=Sass&logoColor=white">
+<img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=white">
 
-**Back-end**
 
--   Node.js
--   TypeScript
--   express
--   MySQL
+#### **Back-end**
+
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=Node.js&logoColor=white">
+<img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=TypeScript&logoColor=white">
+<img src="https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=Express&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
 <br><br>
 
-#### 🎨  **협업 도구**
+### 🎨  **협업 도구**
+#### 구경하고 싶다면 아이콘 클릭!!
+##### [<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">](https://www.figma.com/file/UsjJ6jb7183EYkwycY9BGW/%EC%84%B1%EC%88%98%EB%8F%99-%EC%97%98%EB%A6%AC%EC%8A%A4?type=design&node-id=11%3A1428&t=xfZgTkdHcgXADYNf-1) - 초반 기획시 빠른 레이아웃을 잡기 위해 사용
 
--   Figma : 초반 기획시 빠른 레이아웃을 잡기 위해 사용  
-    🔗[피그마 링크](https://www.figma.com/file/UsjJ6jb7183EYkwycY9BGW/%EC%84%B1%EC%88%98%EB%8F%99-%EC%97%98%EB%A6%AC%EC%8A%A4?type=design&node-id=11%3A1428&t=xfZgTkdHcgXADYNf-1)
--   Notion : API 명세서, API DOCS 등 활용  
-    🔗[노션 링크](https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296%5D(https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296))
--   Discord : 팀원간 커뮤니케이션 및 매일 아침 스크럼 진행
--   Gitlab : Code Repository
--   Gitlab Issue : Trouble Shooting 내역 기제
--   Gitlab Wiki : 🔗[프로젝트 과정 기록]
--   Postman Teams : API 테스트 진행
-<br>
+##### [<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">](https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296%5D(https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296)) - API 명세서, API DOCS등 활용  
+
+##### <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white"> - 팀원간 커뮤니케이션 및 매일 아침 스크럼 진행
+
+##### <img src="https://img.shields.io/badge/Gitlab-FC6D26?style=for-the-badge&logo=Gitlab&logoColor=white"> - Code Repository, Trouble Shooting 내역 기제
+
+##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> - API 테스트 진행
+
+<br><br>
+
+### 🪄 **기술 명세서**
+<br><br>
+
+### 🧬 **ERD(Entity Relationship Diagram)**
+<br><br>
+
+
+
+<br><br>
+
+### 📌  **스크럼**
+##### -   매일 오전 10시 스크럼 진행
+##### -   프론트, 백의 개발 진행상황 및 이슈 공유
+##### -   필요시 프론트/백 전체 오프라인 미팅 진행
+<br><br>
+
 
 #### 📎 **커밋 컨벤션**
 
@@ -107,9 +169,9 @@
 <br/><br/><br/>
 
 
-## **5\. 파일 및 폴더 구성**
+## **6\. 파일 및 폴더 구성**
 
-**Client**
+### **Client**
 
 ```
 src
@@ -162,7 +224,7 @@ src
 ┗ types
 ```
 
-**Server**
+### **Server**
 
 ```
 src
@@ -216,7 +278,7 @@ src
 ```
 <br/><br/><br/>
 
-## **6\. 구성원 역할**
+## **7\. 구성원 역할**
 
 | **이름** | **역할** |
 | --- | --- |

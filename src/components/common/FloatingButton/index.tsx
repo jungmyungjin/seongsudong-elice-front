@@ -6,6 +6,7 @@ import { openChatModal, openChatListModal } from 'reducers/modal';
 import ChatModal from 'components/ChatModal';
 import ChatListModal from 'components/ChatListModal';
 import styles from './floatingButton.module.scss';
+import { ReactComponent as FloatingChat } from 'assets/FloatingChat.svg';
 
 function FloatingButton() {
   const { isChatModalOpen, isChatListModalOpen } = useAppSelector(
@@ -71,13 +72,8 @@ function FloatingButton() {
               onClick={handleOpenChatModal}
               onTouchEnd={handleOpenChatModal}
             >
-              <div className={styles.rabbitIcon}>
-                <img src='/images/rabbit.png' alt='rabbit-icon' />
-              </div>
-              <div className={styles.floatingButtonText}>
-                {userEmail === 'elliseusobanggwan@gmail.com'
-                  ? '문의관리'
-                  : '문의하기'}
+              <div className={styles.chatIcon}>
+                <FloatingChat />
               </div>
             </button>
           </div>
