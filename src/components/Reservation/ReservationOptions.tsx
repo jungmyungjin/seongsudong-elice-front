@@ -23,7 +23,6 @@ import AlertModal from './AlertModal';
 
 import { ReactComponent as Check } from '../../assets/Check.svg';
 import styles from './reservationOptions.module.scss';
-import { current } from '@reduxjs/toolkit';
 
 const DateOptions: React.FC = () => {
   const SelectDate: React.FC<SelectDateProps> = ({
@@ -79,11 +78,9 @@ const DateOptions: React.FC = () => {
     };
 
     let checkDate: string = '';
-    if (isWeekdayAndFriBeforeTenPm()) {
-      checkDate = getCurrentDate();
-    } else {
-      checkDate = afterTenPmGetNextDate();
-    }
+    isWeekdayAndFriBeforeTenPm()
+      ? (checkDate = getCurrentDate())
+      : (checkDate = afterTenPmGetNextDate());
 
     const [selectedCheckbox, setSelectedCheckbox] = useState(checkDate);
 
@@ -106,7 +103,6 @@ const DateOptions: React.FC = () => {
         updateReservation({
           reservation_date: selectedDate,
         });
-        console.log(reservationInfo.reservation_date);
       } else if (
         isSameDay(realClickedDate.toISOString().split('T')[0]) &&
         checkBeforeTenPm()
@@ -126,12 +122,10 @@ const DateOptions: React.FC = () => {
 
     useEffect(() => {
       setSelectedCheckbox(getCurrentDate());
-      console.log(getCurrentDate());
     }, []);
 
     useEffect(() => {
       setSelectedCheckbox(reservationInfo.reservation_date);
-      console.log(selectedCheckbox);
     }, [reservationInfo.reservation_date]);
 
     return (
@@ -268,7 +262,6 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
         setIsPastTime(true);
         updatedClickedState[index] = !updatedClickedState[index];
         setIsClicked(updatedClickedState);
-        console.log(isClicked);
       }
     }
     isPassedTime(endTime, reservationInfo.reservation_date, checkIsPassedTime);
