@@ -8,6 +8,11 @@
 
   .mainVideo {
     width: 100%;
+    cursor: 'none';
+  }
+  .mainVideoHide {
+    width: 100%;
+    display: block;
   }
 }
 
@@ -17,6 +22,7 @@
   height: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   opacity: 0;
   animation: 1s 4s fadeIn forwards;
 
@@ -31,14 +37,14 @@
     align-items: center;
     .infoTitle {
       color: $MAIN_INFO_TITLE;
-      font-size: 1em;
+      font-size: 1.4em;
     }
     .infoValue {
-      font-size: 1.5em;
+      font-size: 2.8em;
       color: $MAIN_INFO_VALUE;
       & > span:last-child {
         padding-left: 0.2em;
-        font-size: 0.5em;
+        font-size: 0.6em;
         color: $MAIN_INFO_VALUE_UNIT;
       }
     }
@@ -49,7 +55,7 @@
 .titleLayout {
   position: absolute;
   .typing {
-    font-size: 6vh;
+    font-size: 4.5em;
     color: $MAIN_PURPLE;
     text-shadow: 0px 0px 20px $BRIGHT_GRAY;
 
