@@ -69,11 +69,11 @@ function ChatModal() {
     onMessage();
     getOnline();
     return () => {
+      socket.off('latestMessage');
       socket.off('message');
       socket.off('onlineStatus');
-      socket.off('latestMessage');
     };
-  }, []);
+  }, [addChat, setOnlineEmailList]);
 
   /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -122,6 +122,7 @@ function ChatModal() {
 
   function onMessage() {
     socket.on('latestMessage', (data: IChatMessage[]) => {
+      console.log('latestMessage: ', data);
       const newChatMessage = {
         sender_email: data[0].sender_email,
         name: data[0].name,
@@ -144,7 +145,6 @@ function ChatModal() {
 
   function getOnline() {
     socket.on('onlineStatus', (data: emailList[]) => {
-      console.log(data);
       dispatch(setOnlineEmailList(data));
     });
   }
