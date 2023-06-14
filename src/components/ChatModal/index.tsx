@@ -32,6 +32,8 @@ function ChatModal() {
 
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
     reconnection: false,
+    path: '/socket.io',
+    transports: ['websocket'],
   });
 
   /****************** 소켓 위해 지정한 관리자 이메일 *****************/
