@@ -109,6 +109,7 @@
 
 ##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> - API 테스트 진행
 
+<br><br>
 
 ### 🪄 **기술 명세서**
 <br><br>
