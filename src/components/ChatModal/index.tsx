@@ -16,7 +16,11 @@ import {
 } from 'reducers/chat';
 
 import { IChatMessage, emailList } from 'types/chat';
-import { convertDate, stringToTime } from 'utils/convertDate';
+import {
+  getCustomDateString,
+  getPrevDateString,
+  stringToTime,
+} from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
 import { io } from 'socket.io-client';
@@ -24,7 +28,6 @@ import { io } from 'socket.io-client';
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
-  const [date, setDate] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
@@ -33,7 +36,6 @@ function ChatModal() {
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
     reconnection: false,
     path: '/socket.io',
-    transports: ['websocket'],
   });
 
   /****************** 소켓 위해 지정한 관리자 이메일 *****************/
@@ -57,7 +59,6 @@ function ChatModal() {
     if (userEmail === adminEmail)
       setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
-    setDate(convertDate(new Date()));
 
     enterChatRoom();
     return () => {
@@ -130,7 +131,7 @@ function ChatModal() {
         name: data[0].name,
         generation: data[0].generation,
         message: data[0].message,
-        sentAt: stringToTime(data[0].sentAt),
+        sentAt: data[0].sentAt,
       };
       console.log('newChat: ', newChatMessage);
       dispatch(addChat({ chatMessage: newChatMessage }));
@@ -150,6 +151,7 @@ function ChatModal() {
       dispatch(setOnlineEmailList(data));
     });
   }
+
   /***********************************************************************/
 
   return (
@@ -157,22 +159,38 @@ function ChatModal() {
       <div className={styles.chatModalContainer}>
         <div className={styles.scrollContainer} ref={scrollContainerRef}>
           {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
-          <div className={styles.nowDate}>{date}</div>
+
           <div className={styles.chatListContainer}>
             {chatList !== null ? (
               chatList?.length > 0 ? (
-                chatList?.map((msg, i) => (
-                  <ChatMessage
-                    key={i}
-                    sender_email={msg.sender_email}
-                    name={msg.name}
-                    generation={msg.generation}
-                    message={msg.message}
-                    sentAt={msg.sentAt}
-                  />
-                ))
+                chatList?.map((msg, i) => {
+                  const currentDate = getPrevDateString(msg.sentAt);
+                  const formattedDate =
+                    i === 0 ||
+                    currentDate !== getPrevDateString(chatList[i - 1]?.sentAt)
+                      ? getCustomDateString(msg.sentAt)
+                      : '';
+
+                  return (
+                    <div key={i}>
+                      {formattedDate && (
+                        <div className={styles.nowDate}>{formattedDate}</div>
+                      )}
+                      <ChatMessage
+                        key={i}
+                        sender_email={msg.sender_email}
+                        name={msg.name}
+                        generation={msg.generation}
+                        message={msg.message}
+                        sentAt={stringToTime(msg.sentAt)}
+                      />
+                    </div>
+                  );
+                })
               ) : (
-                <Loading />
+                <div className={styles.loadingContainer}>
+                  {chatList !== null ? <Loading /> : <></>}
+                </div>
               )
             ) : (
               <></>
