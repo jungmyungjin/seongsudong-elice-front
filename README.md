@@ -1,6 +1,6 @@
 # **시켜줘,  엘리스 명예 소방관**
 
-<img src="/public/images/img%20copy.jpg" width="1148" height="675">
+<img src="/public/images/img%20copy.jpg" width="948" height="500" margin="0 auto 0 auto">
 
 <br><br><br>
 
