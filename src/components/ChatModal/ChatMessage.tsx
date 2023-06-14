@@ -20,7 +20,6 @@ function ChatMessage({
   const getEmailList = useAppSelector(state => state.chat.onlineList);
 
   useEffect(() => {
-    console.log('getEmailList: ', getEmailList);
     if (userEmail === sender_email) {
       setChatFromMe(true);
     } else {

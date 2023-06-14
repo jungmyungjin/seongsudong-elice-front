@@ -16,7 +16,11 @@ import {
 } from 'reducers/chat';
 
 import { IChatMessage, emailList } from 'types/chat';
-import { convertDate, chatTime } from 'utils/convertDate';
+import {
+  getCustomDateString,
+  getPrevDateString,
+  stringToTime,
+} from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
 import { io } from 'socket.io-client';
@@ -24,7 +28,6 @@ import { io } from 'socket.io-client';
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
-  const [date, setDate] = useState<string>('');
 
   const dispatch = useAppDispatch();
   const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
@@ -32,6 +35,8 @@ function ChatModal() {
 
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
     reconnection: false,
+    path: '/socket.io/',
+    transports: ['websocket'],
   });
 
   /****************** 소켓 위해 지정한 관리자 이메일 *****************/
@@ -55,11 +60,8 @@ function ChatModal() {
     if (userEmail === adminEmail)
       setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
-    setDate(convertDate(new Date()));
 
-    /** 소켓 **/
     enterChatRoom();
-
     return () => {
       socket.off('enterChatRoom');
       socket.off('AllMessages');
@@ -71,10 +73,11 @@ function ChatModal() {
     onMessage();
     getOnline();
     return () => {
+      socket.off('latestMessage');
       socket.off('message');
       socket.off('onlineStatus');
     };
-  }, []);
+  }, [addChat, setOnlineEmailList]);
 
   /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -104,13 +107,10 @@ function ChatModal() {
   function enterChatRoom() {
     if (userEmail === adminEmail) {
       socket.emit('enterChatRoom', chatRoomDetail.email);
-      console.log('enterChatRoom(isAdmin) : ', chatRoomDetail.email);
     } else {
       socket.emit('enterChatRoom', userEmail);
-      console.log('enterChatRoom(user) : ', userEmail);
     }
     socket.on('AllMessages', data => {
-      console.log('모든 메세지: ', data);
       dispatch(setChatRoomDetailChatList(data));
     });
   }
@@ -125,6 +125,7 @@ function ChatModal() {
 
   function onMessage() {
     socket.on('latestMessage', (data: IChatMessage[]) => {
+      console.log('latestMessage: ', data);
       const newChatMessage = {
         sender_email: data[0].sender_email,
         name: data[0].name,
@@ -132,35 +133,24 @@ function ChatModal() {
         message: data[0].message,
         sentAt: data[0].sentAt,
       };
-      console.log('newChat: ', newChatMessage);
       dispatch(addChat({ chatMessage: newChatMessage }));
     });
   }
 
   function sendOnline() {
-    console.log('start to get isOnline');
     if (userEmail === adminEmail) {
-      console.log('Admin인 경우');
-      console.log(
-        'userEmail : ',
-        chatRoomDetail.email,
-        'adminEmail: ',
-        adminEmail,
-      );
       socket.emit('isOnlineStatus', chatRoomDetail.email, adminEmail);
     } else {
-      console.log('isAdmin가 아닌 경우');
-      console.log('userEmail : ', userEmail, 'adminEmail: ', adminEmail);
       socket.emit('isOnlineStatus', userEmail, adminEmail);
     }
   }
 
   function getOnline() {
     socket.on('onlineStatus', (data: emailList[]) => {
-      console.log(data);
       dispatch(setOnlineEmailList(data));
     });
   }
+
   /***********************************************************************/
 
   return (
@@ -168,22 +158,38 @@ function ChatModal() {
       <div className={styles.chatModalContainer}>
         <div className={styles.scrollContainer} ref={scrollContainerRef}>
           {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
-          <div className={styles.nowDate}>{date}</div>
+
           <div className={styles.chatListContainer}>
             {chatList !== null ? (
               chatList?.length > 0 ? (
-                chatList?.map((msg, i) => (
-                  <ChatMessage
-                    key={i}
-                    sender_email={msg.sender_email}
-                    name={msg.name}
-                    generation={msg.generation}
-                    message={msg.message}
-                    sentAt={msg.sentAt}
-                  />
-                ))
+                chatList?.map((msg, i) => {
+                  const currentDate = getPrevDateString(msg.sentAt);
+                  const formattedDate =
+                    i === 0 ||
+                    currentDate !== getPrevDateString(chatList[i - 1]?.sentAt)
+                      ? getCustomDateString(msg.sentAt)
+                      : '';
+
+                  return (
+                    <div key={i}>
+                      {formattedDate && (
+                        <div className={styles.nowDate}>{formattedDate}</div>
+                      )}
+                      <ChatMessage
+                        key={i}
+                        sender_email={msg.sender_email}
+                        name={msg.name}
+                        generation={msg.generation}
+                        message={msg.message}
+                        sentAt={stringToTime(msg.sentAt)}
+                      />
+                    </div>
+                  );
+                })
               ) : (
-                <Loading />
+                <div className={styles.loadingContainer}>
+                  {chatList !== null ? <Loading /> : <></>}
+                </div>
               )
             ) : (
               <></>
