@@ -12,10 +12,10 @@ export interface SelectDateProps {
   selectedCheckbox: string;
 }
 
-export interface SingleSelectProps {
+export interface SingleSelectorProps {
   typeList: string[];
-  name?: string;
-  onSelect?: (value: string) => void;
+  name: string;
+  onSelect: (value: string) => void;
 }
 
 export interface MultiSelectorProps {
