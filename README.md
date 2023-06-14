@@ -2,7 +2,7 @@
 
 <img src="/public/images/img%20copy.jpg" width="1148" height="675">
 
-<br><br>
+<br><br><br>
 
 ## **1\. 기획의도 & 목적**
 
@@ -84,6 +84,7 @@
 ##### -   TypeScript
 ##### -   Sass
 ##### -   redux-toolkit
+<img src="https://img.shields.io/badge/React-#61DAFB?style=for-the-badge&logo=React&logoColor=white">
 
 #### **Back-end**
 
