@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { shareKakao } from './shareKakao';
 
 import { useAppSelector } from 'hooks/useRedux';
 
 import { ReactComponent as KakaoIcon } from 'assets/Kakao.svg';
 import styles from './kakaoShareButton.module.scss';
+import darkStyles from './kakaoShareButtonDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 const { Kakao } = window;
 
@@ -39,14 +42,22 @@ function KakaoShareButton() {
     }
   }, []);
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <>
       <button
         type='submit'
-        className={styles.kakaoButton}
+        className={selectedStyles.kakaoButton}
         onClick={() => shareKakao(buttonContents)}
       >
-        <div className={styles.KakaoShareText}>
+        <div className={selectedStyles.KakaoShareText}>
           <KakaoIcon />
           <p>카카오톡 공유하기</p>
         </div>

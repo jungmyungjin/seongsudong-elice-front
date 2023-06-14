@@ -1,8 +1,12 @@
 import styles from './reservationList.module.scss';
+import darkStyles from './reservationListDark.module.scss';
 
 import { ReactComponent as ChevronRight } from '../../assets/ChevronRight.svg';
 
 import { MyReservation } from 'types/myReservation';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
+import { useMemo } from 'react';
 
 interface Props {
   reservation: MyReservation;
@@ -21,18 +25,26 @@ function ReservationList({ reservation, onClick }: Props) {
     return value;
   };
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div className={styles.reservationList}>
       <div
-        className={styles.reservationContainer}
+        className={selectedStyles.reservationContainer}
         key={reservation.reservation_id}
         onClick={onClick}
       >
-        <div className={styles.eachReservation}>
-          <p className={styles.date}>
+        <div className={selectedStyles.eachReservation}>
+          <p className={selectedStyles.date}>
             {convertStringToDate(reservation.reservation_date)}
           </p>
-          <p className={styles.timeAndSeat}>
+          <p className={selectedStyles.timeAndSeat}>
             {returnReservationTime(
               reservation.start_time,
               reservation.end_time,
@@ -41,7 +53,7 @@ function ReservationList({ reservation, onClick }: Props) {
             {reservation.seat_type} {reservation.seat_number}
           </p>
         </div>
-        <div className={styles.icon}>
+        <div className={selectedStyles.icon}>
           <ChevronRight />
         </div>
       </div>

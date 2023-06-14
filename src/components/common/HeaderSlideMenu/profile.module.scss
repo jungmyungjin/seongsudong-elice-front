@@ -6,6 +6,10 @@
   height: 140px;
   display: flex;
   flex-direction: column;
+
+  span {
+    background-color: inherit;
+  }
 }
 
 .ButtonBar {

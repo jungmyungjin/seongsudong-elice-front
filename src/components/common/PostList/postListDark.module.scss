@@ -1,0 +1,61 @@
+@import '../../../styles/colors.scss';
+
+.eachPost {
+  display: flex;
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid white;
+  border-radius: 4px;
+
+  margin-bottom: 5px;
+
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: $DARK_MODEㅡGRAY;
+  box-shadow: 3px 3px 3px $DARK_MODEㅡSHADOW;
+
+  p {
+    overflow: hidden;
+  }
+  .postInfo {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #999999;
+    margin-bottom: 5px;
+    .nameAndDate {
+      display: flex;
+      flex-direction: row;
+
+      .name {
+        margin-right: 5px;
+        color: $DARK_MODEㅡFONT;
+      }
+
+      p:last-child {
+        color: $DARK_MODEㅡBRIGHT_GRAY;
+      }
+    }
+    .viewsContainer {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 5px;
+        stroke: #999999;
+      }
+
+      p {
+        color: $DARK_MODEㅡBRIGHT_GRAY;
+      }
+    }
+  }
+  .title {
+    color: $DARK_MODEㅡFONT;
+  }
+}

@@ -43,66 +43,67 @@
   height: 2000px;
   font-size: 1.7rem;
   color: black;
+}
 
-  section {
-    width: 90%;
-    margin-left: auto;
-    margin-top: 5%;
-    border: 1px solid #7573b9;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    position: relative;
+.possible,
+.impossible {
+  width: 90%;
+  margin-left: auto;
+  margin-top: 5%;
+  border: 1px solid #7573b9;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  position: relative;
 
-    height: 102px;
-    overflow: hidden;
+  height: 102px;
+  overflow: hidden;
 
-    .graduateSeat:last-child {
-      height: 100px;
-      transform: translateY(-50px);
-    }
+  .graduateSeat:last-child {
+    height: 100px;
+    transform: translateY(-50px);
   }
+}
 
-  .entrance {
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    writing-mode: vertical-lr;
-    margin-top: 0;
-    height: 120px;
-    width: 29px;
-    position: absolute;
-    transform: translateY(-715%) translateX(-11%);
-    border: none;
-    font-size: 1.2rem;
-    background-color: #f2effb;
-  }
+.entrance {
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  writing-mode: vertical-lr;
+  margin-top: 0;
+  height: 120px;
+  width: 29px;
+  position: absolute;
+  transform: translateY(-715%) translateX(-11%);
+  border: none;
+  font-size: 1.2rem;
+  background-color: #f2effb;
+}
 
-  .possible > .visible {
-    background-color: #c6b3ff;
-    cursor: pointer;
-  }
+.possible > .visible {
+  background-color: #c6b3ff;
+  cursor: pointer;
+}
 
-  .impossible > .visible {
-    background-color: #b3b3b3;
-  }
+.impossible > .visible {
+  background-color: #b3b3b3;
+}
 
-  .group.possible > div:last-child.visible,
-  .possible > div:last-child.graduateSeat {
-    background-color: #8a7cda;
-  }
+.group.possible > div:last-child.visible,
+.possible > div:last-child.graduateSeat {
+  background-color: #8a7cda;
+}
 
-  section.possible > div.visible:not(.alreadyReserved):hover {
-    background-color: #c6ccffe8;
-    color: $MAIN_PURPLE;
-  }
+section.possible > div.visible:not(.alreadyReserved):hover {
+  background-color: #c6ccffe8;
+  color: $MAIN_PURPLE;
+}
 
-  section.possible > div.visible.alreadyReserved,
-  section.group.possible > div.visible.alreadyReserved {
-    background-color: #b3b3b3;
-    cursor: initial;
-  }
+section.possible > div.visible.alreadyReserved,
+section.group.possible > div.visible.alreadyReserved {
+  background-color: #b3b3b3;
+  cursor: initial;
 }
 
 .managerZone {
