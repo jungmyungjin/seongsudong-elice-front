@@ -23,7 +23,7 @@ function ZoneOption(props: ZoneOptionInterface) {
     },
     {
       zoneName: '수료 기수석',
-      zoneValue: '수료 기수석',
+      zoneValue: '수료기수석',
     },
     {
       zoneName: '미팅룸',

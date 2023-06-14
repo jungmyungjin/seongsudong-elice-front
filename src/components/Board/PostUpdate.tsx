@@ -4,13 +4,15 @@ import axios from 'axios';
 import styles from './postUpdate.module.scss';
 import { ReactComponent as Back } from 'assets/Back.svg';
 import { ReactComponent as UploadIcon } from 'assets/Upload.svg';
-import postsData from './postsData.json';
+
 
 interface Post {
   id: number;
   title: string;
   description: string;
 }
+
+const backendUrl = process.env.REACT_APP_BACKEND_ADDRESS;
 
 const EditPost: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,65 +27,11 @@ const EditPost: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  // 더미 데이터 테스트
-  // useEffect(() => {
-  //   const fetchPost = () => {
-  //     let storedData = localStorage.getItem('postsData');
-  //     if (storedData === null) {
-  //       localStorage.setItem('postsData', JSON.stringify(postsData));
-  //       storedData = localStorage.getItem('postsData');
-  //     }
-  //     const parsedData = JSON.parse(storedData!);
-  //     const response = parsedData.find((post: Post) => post.id === Number(id));
-
-  //     if (!response) {
-  //       console.error('Post not found');
-  //       return;
-  //     }
-
-  //     setPost(response);
-  //     setTitle(response.title);
-  //     setDescription(response.description);
-  //   };
-
-  //   fetchPost();
-  // }, [id]);
-
-  // const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setTitle(event.target.value);
-  // };
-
-  // const handleBodyChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-  //   setDescription(event.target.value);
-  // };
-
-  // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setImage(event.target.files ? event.target.files[0] : null);
-  // };
-
-  // const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-  //   event.preventDefault();
-
-  //   const formData = new FormData();
-  //   formData.append('title', title);
-  //   formData.append('description', description);
-  //   if (image) {
-  //     formData.append('image', image);
-  //   }
-
-  //   let storedData = localStorage.getItem('dummyData');
-  //   const parsedData = JSON.parse(storedData!);
-  //   const postIndex = parsedData.findIndex((post: Post) => post.id === Number(id));
-  //   parsedData[postIndex] = { ...parsedData[postIndex], title: title, description: description };
-  //   localStorage.setItem('dummyData', JSON.stringify(parsedData));
-
-  //   navigate(`/post/free/${id}`);
-  // };
 
   // api 테스트
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+      const response = await axios.get(`${backendUrl}/posts/${id}`, {withCredentials: true});
       setPost(response.data.postData);
       setTitle(response.data.postData.title);
       setDescription(response.data.postData.description);
@@ -120,11 +68,13 @@ const EditPost: React.FC = () => {
       }
     }
 
-    await axios.patch(`http://localhost:5000/api/posts/${id}`, formData, {
+    await axios.patch(`${backendUrl}/posts/${id}`, formData, {
+      withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
-      },
+      }
     });
+    
 
     navigate(`/post/free/${id}`); // 수정 후 게시물 상세 페이지로 이동
   };

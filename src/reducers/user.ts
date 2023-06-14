@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { deleteUser, logout } from 'actions/user';
 
 // 사용자 상태 타입 정의
 interface UserState {
@@ -8,6 +9,10 @@ interface UserState {
   username: string | null;
   course: string | null;
   generation: number | string;
+  deleteUserDone: boolean;
+  deleteUserError: null | string;
+  logoutDone: boolean;
+  logoutError: null | string;
 }
 
 interface LogInPayload {
@@ -26,6 +31,10 @@ const initialState: UserState = {
   username: null,
   course: null,
   generation: 0,
+  deleteUserDone: false,
+  deleteUserError: null,
+  logoutDone: false,
+  logoutError: null,
 };
 
 // 사용자 상태 slice 생성
@@ -51,6 +60,33 @@ const userSlice = createSlice({
       state.course = null;
       state.generation = 0;
     },
+  },
+  extraReducers: builder => {
+    builder
+      .addCase(logout.pending, state => {
+        state.logoutDone = false;
+        state.logoutError = null;
+      })
+      .addCase(logout.fulfilled, state => {
+        state.logoutDone = true;
+        state.logoutError = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.logoutDone = false;
+        state.logoutError = action.error.message || null;
+      })
+      .addCase(deleteUser.pending, state => {
+        state.deleteUserDone = false;
+        state.deleteUserError = null;
+      })
+      .addCase(deleteUser.fulfilled, state => {
+        state.deleteUserDone = true;
+        state.deleteUserError = null;
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.deleteUserDone = false;
+        state.deleteUserError = action.error.message || null;
+      });
   },
 });
 

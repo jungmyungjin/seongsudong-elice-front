@@ -4,6 +4,7 @@ export interface IChat {
   loadChatError: null | string;
   isOnline: boolean;
   chatRoomDetail: IChatRoom;
+  onlineList: emailList[];
 }
 
 export interface IChatMessage {
@@ -31,4 +32,8 @@ export interface IChatRoom {
   message: string;
   sentAt: string;
   chatList: IChatMessage[] | null;
+}
+
+export interface emailList {
+  member_email: string;
 }

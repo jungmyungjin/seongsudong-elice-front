@@ -35,6 +35,8 @@ interface Comment {
   isAdmin: number;
 }
 
+const backendUrl = process.env.REACT_APP_BACKEND_ADDRESS;
+
 const PostDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [post, setPost] = useState<Post | null>(null);
@@ -50,7 +52,7 @@ const PostDetail: React.FC = () => {
   // 댓글 생성 api 연결
   const addComment = async () => {
     try {
-      const response = await axios.post(`http://localhost:5000/api/comments/${id}`, { 
+      const response = await axios.post(`${backendUrl}/comments/${id}`, { 
         comment: newComment,
       }, {withCredentials: true});
         // 최신 댓글일수록 밑에 쌓임   
@@ -65,7 +67,7 @@ const PostDetail: React.FC = () => {
   // 댓글 수정 api 연결
   const editComment = async (commentId: number, content: string) => {
     try {
-      const response = await axios.patch(`http://localhost:5000/api/comments/${id}`, { 
+      const response = await axios.patch(`${backendUrl}/comments/${id}`, { 
         updatedContent: content,
         commentId: commentId,
         
@@ -86,8 +88,8 @@ const PostDetail: React.FC = () => {
   const deleteComment = async (commentId: number) => {
     try {
       const url = loginUserIsAdmin ? 
-      `http://localhost:5000/api/comments/admin/${id}/${commentId}` :
-      `http://localhost:5000/api/comments/${id}/${commentId}`;
+      `${backendUrl}/comments/admin/${id}/${commentId}` :
+      `${backendUrl}/comments/${id}/${commentId}`;
 
       const response = await axios.delete(url, 
         {withCredentials: true},);
@@ -104,7 +106,7 @@ const PostDetail: React.FC = () => {
   useEffect(() => {
     console.log("run");
     const fetchPost = async () => {
-      const response = await axios.get(`http://localhost:5000/api/posts/${id}`);
+      const response = await axios.get(`${backendUrl}/posts/${id}`,{withCredentials: true});
       setPost(response.data.postData);
       setComments(response.data?.commentsData?.filter((comment: Comment) => comment.post_id === Number(id)));
     };
@@ -123,7 +125,7 @@ const PostDetail: React.FC = () => {
 
   const modalController = async () => {
     try {
-      const response = await axios.delete(`http://localhost:5000/api/posts/${id}`);
+      const response = await axios.delete(`${backendUrl}/posts/${id}`,{withCredentials: true});
       if(response.status === 200) {
         dispatch(closeConfirmModal());
         navigate("/post/free");

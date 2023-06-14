@@ -1,6 +1,7 @@
-import React, { MouseEvent, useCallback } from 'react';
+import React, { MouseEvent } from 'react';
 import { AppDispatch } from 'store/configureStore';
 import { useSelector, useDispatch } from 'react-redux';
+import { useAppDispatch } from 'hooks/useRedux';
 import { closeMenu } from 'reducers/slideMenu';
 import { logOut } from 'reducers/user';
 import { RootState } from 'store/configureStore';
@@ -20,12 +21,11 @@ import { offline } from 'actions/access';
 const LoggedInProfile = (): React.ReactElement => {
   let navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
-  const email = useSelector((state: RootState) => state.user.email);
+
   const username = useSelector((state: RootState) => state.user.username);
   const course = useSelector((state: RootState) => state.user.course);
   const generation = useSelector((state: RootState) => state.user.generation);
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    dispatch(offline(email));
     navigate('/myPage');
     dispatch(closeMenu());
   };
@@ -72,22 +72,22 @@ const ToLogIn = (): React.ReactElement => {
 const Profile = (): React.ReactElement => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
+  const offLineDispatch = useAppDispatch();
   const isLoggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const email = useSelector((state: RootState) => state.user.email);
 
-  const handleLogoutClick = useCallback(
-    async (e: MouseEvent<HTMLButtonElement>) => {
-      const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/logout';
-      try {
-        dispatch(closeMenu());
-        dispatch(logOut());
-        navigate('/');
-        await axios.post(api, { withCredentials: true });
-      } catch (error) {
-        console.log('Logout Error : ', error);
-      }
-    },
-    [],
-  );
+  const handleLogoutClick = async () => {
+    const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/logout';
+    try {
+      await offLineDispatch(offline(email)).unwrap();
+      await axios.post(api, { withCredentials: true });
+      dispatch(closeMenu());
+      dispatch(logOut());
+      navigate('/');
+    } catch (error) {
+      console.log('Logout Error : ', error);
+    }
+  };
 
   return (
     <div className={styles.LayoutProfile}>
