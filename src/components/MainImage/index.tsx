@@ -6,45 +6,29 @@ import axios from 'axios';
 
 const MainImage = (): React.ReactElement => {
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [countTodayUser, setCountTodayUser] = useState(0);
-  const [countTodayReservations, setCountTodayReservations] = useState(0);
+  const [remainSeat, setRemainSeat] = useState(0);
 
   const now = getDate();
-  const apiTodayUsers =
-    process.env.REACT_APP_BACKEND_ADDRESS + '/reservations/users/' + now || '';
-  const apiTodayReservations =
-    process.env.REACT_APP_BACKEND_ADDRESS + '/reservations/' + now || '';
+  const api =
+    process.env.REACT_APP_BACKEND_ADDRESS +
+      '/reservations/seat-check?reservation_date=' +
+      now || '';
 
-  const getTodayInfo = async () => {
+  const getRemainSeat = async () => {
     try {
-      const [resTodayUsers, resTodayReservations] = await Promise.all([
-        await axios.get(apiTodayUsers, {
-          withCredentials: true,
-        }),
-        await axios.get(apiTodayReservations, {
-          withCredentials: true,
-        }),
-      ]);
-
-      setCountTodayUser(resTodayUsers.data.totalUserCount);
-      setCountTodayReservations(resTodayReservations.data.count);
-
-      // // resTodayUsers.da
-      // console.log(
-      //   resTodayUsers.data.totalUserCount,
-      //   resTodayReservations.data.count,
-      // );
-
-      // if (response.status === 200) {
-      //   setRemainSeat(Object.keys(response.data).length - 2); // -2 : 미팅룸
-      // }
+      const response = await axios.get(api, {
+        withCredentials: true,
+      });
+      if (response.status === 200) {
+        setRemainSeat(Object.keys(response.data).length - 2); // -2 : 미팅룸
+      }
     } catch (error) {
       console.log('Error getRemainSeat :', error);
     }
   };
 
   useEffect(() => {
-    getTodayInfo();
+    getRemainSeat();
   }, []);
 
   return (
@@ -65,32 +49,28 @@ const MainImage = (): React.ReactElement => {
       </div>
 
       <div className={styles.todayInfo}>
-        <div className={styles.todaySeat}>
+        <div className={styles.todayVisitor}>
           <div className={styles.infoTitle}>오늘 이용자 수</div>
           <div className={styles.infoValue}>
             <span>
-              <CountUp
-                key={countTodayUser}
-                delay={4.5}
-                duration={4.75}
-                end={countTodayUser}
-              />
+              <CountUp delay={5} end={195} />
             </span>
             <span>명</span>
           </div>
         </div>
+
         <div className={styles.todaySeat}>
-          <div className={styles.infoTitle}>오늘 예약 건 수</div>
+          <div className={styles.infoTitle}>잔여 좌석 수</div>
           <div className={styles.infoValue}>
             <span>
               <CountUp
-                key={countTodayReservations}
+                key={remainSeat}
                 delay={4.5}
                 duration={4.75}
-                end={countTodayReservations}
+                end={remainSeat}
               />
             </span>
-            <span>석</span>
+            <span>명</span>
           </div>
         </div>
       </div>
