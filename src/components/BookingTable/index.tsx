@@ -33,7 +33,7 @@ function BookingTable(props: BookingTableInterface) {
                 <td>
                   {data.seat_type}-{data.seat_number}
                 </td>
-                <td>{data.member_name}</td>
+                <td>{data.name}</td>
                 {props.currentHour && props.goodbyeHandler && (
                   <td>
                     {data.reservation_date === getDate() &&

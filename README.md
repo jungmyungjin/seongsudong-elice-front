@@ -1,7 +1,7 @@
 # **🚒 성수동 엘리스**
 <br><br>
 <p align="center">
-  <img src="/public/images/mainPage.png" width="1148" height="500">
+  <img src="/public/images/mainPage.png" width="1000" height="563">
 </p>
 
 
@@ -17,7 +17,8 @@
 
 <br>
 
-### [😀 엘리스 명예 소방관 페이지 구경하러 가기 😀](https://web-2-project-team06-fire-front.vercel.app)
+[<img src="public/images/banner.png">](https://www.firefighter.today)
+#### 🔍 배너 클릭해서 사이트 구경하기!
 
 <br/><br/><br/>
 
@@ -26,15 +27,15 @@
 
 ### **✨ 메인기능**
 
-##### -   SNS
-##### -   엘리스 좌석 예약
 ##### -   실시간 채팅 기능
+##### -   엘리스 좌석 예약
 ##### -   게시판
 
 <br>
 
 ### **✨ 서브기능**
-##### -   로그인/회원가입
+##### -   구글로그인
+##### -   다크모드/라이트모드
 ##### -   메인페이지
 ##### -   마이페이지
 ##### -   관리자페이지
@@ -43,7 +44,7 @@
 
 ## **3\. 프로젝트만의 차별점, 기대 효과**
 
-### **🔥 기존에 있는 엘리스랩 페이지에서 수강생들이 더 편하게 페이지를 이용할 수 있도록 웹서비스를 만들었습니다.**
+### **🔥 기존에 있는 엘리스랩 페이지에서 수강생과 매니저님이 더 편하게 페이지를 이용할 수 있도록 웹서비스를 만들었습니다.**
 
 ##### -   디스코드 DM 대신 플랫폼에서 바로 소통가능
 ##### -   기존의 엘리스랩 예약 방식과 차별화된 편리한 예약 시스템(잔여좌석 확인이 가능한 레이아웃)
@@ -104,18 +105,21 @@
 #### 구경하고 싶다면 아이콘 클릭!!
 ##### [<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">](https://www.figma.com/file/UsjJ6jb7183EYkwycY9BGW/%EC%84%B1%EC%88%98%EB%8F%99-%EC%97%98%EB%A6%AC%EC%8A%A4?type=design&node-id=11%3A1428&t=xfZgTkdHcgXADYNf-1) - 초반 기획시 빠른 레이아웃을 잡기 위해 사용
 
-##### [<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">](https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296%5D(https://www.notion.so/rki0/c10edb826f394906b73ab477e092e296)) - API 명세서, API DOCS등 활용  
+##### <img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white"> - API 명세서, API DOCS등 활용  
 
 ##### <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white"> - 팀원간 커뮤니케이션 및 매일 아침 스크럼 진행
 
 ##### <img src="https://img.shields.io/badge/Gitlab-FC6D26?style=for-the-badge&logo=Gitlab&logoColor=white"> - Code Repository, Trouble Shooting 내역 기제
 
-##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> - API 테스트 진행
+##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> - API 테스트 진행
 
 <br><br>
 
 ### 🪄 **기술 명세서**
-<br><br>
+
+<h align="center">[<img src="/public/images/functionSpecification.png">](https://rki0.notion.site/6e044ebd12d54f1c8ce2391085b46b8c)</h>
+#### 기술명세서 자세히 보고 싶다면 사진 클릭 😀
+<br><br><br>
 
 ### 🧬 **ERD(Entity Relationship Diagram)**
 <h align="center"><img src="/public/images/ERD.png" width="1148" height="675"></h>

@@ -108,7 +108,7 @@ const CreatePost: React.FC = () => {
           </button>
         </div>
         <div className={styles['form-group']}>
-          <input
+          <textarea
             id='title'
             className={`${styles.titleInput} ${
               errors.title ? styles.errorInput : ''
@@ -123,7 +123,7 @@ const CreatePost: React.FC = () => {
           )}
         </div>
         <div className={styles['form-group']}>
-          <input
+          <textarea
             id='body'
             className={`${styles.bodyInput} ${
               errors.body ? styles.errorInput : ''
@@ -139,7 +139,12 @@ const CreatePost: React.FC = () => {
         </div>
         {/* 파일 업로드 */}
         <div className={selectedStyles.fileUpload}>
-          <UploadIcon onClick={onFileButtonClick} />
+          <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+            <UploadIcon onClick={onFileButtonClick} />
+            <p style={{ marginLeft: '10px', fontSize: '12px' }}>
+              (JPG, PNG, 2MB이하, 최대 3장의 사진만 업로드 가능합니다.)
+            </p>
+          </div>
           <input
             id='file'
             type='file'
