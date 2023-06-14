@@ -48,11 +48,9 @@ function ChatModal() {
   /****************************** 자동 스트롤 *******************************/
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (scrollContainerRef.current && chatList) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
+    scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatList]);
+
   /***********************************************************************/
 
   /********* 채팅방 첫 입성시 어드민 상태, 날짜, 소켓 연결, 해당방의 채팅 리스트 *********/
@@ -156,7 +154,7 @@ function ChatModal() {
   return (
     <FullModal title={modalTitle} modalType='chat'>
       <div className={styles.chatModalContainer}>
-        <div className={styles.scrollContainer} ref={scrollContainerRef}>
+        <div className={styles.scrollContainer}>
           {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
 
           <div className={styles.chatListContainer}>
@@ -194,6 +192,7 @@ function ChatModal() {
             ) : (
               <></>
             )}
+            <div ref={scrollContainerRef} />
           </div>
         </div>
         <div className={styles.chatInputContainer}>
