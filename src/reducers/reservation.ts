@@ -1,10 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import { ReservationState } from '../types/reservation';
-import { getCurrentDate } from '../utils/getDate';
+import { getCurrentDate, getNearestAvailableTime } from '../utils/getDate';
 
 export const initialState: ReservationState = {
   reservation_date: getCurrentDate(),
-  time: '',
+  time: getNearestAvailableTime(),
   seat_number: '',
   seat_type: '개인석',
   visitors: '',

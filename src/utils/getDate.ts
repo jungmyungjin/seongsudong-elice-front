@@ -156,10 +156,14 @@ export function isPassedTime(
   date: string,
   callbackFnc: () => void,
 ): void {
+  const currentDate = new Date();
+  const selectedDate = new Date(date);
+  currentDate.setHours(0, 0, 0, 0);
+  selectedDate.setHours(0, 0, 0, 0);
   const currentTime = new Date().getHours();
 
   // 선택한 당일인 경우 선택한 시간과 현재 시간 비교
-  if (isSameDay(date)) {
+  if (selectedDate <= currentDate) {
     if (time <= currentTime) {
       callbackFnc();
       return;

@@ -9,11 +9,6 @@
   }
 }
 
-.modalContainer {
-  animation: fadeIn 0.3s ease-in-out;
-  z-index: 1000;
-}
-
 .backdrop {
   position: absolute;
   top: 0;
@@ -22,6 +17,11 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.35);
   z-index: 999;
+}
+
+.modalContainer {
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 1000;
 }
 
 .overlay {

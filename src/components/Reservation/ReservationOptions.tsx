@@ -4,7 +4,7 @@ import { RootState } from '../../store/configureStore';
 import {
   ReservationState,
   SelectDateProps,
-  SingleSelectProps,
+  SingleSelectorProps,
   MultiSelectorProps,
 } from '../../types/reservation';
 import { updateReservationInfo } from '../../reducers/reservation';
@@ -19,6 +19,8 @@ import AlertModal from './AlertModal';
 
 import { ReactComponent as Check } from '../../assets/Check.svg';
 import styles from './reservationOptions.module.scss';
+import { convertDate } from 'utils/convertDate';
+import { get } from 'http';
 
 const DateOptions: React.FC = () => {
   const SelectDate: React.FC<SelectDateProps> = ({
@@ -131,7 +133,7 @@ const DateOptions: React.FC = () => {
   );
 };
 
-export const SingleSelect: React.FC<SingleSelectProps> = ({
+export const SingleSelector: React.FC<SingleSelectorProps> = ({
   typeList,
   name,
   onSelect,
@@ -284,14 +286,6 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
 };
 
 const ReservationOptions: React.FC = () => {
-  const seatTypeList: string[] = ['개인석', '팀플석', '수료기수석', '미팅룸'];
-  const TimeList = ['10:00~14:00', '14:00~18:00', '18:00~22:00'];
-  const [isMeetingRoom, setIsMeetingRoom] = useState<boolean>(false);
-  const [selectedType, setSelectedType] = useState<string>(
-    getNearestAvailableTime(),
-  );
-  const [isPastTime, setIsPastTime] = useState<boolean>(false);
-
   const reservationInfo = useSelector((state: RootState) => state.reservation);
   const dispatch = useDispatch();
 
@@ -303,10 +297,25 @@ const ReservationOptions: React.FC = () => {
     dispatch(updateReservationInfo(updatedReservationInfo));
   };
 
+  const seatTypeList: string[] = ['개인석', '팀플석', '수료기수석', '미팅룸'];
+  const TimeList = ['10:00~14:00', '14:00~18:00', '18:00~22:00'];
+  const [isMeetingRoom, setIsMeetingRoom] = useState<boolean>(false);
+  const [selectedType, setSelectedType] = useState<string>(
+    reservationInfo.time,
+  );
+  const [isPastTime, setIsPastTime] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (isSameDay(reservationInfo.reservation_date)) {
+      updateReservation({ time: getNearestAvailableTime() });
+      setSelectedType(getNearestAvailableTime());
+    }
+  }, [reservationInfo.reservation_date]);
+
   const handleSeatTypeSelect = (value: string) => {
     if (value === '미팅룸') {
-      updateReservation({ seat_type: value, time: getNearestAvailableTime() });
       setIsMeetingRoom(true);
+      updateReservation({ seat_type: value });
     } else {
       updateReservation({ seat_type: value });
       setIsMeetingRoom(false);
@@ -333,7 +342,7 @@ const ReservationOptions: React.FC = () => {
   return (
     <>
       <DateOptions />
-      <SingleSelect
+      <SingleSelector
         typeList={seatTypeList}
         name='seatType'
         onSelect={handleSeatTypeSelect}
@@ -369,7 +378,10 @@ const ReservationOptions: React.FC = () => {
       {isPastTime && (
         <AlertModal
           modalMessage1='지난 시간을 예약하실 수 없습니다.🥹'
-          onClick={() => setIsPastTime(false)}
+          onClick={() => {
+            setIsPastTime(false);
+            updateReservation({ time: getNearestAvailableTime() });
+          }}
         />
       )}
     </>

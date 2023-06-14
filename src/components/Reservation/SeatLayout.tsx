@@ -6,7 +6,7 @@ import { RootState } from '../../store/configureStore';
 import { ReservationState, SeatLayoutProps } from '../../types/reservation';
 import { updateReservationInfo } from '../../reducers/reservation';
 
-import { SingleSelect } from './ReservationOptions';
+import { SingleSelector } from './ReservationOptions';
 
 import ConfirmModal from '../common/ConfirmModal';
 import { openConfirmModal, closeConfirmModal } from '../../reducers/modal';
@@ -14,9 +14,10 @@ import { openConfirmModal, closeConfirmModal } from '../../reducers/modal';
 import SubmitModal from './SubmitModal';
 import AlertModal from './AlertModal';
 
-import { findAvailableSeats, ServerResponse } from './FindAvailableSeats';
-// 더미 데이터
-// import serverDatas from './seatDatas.json';
+import {
+  findAvailableSeats,
+  ServerResponse,
+} from '../../utils/FindAvailableSeats';
 
 import axios, { AxiosRequestConfig } from 'axios';
 
@@ -60,17 +61,15 @@ const SeatLayout: React.FC = () => {
   // 서버 통신
   const [serverData, setServerData] = useState<ServerResponse>({});
 
-  const fetchData = async (date: string) => {
+  const fetchData = async (time: string) => {
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/seat-check?reservation_date=${reservationInfo.reservation_date}`,
       );
       const serverDatas = response.data;
       setServerData(serverDatas);
-      const seats = findAvailableSeats(serverDatas, date);
+      const seats = findAvailableSeats(serverDatas, time);
       setCanReservationSeat(seats);
-      console.log(serverDatas);
-      console.log(reservationInfo.reservation_date);
     } catch (error) {
       // 에러 처리
       console.error(error);
@@ -78,14 +77,17 @@ const SeatLayout: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchData('10:00~14:00');
-    // console.log(canReservationSeat);
-  }, [reservationInfo.reservation_date]);
+    fetchData(reservationInfo.time);
+  }, []);
 
   useEffect(() => {
     const seats = findAvailableSeats(serverData, reservationInfo.time);
     setCanReservationSeat(seats);
   }, [reservationInfo.time]);
+
+  useEffect(() => {
+    fetchData(reservationInfo.time);
+  }, [reservationInfo.reservation_date]);
 
   useEffect(() => {
     setCheckReservation(
@@ -374,12 +376,10 @@ const SeatLayout: React.FC = () => {
     } else {
       typeList = [];
     }
-    console.log(canReservationSeat);
 
     const [inputValue, setInputValue] = useState('');
 
     const handleMeetingRoomType = (value: string) => {
-      // updateReservation({ seat_number: value.charAt(3) });
       meetingRoomNumber = value.charAt(3);
       console.log(meetingRoomNumber);
     };
@@ -404,7 +404,7 @@ const SeatLayout: React.FC = () => {
 
     return (
       <section>
-        <SingleSelect
+        <SingleSelector
           typeList={typeList}
           name='meetingRoomType'
           onSelect={handleMeetingRoomType}
@@ -453,7 +453,6 @@ const SeatLayout: React.FC = () => {
     try {
       for (let i = 0; i < timeArray.length; i++) {
         const request = {
-          // 리듀서에 저장된 유저 정보
           member_generation: `${course}/${generation}`,
           member_name: username,
           member_email: email,
@@ -469,15 +468,15 @@ const SeatLayout: React.FC = () => {
           `${process.env.REACT_APP_BACKEND_ADDRESS}/reservations/`,
           request,
           {
-            credentials: 'include',
+            withCredentials: true,
           } as CustomAxiosRequestConfig<ResponseDataType>,
         );
 
         setClickedSubmit(true);
-        console.log(request); // 요청(request) 정보 출력
+        console.log(request);
         console.log(response.data);
       }
-      fetchData(reservationInfo.reservation_date);
+      fetchData(reservationInfo.time);
     } catch (error) {
       setIsReservationFail(true);
       console.error(error);
@@ -507,14 +506,21 @@ const SeatLayout: React.FC = () => {
         modalMessage={checkReservation}
         modalController={handleModalController}
       />
-      {clickedSubmit && <SubmitModal onClick={() => setClickedSubmit(false)} />}
+      {clickedSubmit && (
+        <SubmitModal
+          onClick={() => {
+            setClickedSubmit(false);
+            fetchData(reservationInfo.time);
+          }}
+        />
+      )}
       {isReservationFail && (
         <AlertModal
           modalMessage1='좌석 예약에 실패하였습니다.🥹'
           modalMessage2='다시 시도해주세요.'
           onClick={() => {
             setIsReservationFail(false);
-            // fetchData(reservationInfo.reservation_date);
+            fetchData(reservationInfo.time);
           }}
         />
       )}
