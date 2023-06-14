@@ -11,8 +11,7 @@ function FloatingButton() {
   const { isChatModalOpen, isChatListModalOpen } = useAppSelector(
     state => state.modal,
   );
-  /* isAdmin전역 저장 성공하면 아래 주석 철회, 일단은 state로 왔다갔다 하면서 테스트 */
-  // const {isAdmin} = useAppSelector(state => state.user);
+
   const [isDragging, setIsDragging] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [hidden, setHidden] = useState(false);

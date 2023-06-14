@@ -16,14 +16,13 @@ import {
 } from 'reducers/chat';
 
 import { IChatMessage, emailList } from 'types/chat';
-import { convertDate, chatTime } from 'utils/convertDate';
+import { convertDate, stringToTime } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
 import { io } from 'socket.io-client';
 
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [inputValue, setInputValue] = useState<string>('');
   const [date, setDate] = useState<string>('');
 
@@ -33,6 +32,8 @@ function ChatModal() {
 
   const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
     reconnection: false,
+    path: '/socket.io',
+    transports: ['websocket'],
   });
 
   /****************** 소켓 위해 지정한 관리자 이메일 *****************/
@@ -53,35 +54,28 @@ function ChatModal() {
 
   /********* 채팅방 첫 입성시 어드민 상태, 날짜, 소켓 연결, 해당방의 채팅 리스트 *********/
   useEffect(() => {
-    if (userEmail === adminEmail) {
-      setIsAdmin(true);
-    } else {
-      setIsAdmin(false);
-    }
-
-    if (isAdmin)
+    if (userEmail === adminEmail)
       setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
     setDate(convertDate(new Date()));
 
-    /** 소켓 **/
     enterChatRoom();
-
     return () => {
       socket.off('enterChatRoom');
       socket.off('AllMessages');
     };
-  }, [chatRoomDetail.email, isAdmin, userEmail, adminEmail]);
+  }, [chatRoomDetail.email, userEmail, adminEmail]);
   /***********************************************************************/
 
   useEffect(() => {
     onMessage();
     getOnline();
     return () => {
+      socket.off('latestMessage');
       socket.off('message');
       socket.off('onlineStatus');
     };
-  }, []);
+  }, [addChat, setOnlineEmailList]);
 
   /************************** 채팅 보내기 관련 함수 *****************************/
   function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
@@ -109,19 +103,19 @@ function ChatModal() {
   /***************************** 소켓 관련 함수 코드임 ***************************/
 
   function enterChatRoom() {
-    if (isAdmin) {
+    if (userEmail === adminEmail) {
       socket.emit('enterChatRoom', chatRoomDetail.email);
     } else {
       socket.emit('enterChatRoom', userEmail);
     }
     socket.on('AllMessages', data => {
-      console.log('모든 메세지: ', data);
+      console.log(data);
       dispatch(setChatRoomDetailChatList(data));
     });
   }
 
   function sendMessage(message: string) {
-    if (isAdmin) {
+    if (userEmail === adminEmail) {
       socket.emit('message', chatRoomDetail.email, adminEmail, message);
     } else {
       socket.emit('message', userEmail, userEmail, message);
@@ -129,13 +123,14 @@ function ChatModal() {
   }
 
   function onMessage() {
-    socket.on('message', (data: IChatMessage[]) => {
+    socket.on('latestMessage', (data: IChatMessage[]) => {
+      console.log('latestMessage: ', data);
       const newChatMessage = {
         sender_email: data[0].sender_email,
         name: data[0].name,
         generation: data[0].generation,
         message: data[0].message,
-        sentAt: data[0].sentAt,
+        sentAt: stringToTime(data[0].sentAt),
       };
       console.log('newChat: ', newChatMessage);
       dispatch(addChat({ chatMessage: newChatMessage }));
@@ -143,26 +138,15 @@ function ChatModal() {
   }
 
   function sendOnline() {
-    console.log('start to get isOnline');
-    if (isAdmin) {
-      console.log('Admin인 경우');
-      console.log(
-        'userEmail : ',
-        chatRoomDetail.email,
-        'adminEmail: ',
-        adminEmail,
-      );
+    if (userEmail === adminEmail) {
       socket.emit('isOnlineStatus', chatRoomDetail.email, adminEmail);
     } else {
-      console.log('isAdmin가 아닌 경우');
-      console.log('userEmail : ', userEmail, 'adminEmail: ', adminEmail);
       socket.emit('isOnlineStatus', userEmail, adminEmail);
     }
   }
 
   function getOnline() {
     socket.on('onlineStatus', (data: emailList[]) => {
-      console.log(data);
       dispatch(setOnlineEmailList(data));
     });
   }
@@ -172,7 +156,7 @@ function ChatModal() {
     <FullModal title={modalTitle} modalType='chat'>
       <div className={styles.chatModalContainer}>
         <div className={styles.scrollContainer} ref={scrollContainerRef}>
-          {!isAdmin && <AdminProfile isOnline={isOnline} />}
+          {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
           <div className={styles.nowDate}>{date}</div>
           <div className={styles.chatListContainer}>
             {chatList !== null ? (
