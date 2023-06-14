@@ -13,7 +13,7 @@
 ##### > 레이서들을 위한 커뮤니티 및 엘리스랩 좌석예약을 더욱 편리하게 이용하기 위한 모바일 기반 웹서비스입니다.
 
 
-### [엘리스 명예 소방관 페이지](https://web-2-project-team06-fire-front.vercel.app)
+### [😀 엘리스 명예 소방관 페이지 구경하러 가기 😀](https://web-2-project-team06-fire-front.vercel.app)
 
 <br/><br/><br/>
 
