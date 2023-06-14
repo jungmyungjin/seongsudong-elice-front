@@ -28,6 +28,8 @@
 ##### -   실시간 채팅 기능
 ##### -   게시판
 
+<br>
+
 ### **✨ 서브기능**
 ##### -   로그인/회원가입
 ##### -   메인페이지
@@ -106,6 +108,14 @@
 ##### <img src="https://img.shields.io/badge/Gitlab-FC6D26?style=for-the-badge&logo=Gitlab&logoColor=white"> - Code Repository, Trouble Shooting 내역 기제
 
 ##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> - API 테스트 진행
+
+
+### 🪄 **기술 명세서**
+<br><br>
+
+### 🧬 **Entity Relationship Diagram(ERD)**
+<br><br>
+
 
 
 <br><br>
