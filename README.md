@@ -1,10 +1,8 @@
-# **🚒 시켜줘,  엘리스 명예 소방관**
+# **🚒 성수동 엘리스**
 
-<p align="center">
-  <img src="/public/images/img%20copy.jpg" width="1196" height="615">
-</p>
 
-<br><br><br>
+
+<br><br>
 
 ## **1\. 기획의도 & 목적**
 
@@ -278,7 +276,15 @@ src
 ```
 <br/><br/><br/>
 
+
 ## **7\. 구성원 역할**
+
+### 🔥시켜줘, 엘리스 명예소방관🔥
+
+<p align="center">
+  <img src="/public/images/img%20copy.jpg" width="948" height="475">
+</p>
+
 
 | **이름** | **역할** |
 | --- | --- |
