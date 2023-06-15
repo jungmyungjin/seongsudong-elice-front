@@ -118,6 +118,7 @@
 <br><br>
 
 ### 🧬 **ERD(Entity Relationship Diagram)**
+<h align="center"><img src="/public/images/ERD.png" width="1148" height="675"></h>
 <br><br>
 
 
