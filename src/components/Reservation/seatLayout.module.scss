@@ -1,10 +1,12 @@
 @import '/src/styles/colors';
+@import 'src/styles/mixins';
 
 .seatKindContainer {
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
   margin: 1rem 0;
+  font-size: 15px;
 
   article {
     display: flex;
@@ -36,10 +38,11 @@
 }
 
 .seatContainer {
+  height: 100%;
   border: 3px solid #7573b9;
   border-radius: 10px;
   background-color: #f2effb;
-  font-size: 1.2rem;
+  font-size: 17px;
   color: black;
 }
 
@@ -75,7 +78,7 @@
   position: absolute;
   transform: translateY(-715%) translateX(-17%);
   border: none;
-  font-size: 1.2rem;
+  font-size: 17px;
   background-color: inherit;
 }
 
@@ -115,7 +118,7 @@ section.group.possible > div.visible.alreadyReserved {
   color: white;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  font-size: 25px;
+  font-size: 19px;
   letter-spacing: 2px;
 }
 
