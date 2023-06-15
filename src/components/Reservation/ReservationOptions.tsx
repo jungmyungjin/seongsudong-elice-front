@@ -40,16 +40,16 @@ function after22GetNextDate(): string {
   return currentDate.toISOString().split('T')[0];
 }
 
-function checkIsBefore22(): boolean {
+function checkIsAfter22(): boolean {
   const currentDate = new Date();
   const currentHour = currentDate.getHours();
 
   // 현재 시간이 오후 10시 이후인지 확인
   if (currentHour >= 22) {
-    return false;
+    return true;
   }
 
-  return true;
+  return false;
 }
 
 function isWeekendAfterSix(): boolean {
@@ -141,7 +141,7 @@ const DateOptions: React.FC = () => {
       currentDate.setHours(0, 0, 0, 0);
       clickedDate.setHours(0, 0, 0, 0);
 
-      if (clickedDate < currentDate) {
+      if (checkIsAfter22() && clickedDate <= currentDate) {
         setIsPastDate(true);
         return;
       }
@@ -298,9 +298,11 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
     updatedClickedState[index] = !updatedClickedState[index];
 
     function checkIsPassedTime() {
-      setIsPastTime(true);
-      updatedClickedState[index] = !updatedClickedState[index];
-      setIsClicked(updatedClickedState);
+      if (time === getCurrentDate()) {
+        setIsPastTime(true);
+        updatedClickedState[index] = !updatedClickedState[index];
+        setIsClicked(updatedClickedState);
+      }
     }
     isPassedTime(endTime, reservationInfo.reservation_date, checkIsPassedTime);
 
@@ -382,7 +384,9 @@ const ReservationOptions: React.FC = () => {
     function checkIsPassedTime() {
       updateReservation({ time: getNearestAvailableTime() });
       setSelectedType(getNearestAvailableTime());
-      setIsPastTime(true);
+      reservationInfo.reservation_date !== getCurrentDate()
+        ? setIsPastTime(true)
+        : setSelectedType(time);
     }
 
     isPassedTime(endTime, reservationInfo.reservation_date, checkIsPassedTime);
