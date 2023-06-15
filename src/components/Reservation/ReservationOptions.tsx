@@ -366,7 +366,7 @@ const ReservationOptions: React.FC = () => {
                   name='meetingRoomTimeList'
                   value={time}
                   checked={selectedType === time}
-                  onClick={() => handleMeetingRoomTimeSelect(time)}
+                  onChange={() => handleMeetingRoomTimeSelect(time)}
                   className={styles.checkboxInput}
                 />
                 {time}

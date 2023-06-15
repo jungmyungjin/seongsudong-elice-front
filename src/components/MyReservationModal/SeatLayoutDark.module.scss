@@ -24,6 +24,11 @@
     transform: translateY(-20px);
   }
 
+  & > div > .graduateSeat > div.myReservation {
+    background-color: $MAIN_PURPLE;
+    color: white;
+  }
+
   .entrance {
     display: flex;
     justify-content: center;
@@ -110,6 +115,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    color: gray;
   }
 
   & > div:nth-child(4) {

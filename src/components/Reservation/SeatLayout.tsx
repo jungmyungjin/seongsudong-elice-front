@@ -368,7 +368,6 @@ const SeatLayout: React.FC = () => {
   }
 
   function ClickMeetingRoom() {
-    // console.log(canReservationSeat);
     const [isReservationFail, setIsReservationFail] = useState(false);
     const [isVisiterNameInput, setIsVisiterNameInput] = useState(false);
     let meetingRoomNumber: string = '';
@@ -390,7 +389,6 @@ const SeatLayout: React.FC = () => {
 
     const handleMeetingRoomType = (value: string) => {
       meetingRoomNumber = value.charAt(3);
-      console.log(meetingRoomNumber);
     };
 
     const handleClickSubmit = async () => {
@@ -404,7 +402,10 @@ const SeatLayout: React.FC = () => {
       }
       dispatch(openConfirmModal());
       try {
-        updateReservation({ seat_number: meetingRoomNumber });
+        updateReservation({
+          seat_number: meetingRoomNumber,
+          visitors: inputValue,
+        });
       } catch (error) {
         setIsReservationFail(true);
         console.error(error);
@@ -468,7 +469,7 @@ const SeatLayout: React.FC = () => {
           reservation_date: reservationInfo.reservation_date,
           start_time: startTime[i],
           end_time: endTime[i],
-          visitors: '',
+          visitors: reservationInfo.visitors,
           seat_type: reservationInfo.seat_type,
           seat_number: reservationInfo.seat_number,
         };
@@ -482,8 +483,6 @@ const SeatLayout: React.FC = () => {
         );
 
         setClickedSubmit(true);
-        console.log(request);
-        console.log(response.data);
       }
       fetchData(reservationInfo.time);
     } catch (error) {
