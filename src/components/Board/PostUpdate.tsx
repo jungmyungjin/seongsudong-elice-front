@@ -1,13 +1,10 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from './postUpdate.module.scss';
-import darkStyles from './postUpdateDark.module.scss';
 import { ReactComponent as Back } from 'assets/Back.svg';
 import { ReactComponent as UploadIcon } from 'assets/Upload.svg';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/configureStore';
-import Loading from 'components/common/Loading';
+
 
 interface Post {
   id: number;
@@ -30,20 +27,11 @@ const EditPost: React.FC = () => {
     fileInputRef.current?.click();
   };
 
-  const isDarkMode = useSelector(
-    (state: RootState) => state.checkMode.isDarkMode,
-  );
-
-  const selectedStyles = useMemo(() => {
-    return isDarkMode ? darkStyles : styles;
-  }, [isDarkMode]);
 
   // api 테스트
   useEffect(() => {
     const fetchPost = async () => {
-      const response = await axios.get(`${backendUrl}/posts/${id}`, {
-        withCredentials: true,
-      });
+      const response = await axios.get(`${backendUrl}/posts/${id}`, {withCredentials: true});
       setPost(response.data.postData);
       setTitle(response.data.postData.title);
       setDescription(response.data.postData.description);
@@ -84,8 +72,9 @@ const EditPost: React.FC = () => {
       withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data',
-      },
+      }
     });
+    
 
     navigate(`/post/free/${id}`); // 수정 후 게시물 상세 페이지로 이동
   };
@@ -95,7 +84,7 @@ const EditPost: React.FC = () => {
   };
 
   if (!post) {
-    return <Loading />;
+    return <div>Loading...</div>;
   }
 
   return (
@@ -119,7 +108,7 @@ const EditPost: React.FC = () => {
         value={description}
         onChange={handleBodyChange}
       />
-      <div className={selectedStyles.uploadIcon}>
+      <div className={styles.uploadIcon}>
         <input
           type='file'
           ref={fileInputRef}

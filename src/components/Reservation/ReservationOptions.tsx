@@ -83,6 +83,7 @@ const DateOptions: React.FC = () => {
       e: React.ChangeEvent<HTMLInputElement>,
     ) => {
       const selectedDate = e.target.id;
+      // console.log(selectedDate);
       const weekDates = getWeekdayDates();
       const notIncludeDay = weekDates.map(date => date.split('(')[0]);
       const index = notIncludeDay.indexOf(selectedDate);
