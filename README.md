@@ -1,4 +1,5 @@
 # **🚒 성수동 엘리스**
+<br><br>
 <p align="center">
   <img src="/public/images/mainPage.png" width="948" height="475">
 </p>
