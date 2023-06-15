@@ -15,10 +15,10 @@ const MainImage = (): React.ReactElement => {
     process.env.REACT_APP_BACKEND_ADDRESS + '/reservations/users/' + now || '';
   const apiTodayReservations =
     process.env.REACT_APP_BACKEND_ADDRESS + '/reservations/' + now || '';
-  const apiRemainSeat =
-    process.env.REACT_APP_BACKEND_ADDRESS +
-      '/reservations/seat-check?reservation_date=' +
-      now || '';
+  // const apiRemainSeat =
+  //   process.env.REACT_APP_BACKEND_ADDRESS +
+  //     '/reservations/seat-check?reservation_date=' +
+  //     now || '';
 
   const getTodayInfo = async () => {
     try {
@@ -38,22 +38,21 @@ const MainImage = (): React.ReactElement => {
     }
   };
 
-  const getRemainSeat = async () => {
-    try {
-      const response = await axios.get(apiRemainSeat, {
-        withCredentials: true,
-      });
-      if (response.status === 200) {
-        setRemainSeat(Object.keys(response.data).length - 2); // -2 : 미팅룸
-      }
-    } catch (error) {
-      console.log('Error getRemainSeat :', error);
-    }
-  };
+  // const getRemainSeat = async () => {
+  //   try {
+  //     const response = await axios.get(apiRemainSeat, {
+  //       withCredentials: true,
+  //     });
+  //     if (response.status === 200) {
+  //       setRemainSeat(Object.keys(response.data).length - 2); // -2 : 미팅룸
+  //     }
+  //   } catch (error) {
+  //     console.log('Error getRemainSeat :', error);
+  //   }
+  // };
 
   useEffect(() => {
     getTodayInfo();
-    getRemainSeat();
   }, []);
 
   return (
@@ -75,7 +74,6 @@ const MainImage = (): React.ReactElement => {
           alt='성수동엘리스'
           className={(styles.title, styles.typing)}
         />
-        {/* <p className={(styles.title, styles.typing)}>성수동 엘리스</p> */}
       </div>
       <div className={styles.textContainer}>
         <div className={styles.todayInfo}>
@@ -95,17 +93,17 @@ const MainImage = (): React.ReactElement => {
           </div>
 
           <div className={styles.todaySeat}>
-            <div className={styles.infoTitle}>잔여 좌석 수</div>
+            <div className={styles.infoTitle}>예약건 수</div>
             <div className={styles.infoValue}>
               <span>
                 <CountUp
-                  key={remainSeat}
+                  key={countTodayReservations}
                   delay={4.5}
                   duration={4.75}
-                  end={remainSeat}
+                  end={countTodayReservations}
                 />
               </span>
-              <span>좌석</span>
+              <span>건</span>
             </div>
           </div>
         </div>
