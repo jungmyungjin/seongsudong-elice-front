@@ -109,7 +109,11 @@ const PostDetail: React.FC = () => {
     const fetchPost = async () => {
       const response = await axios.get(`${backendUrl}/posts/${id}`,{withCredentials: true});
       setPost(response.data.postData);
-      setComments(response.data?.commentsData?.filter((comment: Comment) => comment.post_id === Number(id)));
+      
+      const sortedComments = response.data?.commentsData?.filter((comment: Comment) => comment.post_id === Number(id))
+      .sort((a: Comment, b: Comment) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime());
+      
+      setComments(sortedComments);
     };
 
     fetchPost();
