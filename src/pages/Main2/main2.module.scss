@@ -5,26 +5,18 @@
   flex-direction: column;
   position: relative;
   scroll-behavior: auto;
-  // scroll-behavior: smooth;
-
-  .noticeBoard {
-  }
-
-  .reservation {
-    height: 200px;
-  }
-
   overflow: hidden;
 }
 
 .boards {
   display: flex;
   justify-content: center;
-  padding: 40px 0px;
+  padding: 10px 0px;
 
   & > section {
     height: 100%;
     width: 100%;
+    min-width: 50px;
   }
 
   .link {
@@ -34,12 +26,10 @@
     align-items: center;
     margin: 20px 10px;
     height: 3em;
-    border-radius: 0.5em;
-    padding: 0px 10px;
     font-size: 1.2em;
     color: black;
     border-bottom: $MAIN_PURPLE solid 0.3em;
-    box-shadow: 0.2em 0.2em 0.7em rgba($color: #000000, $alpha: 0.2);
+    // box-shadow: 0.2em 0.2em 0.7em rgba($color: #000000, $alpha: 0.2);
 
     &:hover {
       background-color: rgba($color: #000000, $alpha: 0.05);

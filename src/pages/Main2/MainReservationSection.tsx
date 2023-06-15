@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from './mainReservationSection.module.scss';
+import darkStyles from './mainReservationSectionDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 interface MainReservationSectionProps {
   route: string;
@@ -12,10 +15,20 @@ const MainReservationSection = (props: MainReservationSectionProps) => {
     navigate(path);
   };
   let navigate = useNavigate();
+
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(
+    () => (isDarkMode ? darkStyles : styles),
+    [isDarkMode],
+  );
+
   return (
     <div className={styles.MainReservationSection}>
       <button
-        className={styles.ReservationButton}
+        className={selectedStyles.ReservationButton}
         onClick={() => handleClick(route)}
       >
         <div className={styles.title}>

@@ -37,19 +37,6 @@
     font-size: 13px;
     background-color: #f7f3ff;
   }
-
-  .managerZone {
-    width: 450px;
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: translateY(-144px);
-    border-top: 2px solid #7573b9;
-    font-size: 20px;
-    letter-spacing: 2px;
-    padding-bottom: 10px;
-  }
 }
 
 .seatLayoutContainer > div > div:not(.entrance):not(.managerZone) {
@@ -77,24 +64,7 @@
   align-items: center;
 }
 
-.seatLayoutContainer > div > .group {
-  & > div {
-    height: 35px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  & > div:first-child {
-    width: calc(4 / 5 * 100%);
-  }
-
-  & > div:last-child {
-    width: calc(1 / 5 * 100%);
-  }
-}
-
-.seatLayoutContainer > div > div .myReservation {
+.myReservation {
   background-color: $MAIN_PURPLE;
   color: white;
 }
@@ -146,4 +116,34 @@
     background-color: $MAIN_PURPLE;
     color: white;
   }
+}
+
+.group {
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & > div:first-child {
+    height: 35px;
+    width: calc(4 / 5 * 100%);
+  }
+
+  & > div:last-child {
+    height: 35px;
+    width: calc(1 / 5 * 100%);
+  }
+}
+
+.managerZone {
+  width: 450px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(-144px);
+  border-top: 2px solid #7573b9;
+  font-size: 20px;
+  letter-spacing: 2px;
 }

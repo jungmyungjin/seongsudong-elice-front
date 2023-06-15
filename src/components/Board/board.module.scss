@@ -1,7 +1,9 @@
+@import '../../styles/colors';
+
 .posts-container {
   width: 100%;
   height: 100%;
-  background-color: #F0F1F3;
+  background-color: #f0f1f3;
   display: flex;
   flex-direction: column;
   padding: 0 20px;
@@ -17,12 +19,20 @@
   width: 90%;
   padding-bottom: 5px;
   margin: 20px auto 0 auto;
-  box-shadow: inset 0px -1px 0px #E1E2E4;
+  border-bottom: 1px solid #e1e2e4;
   display: flex;
   align-items: center;
 
+  *:not(:last-child) {
+    width: 60px;
+    text-align: center;
+    padding: 0 5px;
+  }
+
   .selected {
-    border-bottom: 3px solid #524FA0;
+    border-bottom: 4px solid $MAIN_PURPLE;
+    padding-bottom: 8px;
+    transform: translateY(6px);
   }
 
   .freePost {
@@ -43,7 +53,7 @@
   width: 90%;
   padding-bottom: 5px;
   margin: 90px auto 15px auto;
-  box-shadow: inset 0px -1px 0px #E1E2E4;
+  box-shadow: inset 0px -1px 0px #e1e2e4;
 
   p {
     line-height: 18px;
@@ -55,5 +65,3 @@
 .postList {
   min-height: 720px;
 }
-
-

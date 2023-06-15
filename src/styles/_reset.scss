@@ -7,12 +7,20 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff')
+    format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
 /* box-sizing */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-  font-family: 'EliceDigitalBaeum-Bd';
+  font-family: 'Pretendard-Regular', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -25,7 +33,7 @@ html,
 body,
 #root {
   height: 100%;
-  font-family: 'EliceDigitalBaeum-Bd';
+  font-family: 'Pretendard-Regular', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -117,14 +125,17 @@ video {
   font: inherit;
   font-size: 100%;
   vertical-align: baseline;
+  font-family: 'Pretendard-Regular', sans-serif;
 }
 
 /* a 링크 초기화 */
 a {
   text-decoration: none;
+  font-family: 'Pretendard-Regular', sans-serif;
 }
 a:hover {
   text-decoration: none;
+  font-family: 'Pretendard-Regular', sans-serif;
 }
 
 /* 버튼초기화 */
@@ -133,11 +144,13 @@ button {
   border: 0;
   cursor: pointer;
   padding: 0;
+  font-family: 'Pretendard-Regular', sans-serif;
 }
 
 table {
   border-collapse: collapse;
   border-spacing: 0;
+  font-family: 'Pretendard-Regular', sans-serif;
 }
 
 img,
@@ -152,4 +165,5 @@ svg {
 input:focus,
 textarea:focus {
   outline: none;
+  font-family: 'Pretendard-Regular', sans-serif;
 }

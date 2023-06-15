@@ -71,12 +71,13 @@
 }
 
 .modalMessage {
+  color: black;
   display: flex;
   white-space: pre-line;
   justify-content: center;
   text-align: center;
   padding: 30px 0 30px 0;
-  font-size: 15px;
+  font-size: 20px;
 }
 
 .modalButtonContainer {

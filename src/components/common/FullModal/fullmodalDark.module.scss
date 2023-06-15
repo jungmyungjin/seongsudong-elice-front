@@ -1,0 +1,71 @@
+@import '../../../styles/colors';
+
+.overlay {
+  position: fixed;
+  top: 0;
+  width: 720px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.overlay.chat {
+  position: fixed;
+  top: 0;
+  width: 720px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 299;
+}
+.overlay.adminChatList {
+  position: fixed;
+  top: 0;
+  width: 720px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 250;
+}
+.container {
+  background-color: $DARK_MODEㅡBACKGROUND;
+  width: 100%;
+  height: 100%;
+  box-shadow: 0rem 0rem 0.7rem $DARK_MODEㅡSHADOW;
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  align-items: center;
+
+  .header {
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: 1px solid #e6e6e6;
+    background-color: $DARK_MODEㅡBRIGHT_GRAY;
+    box-shadow: 0rem 0rem 0.7rem #00000029;
+
+    .headerTitle {
+      width: 100%;
+      align-items: center;
+      text-align: center;
+      font-size: 18px;
+      background-color: $DARK_MODEㅡBRIGHT_GRAY;
+      color: black;
+    }
+    .goback {
+      cursor: pointer;
+    }
+  }
+  .body {
+    width: 100%;
+    height: calc(100% - 4rem);
+  }
+}

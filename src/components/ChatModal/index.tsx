@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
 import FullModal from '../common/FullModal';
@@ -22,8 +22,10 @@ import {
   stringToTime,
 } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
-
+import darkStyles from './chatModalDark.module.scss';
 import { io } from 'socket.io-client';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
@@ -152,14 +154,26 @@ function ChatModal() {
   }
 
   /***********************************************************************/
+  /***********************다크 모드 적용 코드*********************************/
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+  /***********************************************************************/
 
   return (
     <FullModal title={modalTitle} modalType='chat'>
-      <div className={styles.chatModalContainer}>
-        <div className={styles.scrollContainer} ref={scrollContainerRef}>
+      <div className={selectedStyles.chatModalContainer}>
+        <div
+          className={selectedStyles.scrollContainer}
+          ref={scrollContainerRef}
+        >
           {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
 
-          <div className={styles.chatListContainer}>
+          <div className={selectedStyles.chatListContainer}>
             {chatList !== null ? (
               chatList?.length > 0 ? (
                 chatList?.map((msg, i) => {
@@ -173,7 +187,9 @@ function ChatModal() {
                   return (
                     <div key={i}>
                       {formattedDate && (
-                        <div className={styles.nowDate}>{formattedDate}</div>
+                        <div className={selectedStyles.nowDate}>
+                          {formattedDate}
+                        </div>
                       )}
                       <ChatMessage
                         key={i}
@@ -187,7 +203,7 @@ function ChatModal() {
                   );
                 })
               ) : (
-                <div className={styles.loadingContainer}>
+                <div className={selectedStyles.loadingContainer}>
                   {chatList !== null ? <Loading /> : <></>}
                 </div>
               )
@@ -196,7 +212,7 @@ function ChatModal() {
             )}
           </div>
         </div>
-        <div className={styles.chatInputContainer}>
+        <div className={selectedStyles.chatInputContainer}>
           <ChatInput
             inputValue={inputValue}
             handleInputChange={handleInputChange}

@@ -1,0 +1,20 @@
+@import '../../styles/colors.scss';
+
+.ReservationButton {
+  width: 95%;
+  height: 130px;
+  background-color: $RESERVE_BRIGHT_PURPLE;
+  background-image: url('../../../public/images/seongsudong_elice_banner.png');
+  background-size: 350px;
+  background-repeat: no-repeat;
+  position: relative;
+  box-shadow: 0rem 0.4rem 0.4rem rgba($color: #000000, $alpha: 0.25);
+  position: absolute;
+  overflow: hidden;
+  transform: scale(1.05);
+
+  &:hover {
+    transition: transform 0.5s ease;
+    transform: scale(1.08);
+  }
+}

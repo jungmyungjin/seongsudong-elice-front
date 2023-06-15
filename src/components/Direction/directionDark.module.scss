@@ -1,0 +1,32 @@
+@import '../../styles/colors';
+
+.title {
+  width: 80%;
+  margin: 60px auto 0 auto;
+  font-size: 50px;
+  color: $DARK_MODEㅡPURPLE_FONT;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.btnFindRoad {
+  display: flex;
+
+  p {
+    color: $DARK_MODEㅡPURPLE_FONT;
+  }
+}
+
+.RoadMap {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 50px auto 0 auto;
+  p {
+    margin-left: 10px;
+    font-size: 25px;
+    color: $DARK_MODEㅡPURPLE_FONT;
+    font-weight: 800;
+  }
+}

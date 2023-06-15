@@ -1,8 +1,11 @@
-import React, { useState, MouseEvent, useEffect } from 'react';
+import React, { useState, MouseEvent, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import styles from './signUp.module.scss';
+import darkStyles from './signUpDark.module.scss';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SignUpSelectBtn from 'components/SignUpSelectBtn';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/register';
 
@@ -66,15 +69,23 @@ const SignUp = (): React.ReactElement => {
     }
   };
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div className={styles.signUpLayout}>
       <div className={styles.greeting}>
-        <div className={styles.title}>환영합니다!</div>
+        <div className={selectedStyles.title}>환영합니다!</div>
         <div className={styles.subTitle}>기본 회원 정보를 입력해주세요.</div>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.inputField}>
-        <div className={styles.nameField}>
+        <div className={selectedStyles.nameField}>
           <span>이름</span>
           <input
             name='name'
@@ -82,7 +93,7 @@ const SignUp = (): React.ReactElement => {
             onChange={e => setName(e.target.value)}
           />
         </div>
-        <div className={styles.courseField}>
+        <div className={selectedStyles.courseField}>
           <div>
             <SignUpSelectBtn
               buttonName='과정'

@@ -1,7 +1,10 @@
-import React, { useState, MouseEvent, useRef } from 'react';
+import React, { useState, MouseEvent, useRef, useMemo } from 'react';
 import styles from './signupSelectBtn.module.scss';
+import darkStyles from './signupSelectBtnDark.module.scss';
 import svgDown from 'assets/ChevronDown.svg';
 import useHideOnClickOutside from 'hooks/useHideOnClickOutside';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 // SignUpSelectBtn 컴포넌트
 interface SignUpSelectBtnProps {
@@ -34,13 +37,21 @@ const SignUpSelectBtn = (props: SignUpSelectBtnProps): React.ReactElement => {
     props.onValueSelected(value); // 선택한 값을 부모 컴포넌트에 전달
   };
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
-    <div className={styles.buttonLayout}>
+    <div className={selectedStyles.buttonLayout}>
       <button
         key={props.buttonName}
         ref={buttonRef}
         onClick={menuBtnHandle}
-        className={styles.selectSubject}
+        className={selectedStyles.selectSubject}
       >
         <span>{selectBtn || props.buttonName}</span>
         <img src={svgDown} alt='메뉴' />
@@ -48,13 +59,13 @@ const SignUpSelectBtn = (props: SignUpSelectBtnProps): React.ReactElement => {
       <div
         ref={ref}
         className={
-          isVisible ? styles.selectLists : styles.hiddenMenu // isVisible 상태만으로 클래스 결정
+          isVisible ? selectedStyles.selectLists : styles.hiddenMenu // isVisible 상태만으로 클래스 결정
         }
       >
         {props.buttonList.map(list => (
           <button
             onClick={selectHandle}
-            className={styles.selectList}
+            className={selectedStyles.selectList}
             value={list}
             key={list}
           >

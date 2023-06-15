@@ -1,0 +1,51 @@
+@import '../../styles/colors';
+
+.adminProfile {
+  height: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 40px 0 10px 0;
+
+  .adminSquare {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100px;
+    height: 100px;
+
+    border-radius: 40px;
+    background-color: $MAIN_PURPLE;
+    filter: drop-shadow(0px -1px 6px rgba(77, 77, 77, 0.25));
+
+    img {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .adminName {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 20px;
+    font-size: 18px;
+
+    .isOnline {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-left: 5px;
+      background-color: $ONLINE;
+    }
+  }
+
+  .adminProfileText {
+    margin-top: 10px;
+    font-size: 13px;
+    color: #999999;
+  }
+}

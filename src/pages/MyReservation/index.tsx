@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Pagination from 'components/common/Pagination';
@@ -6,6 +6,7 @@ import Loading from 'components/common/Loading';
 import { usePaginate } from 'hooks/usePaginate';
 
 import styles from './myReservation.module.scss';
+import darkStyles from './myReservationDark.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
@@ -17,6 +18,8 @@ import {
 
 import MyReservationModal from '../../components/MyReservationModal';
 import ReservationList from './ReservationList';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 function MyReservationPage() {
   const [showUpcomingReservations, setShowUpcomingReservations] =
@@ -60,41 +63,49 @@ function MyReservationPage() {
     dispatch(openMyReservationModal());
   };
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <>
       {isMyRevervationModalOpen && <MyReservationModal />}
-      <div className={styles.postContainer}>
-        <div className={styles.title}>내 예약 조회</div>
-        <div className={styles.filterBox}>
+      <div className={selectedStyles.postContainer}>
+        <div className={selectedStyles.title}>내 예약 조회</div>
+        <div className={selectedStyles.filterBox}>
           <button
-            className={`${styles.reservationTypeBtn} ${
-              showUpcomingReservations ? styles.active : ''
+            className={`${selectedStyles.reservationTypeBtn} ${
+              showUpcomingReservations ? selectedStyles.active : ''
             }`}
             onClick={() => setShowUpcomingReservations(true)}
           >
             잡힌 예약
           </button>
           <button
-            className={`${styles.reservationTypeBtn} ${
-              !showUpcomingReservations ? styles.active : ''
+            className={`${selectedStyles.reservationTypeBtn} ${
+              !showUpcomingReservations ? selectedStyles.active : ''
             }`}
             onClick={() => setShowUpcomingReservations(false)}
           >
             지난 예약
           </button>
         </div>
-        <div className={styles.lengthBox}>
+        <div className={selectedStyles.lengthBox}>
           <p>전체 {myReservationList.length}개</p>
         </div>
         {(currentReservation.length === 0 || loadMyReservationError) && (
-          <div className={styles.noReservationBox}>
-            <div className={styles.noReservation}>예약이 없습니다.</div>
-            <Link to='/reservation' className={styles.Link}>
+          <div className={selectedStyles.noReservationBox}>
+            <div className={selectedStyles.noReservation}>예약이 없습니다.</div>
+            <Link to='/reservation' className={selectedStyles.Link}>
               예약하러 가기
             </Link>
           </div>
         )}
-        <div className={styles.listBox}>
+        <div className={selectedStyles.listBox}>
           {loadMyReservationLoading && <Loading />}
           {loadMyReservationDone &&
             currentReservation.map((item, _) => (

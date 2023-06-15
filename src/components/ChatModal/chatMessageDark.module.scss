@@ -1,0 +1,98 @@
+@import '../../styles/colors';
+.containerFromOther {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 20px;
+
+  .imgContainer {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: $MAIN_PURPLE;
+    border-radius: 50%;
+
+    img {
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+    }
+    .isOnline {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: $ONLINE;
+    }
+  }
+
+  .contentContainerFromOther {
+    display: flex;
+    width: 70%;
+    flex-direction: column;
+    margin-left: 8px;
+
+    .chatName {
+      color: white;
+      font-size: 12px;
+      height: 12px;
+      margin-bottom: 10px;
+    }
+
+    .contentFromOther {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: end;
+
+      .chatFromOther {
+        padding: 10px;
+        border-radius: 15px;
+        background-color: $DARK_MODEㅡPURPLE_FONT;
+        font-size: 12px;
+      }
+      .chatTimeFromOther {
+        font-size: 10px;
+        margin-left: 8px;
+        color: #999999;
+      }
+    }
+  }
+}
+
+.containerFromMe {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  margin-top: 20px;
+  .contentContainerFromMe {
+    max-width: 70%;
+    height: auto;
+
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: flex-end;
+    justify-content: flex-end;
+    max-width: 70%;
+
+    .chatFromMe {
+      padding: 10px;
+      border-radius: 15px;
+      background-color: $MAIN_PURPLE;
+      color: white;
+      font-size: 12px;
+    }
+
+    .chatTimeFromMe {
+      font-size: 10px;
+      margin-right: 8px;
+      color: #999999;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@import '../../styles/colors.scss';
+
+.chatList {
+  width: 100%;
+}
+
+.chatItem {
+  color: $BRIGHT_GRAY;
+  border-bottom: 2px solid $DARK_MODEㅡPURPLE_FONT;
+  border-radius: 8px;
+  padding: 5px;
+  transition: all 500ms;
+
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+
+  &:hover {
+    cursor: pointer;
+    background-color: $DARK_MODEㅡPURPLE_FONT;
+  }
+}
+
+.chatInfo {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-bottom: 3px;
+}
+
+.chat {
+  width: 100%;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
