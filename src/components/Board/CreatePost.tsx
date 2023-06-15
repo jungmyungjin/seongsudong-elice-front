@@ -108,7 +108,7 @@ const CreatePost: React.FC = () => {
           </button>
         </div>
         <div className={styles['form-group']}>
-          <input
+          <textarea
             id='title'
             className={`${styles.titleInput} ${
               errors.title ? styles.errorInput : ''
@@ -123,7 +123,7 @@ const CreatePost: React.FC = () => {
           )}
         </div>
         <div className={styles['form-group']}>
-          <input
+          <textarea
             id='body'
             className={`${styles.bodyInput} ${
               errors.body ? styles.errorInput : ''
