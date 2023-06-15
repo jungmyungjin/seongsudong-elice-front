@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 
 import FullModal from '../common/FullModal';
@@ -22,10 +22,8 @@ import {
   stringToTime,
 } from 'utils/convertDate';
 import styles from './chatModal.module.scss';
-import darkStyles from './chatModalDark.module.scss';
+
 import { io } from 'socket.io-client';
-import { useSelector } from 'react-redux';
-import { RootState } from 'store/configureStore';
 
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
@@ -50,11 +48,9 @@ function ChatModal() {
   /****************************** 자동 스트롤 *******************************/
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (scrollContainerRef.current && chatList) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
+    scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatList]);
+
   /***********************************************************************/
 
   /********* 채팅방 첫 입성시 어드민 상태, 날짜, 소켓 연결, 해당방의 채팅 리스트 *********/
@@ -68,15 +64,15 @@ function ChatModal() {
       socket.off('enterChatRoom');
       socket.off('AllMessages');
     };
-  }, [chatRoomDetail.email, userEmail, adminEmail]);
+  }, [chatRoomDetail.email, userEmail, adminEmail, dispatch]);
   /***********************************************************************/
 
   useEffect(() => {
     onMessage();
     getOnline();
     return () => {
-      socket.off('latestMessage');
       socket.off('message');
+      socket.off('latestMessage');
       socket.off('onlineStatus');
     };
   }, [addChat, setOnlineEmailList]);
@@ -114,6 +110,9 @@ function ChatModal() {
     }
     socket.on('AllMessages', data => {
       dispatch(setChatRoomDetailChatList(data));
+      if (!data) {
+        socket.emit('createChatRoom', userEmail);
+      }
     });
   }
 
@@ -154,26 +153,14 @@ function ChatModal() {
   }
 
   /***********************************************************************/
-  /***********************다크 모드 적용 코드*********************************/
-  const isDarkMode = useSelector(
-    (state: RootState) => state.checkMode.isDarkMode,
-  );
-
-  const selectedStyles = useMemo(() => {
-    return isDarkMode ? darkStyles : styles;
-  }, [isDarkMode]);
-  /***********************************************************************/
 
   return (
     <FullModal title={modalTitle} modalType='chat'>
-      <div className={selectedStyles.chatModalContainer}>
-        <div
-          className={selectedStyles.scrollContainer}
-          ref={scrollContainerRef}
-        >
+      <div className={styles.chatModalContainer}>
+        <div className={styles.scrollContainer}>
           {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
 
-          <div className={selectedStyles.chatListContainer}>
+          <div className={styles.chatListContainer}>
             {chatList !== null ? (
               chatList?.length > 0 ? (
                 chatList?.map((msg, i) => {
@@ -187,9 +174,7 @@ function ChatModal() {
                   return (
                     <div key={i}>
                       {formattedDate && (
-                        <div className={selectedStyles.nowDate}>
-                          {formattedDate}
-                        </div>
+                        <div className={styles.nowDate}>{formattedDate}</div>
                       )}
                       <ChatMessage
                         key={i}
@@ -203,16 +188,17 @@ function ChatModal() {
                   );
                 })
               ) : (
-                <div className={selectedStyles.loadingContainer}>
+                <div className={styles.loadingContainer}>
                   {chatList !== null ? <Loading /> : <></>}
                 </div>
               )
             ) : (
               <></>
             )}
+            <div ref={scrollContainerRef} />
           </div>
         </div>
-        <div className={selectedStyles.chatInputContainer}>
+        <div className={styles.chatInputContainer}>
           <ChatInput
             inputValue={inputValue}
             handleInputChange={handleInputChange}
