@@ -28,6 +28,7 @@ import { io } from 'socket.io-client';
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
   const [inputValue, setInputValue] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useAppDispatch();
   const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
@@ -60,6 +61,7 @@ function ChatModal() {
     else setModalTitle('1:1 문의 채팅방');
 
     enterChatRoom();
+
     return () => {
       socket.off('enterChatRoom');
       socket.off('AllMessages');
@@ -110,7 +112,9 @@ function ChatModal() {
     }
     socket.on('AllMessages', data => {
       dispatch(setChatRoomDetailChatList(data));
+      setIsLoading(false);
       if (!data) {
+        setIsLoading(false);
         socket.emit('createChatRoom', userEmail);
       }
     });
@@ -161,39 +165,41 @@ function ChatModal() {
           {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
 
           <div className={styles.chatListContainer}>
-            {chatList !== null ? (
-              chatList?.length > 0 ? (
-                chatList?.map((msg, i) => {
-                  const currentDate = getPrevDateString(msg.sentAt);
-                  const formattedDate =
-                    i === 0 ||
-                    currentDate !== getPrevDateString(chatList[i - 1]?.sentAt)
-                      ? getCustomDateString(msg.sentAt)
-                      : '';
-
-                  return (
-                    <div key={i}>
-                      {formattedDate && (
-                        <div className={styles.nowDate}>{formattedDate}</div>
-                      )}
-                      <ChatMessage
-                        key={i}
-                        sender_email={msg.sender_email}
-                        name={msg.name}
-                        generation={msg.generation}
-                        message={msg.message}
-                        sentAt={stringToTime(msg.sentAt)}
-                      />
-                    </div>
-                  );
-                })
-              ) : (
-                <div className={styles.loadingContainer}>
-                  {chatList !== null ? <Loading /> : <></>}
-                </div>
-              )
+            {isLoading ? (
+              <div className={styles.loadingContainer}>
+                <Loading />
+              </div>
             ) : (
-              <></>
+              <>
+                {chatList ? (
+                  chatList.map((msg, i) => {
+                    const currentDate = getPrevDateString(msg.sentAt);
+                    const formattedDate =
+                      i === 0 ||
+                      currentDate !== getPrevDateString(chatList[i - 1]?.sentAt)
+                        ? getCustomDateString(msg.sentAt)
+                        : '';
+
+                    return (
+                      <div key={i}>
+                        {formattedDate && (
+                          <div className={styles.nowDate}>{formattedDate}</div>
+                        )}
+                        <ChatMessage
+                          key={i}
+                          sender_email={msg.sender_email}
+                          name={msg.name}
+                          generation={msg.generation}
+                          message={msg.message}
+                          sentAt={stringToTime(msg.sentAt)}
+                        />
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div></div>
+                )}
+              </>
             )}
             <div ref={scrollContainerRef} />
           </div>
