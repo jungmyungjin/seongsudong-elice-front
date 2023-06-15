@@ -59,4 +59,15 @@
     width: 30px;
     height: 30px;
   }
+
+  
+}
+
+.imagePreviewContainer {
+  margin-top: 20px;
+  .imagePreview {
+    width: 80%;
+    height: 80%;
+    margin: 20px auto 0 auto;
+  }
 }

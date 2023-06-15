@@ -22,6 +22,7 @@ const CreatePost: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null); 
   const location = useLocation();
   const selectedTab = location.state?.selectedTab || '자유';
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]); // 이미지 url들을 저장할 state
 
   const onFileButtonClick = () => {
     fileInputRef.current?.click();
@@ -58,6 +59,19 @@ const CreatePost: React.FC = () => {
     }
   };
 
+  // 파일 인풋 변경 핸들러
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    register('file').onChange(e);
+
+    if (e.target.files) {
+      setUploadedFile(e.target.files);
+
+      // 추가된 코드 - 파일들을 URL로 변환하여 저장
+      const fileUrls = Array.from(e.target.files).map(file => URL.createObjectURL(file));
+      setPreviewUrls(fileUrls);
+    }
+  };
+
   return (
     <div className={styles['create-post-container']}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -91,19 +105,21 @@ const CreatePost: React.FC = () => {
         {/* 파일 업로드 */}
         <div className={styles.fileUpload}>
           <UploadIcon onClick={onFileButtonClick} />
-          <input 
-            id="file" 
-            type="file" 
-            multiple  // Allow multiple files to be selected
-            ref={fileInputRef} 
-            onChange={e => {
-              register('file').onChange(e);  // Still register the file input for React Hook Form
-              if (e.target.files?.length) {
-                setUploadedFile(e.target.files);  // But also store the FileList in the local state
-              }
-            }} 
-            style={{ display: 'none' }} 
+          <input
+            id="file"
+            type="file"
+            multiple
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
           />
+        </div>
+
+        {/* 추가된 코드 - 이미지 미리보기 */}
+        <div className={styles.imagePreviewContainer}>
+          {previewUrls.map((url, index) => (
+            <img key={index} src={url} alt="preview" className={styles.imagePreview} />
+          ))}
         </div>
       </form>
     </div>
