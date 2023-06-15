@@ -50,11 +50,9 @@ function ChatModal() {
   /****************************** 자동 스트롤 *******************************/
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    if (scrollContainerRef.current && chatList) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
+    scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatList]);
+
   /***********************************************************************/
 
   /********* 채팅방 첫 입성시 어드민 상태, 날짜, 소켓 연결, 해당방의 채팅 리스트 *********/
@@ -64,18 +62,18 @@ function ChatModal() {
     else setModalTitle('1:1 문의 채팅방');
 
     enterChatRoom();
+
     return () => {
       socket.off('enterChatRoom');
       socket.off('AllMessages');
+      socket.off('latestMessage');
     };
-  }, [chatRoomDetail.email, userEmail, adminEmail]);
+  }, [chatRoomDetail.email, userEmail, adminEmail, dispatch]);
   /***********************************************************************/
 
   useEffect(() => {
-    onMessage();
     getOnline();
     return () => {
-      socket.off('latestMessage');
       socket.off('message');
       socket.off('onlineStatus');
     };
@@ -93,6 +91,7 @@ function ChatModal() {
     sendMessage(inputValue);
     sendOnline();
     setInputValue('');
+    onMessage();
   }
 
   function handleEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
@@ -114,6 +113,9 @@ function ChatModal() {
     }
     socket.on('AllMessages', data => {
       dispatch(setChatRoomDetailChatList(data));
+      if (!data) {
+        socket.emit('createChatRoom', userEmail);
+      }
     });
   }
 
@@ -210,6 +212,7 @@ function ChatModal() {
             ) : (
               <></>
             )}
+            <div ref={scrollContainerRef} />
           </div>
         </div>
         <div className={selectedStyles.chatInputContainer}>
