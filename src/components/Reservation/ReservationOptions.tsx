@@ -120,18 +120,18 @@ const DateOptions: React.FC = () => {
 
     let checkDate: string = '';
     if (!isWeekendAfterSix()) {
-      checkDate = after22GetNextDate();
-    } else {
       checkDate = getCurrentDate();
+    } else {
+      checkDate = after22GetNextDate();
     }
 
     const [selectedCheckbox, setSelectedCheckbox] = useState(checkDate);
+    // const [selectedCheckbox, setSelectedCheckbox] = useState('2023-06-13');
 
     const handleSelectedDateChange = (
       e: React.ChangeEvent<HTMLInputElement>,
     ) => {
       const selectedDate = e.target.id;
-      // console.log(selectedDate);
       const weekDates = getWeekdayDates();
       const notIncludeDay = weekDates.map(date => date.split('(')[0]);
       const index = notIncludeDay.indexOf(selectedDate);
@@ -141,16 +141,21 @@ const DateOptions: React.FC = () => {
       currentDate.setHours(0, 0, 0, 0);
       clickedDate.setHours(0, 0, 0, 0);
 
-      if (checkIsAfter22() && clickedDate <= currentDate) {
+      if (clickedDate > currentDate && !checkIsAfter22()) {
+        updateReservation({
+          reservation_date: notIncludeDay[index],
+        });
+        console.log(reservationInfo.reservation_date);
+      } else if (clickedDate < currentDate && checkIsAfter22()) {
+        console.log('안되니');
+      } else {
         setIsPastDate(true);
-        return;
       }
-
-      setSelectedCheckbox(weekDates[index]);
-      updateReservation({
-        reservation_date: notIncludeDay[index],
-      });
     };
+
+    useEffect(() => {
+      setSelectedCheckbox(reservationInfo.reservation_date);
+    }, [reservationInfo.reservation_date]);
 
     return (
       <div className={styles.checkbox}>
