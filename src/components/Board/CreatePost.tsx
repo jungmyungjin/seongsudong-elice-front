@@ -59,6 +59,7 @@ const CreatePost: React.FC = () => {
       // console.log(response);
       if (response.status === 201) {
         navigate(-1);
+        window.location.reload();
       }
     } catch (error) {
       console.error(error);
