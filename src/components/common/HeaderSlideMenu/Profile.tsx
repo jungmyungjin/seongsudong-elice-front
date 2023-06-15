@@ -80,10 +80,12 @@ const Profile = (): React.ReactElement => {
     const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/logout';
     try {
       await offLineDispatch(offline(email)).unwrap();
-      await axios.post(api, { withCredentials: true });
-      dispatch(closeMenu());
-      dispatch(logOut());
-      navigate('/');
+      await axios.delete(api, {
+        withCredentials: true,
+      });
+      await dispatch(closeMenu());
+      await dispatch(logOut());
+      await navigate('/');
     } catch (error) {
       console.log('Logout Error : ', error);
     }
