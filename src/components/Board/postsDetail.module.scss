@@ -90,7 +90,6 @@
           font-size: 13px;
           color: white;
           border-radius: 5px;
-          border: 2px solid #aa8dff;
         }
 
         .commentDeleteBtn {
@@ -102,15 +101,15 @@
 
   .commentInfo {
     p {
-      font-size: 15px;
+      font-size: 20px;
     }
   }
 
   .commentContent {
     p {
       margin-top: 5px;
-      font-size: 17px;
-      color: white;
+      font-size: 18px;
+      color: inherit;
     }
 
     input {
@@ -146,7 +145,6 @@
   width: 50px; // 원하는 이미지의 크기로 조절하세요.
   height: 50px; // 원하는 이미지의 크기로 조절하세요.
   border-radius: 50%;
-  border: 2px solid #aa8dff;
   margin-right: 10px; // 필요한 경우 마진을 추가하세요.
 }
 
@@ -178,7 +176,7 @@
       width: 45px;
       height: 30px;
       background-color: #682be0;
-      border: 2px solid #aa8dff;
+
       font-size: 15px;
       color: white;
       border-radius: 4px;

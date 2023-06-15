@@ -128,25 +128,29 @@ section.group.possible > div.visible.alreadyReserved {
 .visitorInput {
   height: 50px;
   width: 100%;
-  margin-bottom: 60%;
+  margin-bottom: 30px;
   border-radius: 5px;
   font-size: 1.2rem;
 }
 
 .submitButton {
   background-color: $MAIN_PURPLE;
-  bottom: 0;
-  height: 70px;
+  height: 60px;
   font-size: 30px;
-  letter-spacing: 8px;
+  letter-spacing: 2px;
   color: white;
-  position: fixed;
-  width: 720px;
+  width: 680px;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translateX(-20px);
   cursor: pointer;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #c6b3ff;
+    color: $MAIN_PURPLE;
+    border: 2px solid $MAIN_PURPLE;
+  }
 }
 
 .visible,
