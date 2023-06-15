@@ -1,3 +1,5 @@
+@import 'src/styles/mixins';
+
 .dateContainer {
   margin: 10px 0;
 
@@ -11,7 +13,7 @@
   justify-content: space-between;
   margin-top: 10px;
   time {
-    font-size: 22px;
+    font-size: 24px;
   }
 }
 
@@ -110,4 +112,18 @@
   background-color: #e2e1ff;
   border: 2px solid #524fa1;
   color: #524fa1;
+}
+
+@include mobile {
+  .date > time {
+    font-size: 15px;
+  }
+
+  .typeSelector > label {
+    font-size: 15px;
+  }
+
+  .TimeSelector > * {
+    font-size: 15px;
+  }
 }

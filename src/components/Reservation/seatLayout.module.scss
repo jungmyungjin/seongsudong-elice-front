@@ -41,11 +41,6 @@
   background-color: #f2effb;
   font-size: 1.2rem;
   color: black;
-
-  // & > section:last-child {
-  //   border: 10px solid #7573b9;
-  //   margin-right: 300px;
-  // }
 }
 
 .possible,
@@ -78,7 +73,7 @@
   height: 120px;
   width: 20px;
   position: absolute;
-  transform: translateY(-715%) translateX(-11%);
+  transform: translateY(-715%) translateX(-17%);
   border: none;
   font-size: 1.2rem;
   background-color: inherit;
