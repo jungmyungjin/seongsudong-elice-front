@@ -22,8 +22,21 @@ const Header = (): React.ReactElement => {
   const buttonRef = useRef<HTMLButtonElement>(null); // 메뉴를 여는 버튼에 대한 참조를 생성합니다.
   const { ref } = useHideOnClickOutside(() => dispatch(closeMenu()), buttonRef); // 메뉴 외부 클릭 시 메뉴를 닫습니다.
 
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth', // 부드러운 스크롤
+    });
+  };
+
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     dispatch(toggleMenu());
+    scrollToTop();
+    ref.current?.addEventListener('scroll', handleScroll);
+  };
+
+  const handleScroll = () => {
+    ref.current?.removeEventListener('scroll', handleScroll);
   };
 
   useEffect(() => {}, [isOpen]);
