@@ -1,0 +1,68 @@
+@import '../../styles/colors';
+
+.posts-container {
+  width: 100%;
+  height: 100%;
+  background-color: inherit;
+  display: flex;
+  flex-direction: column;
+  padding: 0 20px;
+
+  p {
+    font-family: 'NotoSansKR';
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+  }
+}
+
+.tabBox {
+  width: 90%;
+  padding-bottom: 5px;
+  margin: 20px auto 0 auto;
+  border-bottom: 1px solid #e1e2e4;
+  display: flex;
+  align-items: center;
+
+  p {
+    width: 60px;
+    text-align: center;
+    padding: 0 5px;
+  }
+
+  .selected {
+    border-bottom: 4px solid $MAIN_PURPLE;
+    padding-bottom: 8px;
+    transform: translateY(6px);
+  }
+
+  .freePost {
+    margin-right: 10px;
+    line-height: 18px;
+    font-size: 14px;
+    color: black;
+  }
+
+  .createBtn {
+    width: 20px;
+    height: 20px;
+    margin-left: auto;
+  }
+
+  .createBtn > svg {
+    stroke: white;
+  }
+}
+
+.lengthBox {
+  width: 90%;
+  padding-bottom: 5px;
+  margin: 90px auto 15px auto;
+  box-shadow: inset 0px -1px 0px #e1e2e4;
+
+  p {
+    line-height: 18px;
+    color: white;
+    font-size: 14px;
+  }
+}

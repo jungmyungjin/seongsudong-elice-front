@@ -8,6 +8,7 @@ import chatSlice from './chat';
 import userSlice from './user';
 import accessSlice from './access';
 import reservationSlice from './reservation';
+import CheckModeSlice from './checkMode';
 
 const rootReducer = combineReducers({
   modal: modalSlice.reducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   user: userSlice.reducer,
   access: accessSlice.reducer,
   reservation: reservationSlice.reducer,
+  checkMode: CheckModeSlice.reducer,
 });
 
 export default rootReducer;

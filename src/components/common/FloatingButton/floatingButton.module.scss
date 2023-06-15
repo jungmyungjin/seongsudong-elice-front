@@ -102,14 +102,25 @@
     height: 70px;
     width: 70px;
 
-    background-color: $MAIN_PURPLE;
+    background-color: white;
     border-radius: 50%;
 
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+
     svg {
-      stroke-width: 4;
+      width: 70px;
+      height: 70px;
+      padding: 10px;
+      stroke: black;
+      stroke-width: 1.5px;
+
+      &:hover {
+        stroke: white;
+        background-color: $MAIN_PURPLE;
+      }
     }
   }
 }

@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { CustomLinkInterface } from 'types/customLink';
 import Icon from './Icon';
 import Direction from './Direction';
 import styles from './customLink.module.scss';
+import darkStyles from './customLinkDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 function CustomLink(props: CustomLinkInterface) {
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   if (props.icon === 'notice') {
     return (
       <Link
@@ -14,7 +25,7 @@ function CustomLink(props: CustomLinkInterface) {
         state={{
           tab: '공지',
         }}
-        className={styles.link}
+        className={selectedStyles.link}
       >
         <div className={styles.icon_title_div}>
           <Icon description={props.icon} />
@@ -28,7 +39,7 @@ function CustomLink(props: CustomLinkInterface) {
   }
 
   return (
-    <Link to={props.to} className={styles.link}>
+    <Link to={props.to} className={selectedStyles.link}>
       <div className={styles.icon_title_div}>
         <Icon description={props.icon} />
 

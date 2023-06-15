@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import axios from 'axios';
 import classNames from 'classnames';
 import Pagination from '../common/Pagination';
 import PostList from '../common/PostList';
 import SearchBox from '../common/SearchBox';
+import darkStyles from './boardDark.module.scss';
 import styles from './board.module.scss';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { ReactComponent as PostBtn } from 'assets/Create.svg';
@@ -17,7 +18,9 @@ const Posts: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 번호를 저장하는 상태 변수
   const [postsPerPage] = useState(10); // 페이지 당 보여줄 게시물 수를 저장하는 상태 변수
   const [searchTerm, setSearchTerm] = useState(''); // 검색어를 저장하는 상태 변수
-  const loginUserIsAdmin = useSelector((state: RootState) => state.user.isAdmin);
+  const loginUserIsAdmin = useSelector(
+    (state: RootState) => state.user.isAdmin,
+  );
 
   const navigate = useNavigate();
 
@@ -57,13 +60,21 @@ const Posts: React.FC = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
-    <div className={styles['posts-container']}>
-      <div className={styles.tabBox}>
+    <div className={selectedStyles['posts-container']}>
+      <div className={selectedStyles.tabBox}>
         <Link
           to='/post/free'
-          className={classNames(styles.freePost, {
-            [styles.selected]: selectedTab === '자유',
+          className={classNames(selectedStyles.freePost, {
+            [selectedStyles.selected]: selectedTab === '자유',
           })}
           onClick={() => setSelectedTab('자유')}
         >
@@ -71,17 +82,18 @@ const Posts: React.FC = () => {
         </Link>
         <Link
           to='/post/free'
-          className={classNames(styles.freePost, {
-            [styles.selected]: selectedTab === '공지',
+          className={classNames(selectedStyles.freePost, {
+            [selectedStyles.selected]: selectedTab === '공지',
           })}
           onClick={() => setSelectedTab('공지')}
         >
           <p>공지</p>
         </Link>
-        {((loginUserIsAdmin && selectedTab === '공지') || selectedTab === '자유') && ( // isAdmin이 true이고 선택된 탭이 '공지'인 경우에만 버튼을 렌더링합니다.
+        {((loginUserIsAdmin && selectedTab === '공지') ||
+          selectedTab === '자유') && ( // isAdmin이 true이고 선택된 탭이 '공지'인 경우에만 버튼을 렌더링합니다.
           <Link
             to='/post/free/create'
-            className={styles.createBtn}
+            className={selectedStyles.createBtn}
             onClick={e => {
               e.preventDefault();
               navigate('/post/free/create', { state: { selectedTab } });
@@ -93,7 +105,7 @@ const Posts: React.FC = () => {
       </div>
       {/* 검색 컴포넌트 불러옴. */}
       <SearchBox searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-      <div className={styles.lengthBox}>
+      <div className={selectedStyles.lengthBox}>
         <p>전체 {filteredPosts.length}개</p>
       </div>
       {/* PostList 컴포넌트 불러옴 */}

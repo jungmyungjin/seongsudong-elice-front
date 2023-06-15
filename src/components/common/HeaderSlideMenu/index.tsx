@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './HeaderSlideMenu.module.scss';
+import darkStyles from './headerSlideMenuDark.module.scss';
 import Profile from './Profile';
 import axios from 'axios';
 
@@ -38,11 +39,19 @@ const HeaderSlideMenu = (): React.ReactElement => {
     }
   }, [isOpen, dispatch, isVisible]);
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div
       ref={ref}
-      className={`${styles.SlideMenu} ${
-        isVisible ? styles.open : styles.close
+      className={`${selectedStyles.SlideMenu} ${
+        isVisible ? selectedStyles.open : selectedStyles.close
       }`}
     >
       <Profile />

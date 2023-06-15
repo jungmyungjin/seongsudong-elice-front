@@ -1,0 +1,24 @@
+@import 'styles/colors';
+
+.link {
+  // background-color: $BRIGHT_GRAY;
+  display: block;
+  display: flex;
+  align-items: center;
+  margin: 20px 10px;
+  height: 3em;
+  // border-radius: 0.5em;
+  padding: 0px 10px;
+  font-size: 1.2em;
+  color: white;
+  border-bottom: $MAIN_PURPLE solid 0.3em;
+  // box-shadow: 0.2em 0.2em 0.7em rgba($color: #000000, $alpha: 0.2);
+
+  &:hover {
+    background-color: $BRIGHT_GRAY;
+  }
+}
+.link:hover {
+  background-color: $DARK_MODEㅡBRIGHT_GRAY;
+  font-weight: 700;
+}

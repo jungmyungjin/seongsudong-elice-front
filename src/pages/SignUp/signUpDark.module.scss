@@ -1,0 +1,63 @@
+@import 'styles/colors';
+
+.title {
+  color: $DARK_MODEㅡPURPLE_FONT;
+  font-size: 6vh;
+}
+
+.inputField {
+  position: relative;
+  height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.nameField {
+  background-color: $DARK_MODEㅡBACKGROUND;
+  display: flex;
+  flex-direction: column;
+  width: 20vh;
+  height: 6vh;
+  font-size: 2.3vh;
+  span {
+    color: $DARK_MODEㅡPURPLE_FONT;
+    margin-bottom: 10px;
+  }
+  input {
+    border: 0px;
+    font-size: 2.8vh;
+    border-bottom: 2px solid $BRIGHT_GRAY;
+    background-color: $DARK_MODEㅡBACKGROUND;
+  }
+}
+
+.courseField {
+  position: absolute;
+  width: inherit;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 14vh;
+  > div {
+    margin-right: 5vh;
+  }
+  z-index: 1;
+}
+
+.resultBtns {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  font-size: 2.2vh;
+
+  :hover {
+    background-color: $MAIN_PURPLE;
+  }
+  > button {
+    background-color: $BRIGHT_GRAY;
+    color: white;
+    border-radius: 8px;
+    height: 5.4vh;
+    width: 14vh;
+    margin: 10px;
+  }
+}

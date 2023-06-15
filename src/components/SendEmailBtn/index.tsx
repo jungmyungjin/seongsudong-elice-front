@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { ReactComponent as Mail } from 'assets/Mail.svg';
 
@@ -8,6 +8,9 @@ import { useAppDispatch } from 'hooks/useRedux';
 
 import InputEmailModal from './InputEmailModal';
 import styles from './sendEmailBtn.module.scss';
+import darkStyles from './sendEmailBtnDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 function SendEmailBtn() {
   const dispatch = useAppDispatch();
@@ -16,14 +19,22 @@ function SendEmailBtn() {
     dispatch(openSendInputModal());
   };
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <>
       <button
         type='submit'
-        className={styles.sendEmailBtn}
+        className={selectedStyles.sendEmailBtn}
         onClick={handleOpenInputModal}
       >
-        <div className={styles.sendEmailText}>
+        <div className={selectedStyles.sendEmailText}>
           <Mail />
           <p>이메일 공유하기</p>
         </div>

@@ -64,15 +64,15 @@ function ChatModal() {
       socket.off('enterChatRoom');
       socket.off('AllMessages');
     };
-  }, [chatRoomDetail.email, userEmail, adminEmail]);
+  }, [chatRoomDetail.email, userEmail, adminEmail, dispatch]);
   /***********************************************************************/
 
   useEffect(() => {
     onMessage();
     getOnline();
     return () => {
-      socket.off('latestMessage');
       socket.off('message');
+      socket.off('latestMessage');
       socket.off('onlineStatus');
     };
   }, [addChat, setOnlineEmailList]);
@@ -110,6 +110,9 @@ function ChatModal() {
     }
     socket.on('AllMessages', data => {
       dispatch(setChatRoomDetailChatList(data));
+      if (!data) {
+        socket.emit('createChatRoom', userEmail);
+      }
     });
   }
 

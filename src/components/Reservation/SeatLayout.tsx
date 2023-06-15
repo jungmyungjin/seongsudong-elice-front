@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/useRedux';
 
@@ -22,6 +22,7 @@ import {
 import axios, { AxiosRequestConfig } from 'axios';
 
 import styles from './seatLayout.module.scss';
+import darkStyles from './seatLayoutDark.module.scss';
 
 interface ResponseDataType {
   member_generation: string;
@@ -194,6 +195,14 @@ const SeatLayout: React.FC = () => {
     return seats;
   }
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   function PersonalSeatLayout({ className, clickEvent }: SeatLayoutProps) {
     return (
       <>
@@ -277,7 +286,7 @@ const SeatLayout: React.FC = () => {
             <div className={styles.kindText}>이용가능</div>
           </article>
         </section>
-        <section className={styles.seatContainer}>
+        <section className={selectedStyles.seatContainer}>
           <PersonalSeatLayout
             className={styles.possible}
             clickEvent={clickEvent}
@@ -285,7 +294,7 @@ const SeatLayout: React.FC = () => {
           <FirstGroupSeatLayout className={styles.impossible} />
           <GraduateSeatLayout className={styles.impossible} />
           <SecondGroupSeatLayout className={styles.impossible} />
-          <div className={styles.entrance}>출입문</div>
+          <div className={selectedStyles.entrance}>출입문</div>
         </section>
         <div className={styles.managerZone}>ManagerZone</div>
       </>
@@ -309,7 +318,7 @@ const SeatLayout: React.FC = () => {
             <div className={styles.kindText}>이용가능 (2인석)</div>
           </article>
         </section>
-        <section className={styles.seatContainer}>
+        <section className={selectedStyles.seatContainer}>
           <PersonalSeatLayout className={styles.impossible} />
           <FirstGroupSeatLayout
             className={styles.possible}
@@ -344,7 +353,7 @@ const SeatLayout: React.FC = () => {
             <div className={styles.kindText}>이용가능 (2인석)</div>
           </article>
         </section>
-        <section className={styles.seatContainer}>
+        <section className={selectedStyles.seatContainer}>
           <PersonalSeatLayout className={styles.impossible} />
           <FirstGroupSeatLayout className={styles.impossible} />
           <GraduateSeatLayout
@@ -359,7 +368,6 @@ const SeatLayout: React.FC = () => {
   }
 
   function ClickMeetingRoom() {
-    // console.log(canReservationSeat);
     const [isReservationFail, setIsReservationFail] = useState(false);
     const [isVisiterNameInput, setIsVisiterNameInput] = useState(false);
     let meetingRoomNumber: string = '';
@@ -381,7 +389,6 @@ const SeatLayout: React.FC = () => {
 
     const handleMeetingRoomType = (value: string) => {
       meetingRoomNumber = value.charAt(3);
-      console.log(meetingRoomNumber);
     };
 
     const handleClickSubmit = async () => {
@@ -395,7 +402,10 @@ const SeatLayout: React.FC = () => {
       }
       dispatch(openConfirmModal());
       try {
-        updateReservation({ seat_number: meetingRoomNumber });
+        updateReservation({
+          seat_number: meetingRoomNumber,
+          visitors: inputValue,
+        });
       } catch (error) {
         setIsReservationFail(true);
         console.error(error);
@@ -459,7 +469,7 @@ const SeatLayout: React.FC = () => {
           reservation_date: reservationInfo.reservation_date,
           start_time: startTime[i],
           end_time: endTime[i],
-          visitors: '',
+          visitors: reservationInfo.visitors,
           seat_type: reservationInfo.seat_type,
           seat_number: reservationInfo.seat_number,
         };
@@ -469,12 +479,10 @@ const SeatLayout: React.FC = () => {
           request,
           {
             withCredentials: true,
-          } as CustomAxiosRequestConfig<ResponseDataType>,
+          },
         );
 
         setClickedSubmit(true);
-        console.log(request);
-        console.log(response.data);
       }
       fetchData(reservationInfo.time);
     } catch (error) {

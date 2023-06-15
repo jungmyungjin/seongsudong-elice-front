@@ -1,0 +1,135 @@
+@import '/src/styles/colors';
+
+.seatLayoutContainer {
+  border: 2px solid #7573b9;
+  border-radius: 7px;
+  background-color: $DARK_MODEㅡBRIGHT_GRAY;
+  height: 820px;
+  min-width: 450px;
+  max-width: 450px;
+  margin: 20px 0;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 13px;
+  color: black;
+
+  & > div > .graduateSeat {
+    height: 41px;
+    overflow: hidden;
+  }
+
+  & > div > .graduateSeat > div:last-child {
+    background-color: $BRIGHT_GRAY;
+    height: 40px;
+    transform: translateY(-20px);
+  }
+
+  & > div > .graduateSeat > div.myReservation {
+    background-color: $MAIN_PURPLE;
+    color: white;
+  }
+
+  .entrance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    writing-mode: vertical-lr;
+    margin-top: 0;
+    height: 70px;
+    width: 30px;
+    position: relative;
+    transform: translateX(-2px) translateY(-418px);
+    border: none;
+    font-size: 13px;
+    background-color: $DARK_MODEㅡBRIGHT_GRAY;
+    color: black;
+  }
+
+  .managerZone {
+    width: 450px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-144px);
+    border-top: 2px solid #7573b9;
+    font-size: 20px;
+    letter-spacing: 2px;
+    color: black;
+  }
+}
+
+.seatLayoutContainer > div > div:not(.entrance):not(.managerZone) {
+  border: 1px solid #7573b9;
+  width: 400px;
+  margin-left: auto;
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  transform: translateX(1px);
+  background-color: $BRIGHT_GRAY;
+}
+
+.seatLayoutContainer > div > div:nth-last-child(3) {
+  margin-bottom: 100px;
+}
+
+.seatLayoutContainer > div > div > div {
+  border: 1px solid #7573b9;
+  height: 20px;
+  width: calc(1 / 6 * 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.meetingRoomContainer {
+  border: 2px solid #7573b9;
+  border-radius: 7px;
+  background-color: #f7f3ff;
+  height: 400px;
+  min-width: 450px;
+  max-width: 450px;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 18px;
+
+  & > div:first-child,
+  & > div:nth-child(2) {
+    border: 1px solid #7573b9;
+    background-color: $BRIGHT_GRAY;
+    width: 50%;
+    height: 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & > div:nth-child(3) {
+    width: 100%;
+    height: 65%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: gray;
+  }
+
+  & > div:nth-child(4) {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    transform: translateX(212px) translateY(-230px);
+    background-color: #f7f3ff;
+    writing-mode: vertical-lr;
+  }
+
+  & > div.myReservation {
+    background-color: $MAIN_PURPLE;
+    color: white;
+  }
+}
