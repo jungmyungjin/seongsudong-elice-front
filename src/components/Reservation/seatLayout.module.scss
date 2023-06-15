@@ -39,9 +39,13 @@
   border: 3px solid #7573b9;
   border-radius: 10px;
   background-color: #f2effb;
-  height: 2000px;
   font-size: 1.2rem;
   color: black;
+
+  // & > section:last-child {
+  //   border: 10px solid #7573b9;
+  //   margin-right: 300px;
+  // }
 }
 
 .possible,
@@ -58,9 +62,9 @@
   height: 102px;
   overflow: hidden;
 
-  .graduateSeat:last-child {
+  &:nth-last-child(2) {
     height: 100px;
-    transform: translateY(-50px);
+    margin-bottom: 100px;
   }
 }
 
@@ -72,7 +76,7 @@
   writing-mode: vertical-lr;
   margin-top: 0;
   height: 120px;
-  width: 29px;
+  width: 20px;
   position: absolute;
   transform: translateY(-715%) translateX(-11%);
   border: none;

@@ -14,7 +14,7 @@ const AlertModal: React.FC<AlertModalProps> = ({
   onClick,
 }) => {
   return (
-    <aside onClick={onClick} className={styles.backdrop}>
+    <section onClick={onClick} className={styles.backdrop}>
       <div className={styles.modalContainer}>
         <div className={styles.overlay}>
           <header className={styles.modalTop}>
@@ -29,7 +29,7 @@ const AlertModal: React.FC<AlertModalProps> = ({
           </div>
         </div>
       </div>
-    </aside>
+    </section>
   );
 };
 
