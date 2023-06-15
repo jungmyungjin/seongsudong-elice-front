@@ -5,7 +5,7 @@
   justify-content: space-evenly;
   flex-wrap: wrap;
   margin: 1rem 0;
-  font-size: 15px;
+
   article {
     display: flex;
     align-items: center;
@@ -40,7 +40,7 @@
   border-radius: 10px;
   background-color: #f2effb;
   height: 2000px;
-  font-size: 17px;
+  font-size: 1.2rem;
   color: black;
 }
 
@@ -76,7 +76,7 @@
   position: absolute;
   transform: translateY(-715%) translateX(-11%);
   border: none;
-  font-size: 17px;
+  font-size: 1.2rem;
   background-color: inherit;
 }
 
@@ -116,7 +116,7 @@ section.group.possible > div.visible.alreadyReserved {
   color: white;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
-  font-size: 19px;
+  font-size: 25px;
   letter-spacing: 2px;
 }
 

@@ -294,7 +294,7 @@ const SeatLayout: React.FC = () => {
           <FirstGroupSeatLayout className={styles.impossible} />
           <GraduateSeatLayout className={styles.impossible} />
           <SecondGroupSeatLayout className={styles.impossible} />
-          <div className={styles.entrance}>출입문</div>
+          <div className={selectedStyles.entrance}>출입문</div>
         </section>
         <div className={styles.managerZone}>ManagerZone</div>
       </>
