@@ -36,6 +36,7 @@ interface Comment {
 }
 
 const backendUrl = process.env.REACT_APP_BACKEND_ADDRESS;
+const backendUrl2 = process.env.REACT_APP_BACKEND_ADDRESS_FOR_IMAGE;
 
 const PostDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -165,7 +166,7 @@ const PostDetail: React.FC = () => {
       </div>
       <div className={styles.imgPosition}>
         {post.images.map((image:any, index:any) => (
-          <img key={index} src={`http://localhost:5000/${image}`} alt={`post-${index}`} />
+          <img key={index} src={`${backendUrl2}/${image}`} alt={`post-${index}`} />
         ))}
       </div>
       <div className={styles.updateAndDeleteBtn}>

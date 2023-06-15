@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import styles from './login.module.scss';
+import darkStyles from './loginDark.module.scss';
 import { useNavigate } from 'react-router-dom';
 import logo from 'assets/elice-logo.png';
 import axios from 'axios';
 import { useGoogleLogin, CodeResponse } from '@react-oauth/google';
-import { AppDispatch } from 'store/configureStore';
-import { useDispatch } from 'react-redux';
+import { AppDispatch, RootState } from 'store/configureStore';
+import { useDispatch, useSelector } from 'react-redux';
 import { logIn } from 'reducers/user';
 import { online } from 'actions/access';
 
@@ -72,13 +73,23 @@ const Login = (): React.ReactElement => {
     flow: 'auth-code',
   });
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div className={styles.LoginLayout}>
       <div>
         <div className={styles.LoginImg}>
           <img src={logo} alt='엘리스 로고' />
           <div>
-            <span>레이서 여러분 오늘도 화이팅!</span>
+            <span className={selectedStyles.welcomeText}>
+              레이서 여러분 오늘도 화이팅!
+            </span>
           </div>
         </div>
         <button className={styles.LoginButton} onClick={loginBtnHandle}>
@@ -87,44 +98,6 @@ const Login = (): React.ReactElement => {
             <span>구글 계정으로 로그인</span>
           </div>
         </button>
-        {/* <GoogleLogin
-          onSuccess={async credentialResponse => {
-            try {
-              const res = await axios.post(api, {
-                headers: {
-                  Authorization: `Bearer ${credentialResponse.credential}`,
-                },
-              });
-              if (res.status === 200) {
-                const { isAdmin, email, name, generation } = res.data;
-                dispatch(
-                  logIn({
-                    isAdmin: isAdmin,
-                    email: email,
-                    username: name,
-                    course: generation.split('/')[0],
-                    generation: generation.split('/')[1],
-                  }),
-                );
-
-                navigate('/');
-              } else if (res.status === 204) {
-                // 회원가입이 안된 사용자, 회원가입 페이지로 리디랙션
-                navigate('/signUp', {
-                  state: { token: credentialResponse.credential },
-                });
-              } else {
-                console.log('status error : ' + res.status);
-              }
-            } catch (error) {
-              console.log(error);
-            }
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log('Login Failed');
-          }}
-        /> */}
       </div>
     </div>
   );

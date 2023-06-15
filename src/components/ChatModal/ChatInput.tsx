@@ -1,5 +1,9 @@
+import { useMemo } from 'react';
 import styles from './chatInput.module.scss';
+import darkStyles from './chatInputDark.module.scss';
 import { ReactComponent as Send } from 'assets/Send.svg';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 import { IChatInput } from 'types/chat';
 
@@ -9,17 +13,25 @@ function ChatInput({
   handleClick,
   handleEnter,
 }: IChatInput) {
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
-    <div className={styles.chatInputContainer}>
+    <div className={selectedStyles.chatInputContainer}>
       <textarea
-        className={styles.chatInput}
+        className={selectedStyles.chatInput}
         value={inputValue}
         maxLength={500}
         onChange={handleInputChange}
         onKeyPress={handleEnter}
       />
-      <button className={styles.sendButton} onClick={handleClick}>
-        <div className={styles.sendIconWrapper}>
+      <button className={selectedStyles.sendButton} onClick={handleClick}>
+        <div className={selectedStyles.sendIconWrapper}>
           <Send />
         </div>
       </button>

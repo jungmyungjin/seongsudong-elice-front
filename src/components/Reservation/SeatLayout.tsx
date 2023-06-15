@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from '../../hooks/useRedux';
 
@@ -22,6 +22,7 @@ import {
 import axios, { AxiosRequestConfig } from 'axios';
 
 import styles from './seatLayout.module.scss';
+import darkStyles from './seatLayoutDark.module.scss';
 
 interface ResponseDataType {
   member_generation: string;
@@ -194,6 +195,14 @@ const SeatLayout: React.FC = () => {
     return seats;
   }
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   function PersonalSeatLayout({ className, clickEvent }: SeatLayoutProps) {
     return (
       <>
@@ -277,7 +286,7 @@ const SeatLayout: React.FC = () => {
             <div className={styles.kindText}>이용가능</div>
           </article>
         </section>
-        <section className={styles.seatContainer}>
+        <section className={selectedStyles.seatContainer}>
           <PersonalSeatLayout
             className={styles.possible}
             clickEvent={clickEvent}
@@ -285,7 +294,7 @@ const SeatLayout: React.FC = () => {
           <FirstGroupSeatLayout className={styles.impossible} />
           <GraduateSeatLayout className={styles.impossible} />
           <SecondGroupSeatLayout className={styles.impossible} />
-          <div className={styles.entrance}>출입문</div>
+          <div className={selectedStyles.entrance}>출입문</div>
         </section>
         <div className={styles.managerZone}>ManagerZone</div>
       </>
@@ -309,7 +318,7 @@ const SeatLayout: React.FC = () => {
             <div className={styles.kindText}>이용가능 (2인석)</div>
           </article>
         </section>
-        <section className={styles.seatContainer}>
+        <section className={selectedStyles.seatContainer}>
           <PersonalSeatLayout className={styles.impossible} />
           <FirstGroupSeatLayout
             className={styles.possible}
@@ -344,7 +353,7 @@ const SeatLayout: React.FC = () => {
             <div className={styles.kindText}>이용가능 (2인석)</div>
           </article>
         </section>
-        <section className={styles.seatContainer}>
+        <section className={selectedStyles.seatContainer}>
           <PersonalSeatLayout className={styles.impossible} />
           <FirstGroupSeatLayout className={styles.impossible} />
           <GraduateSeatLayout
@@ -469,7 +478,7 @@ const SeatLayout: React.FC = () => {
           request,
           {
             withCredentials: true,
-          } as CustomAxiosRequestConfig<ResponseDataType>,
+          },
         );
 
         setClickedSubmit(true);

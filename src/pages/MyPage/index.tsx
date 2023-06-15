@@ -1,14 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import CustomLink from 'components/common/Link';
 import ConfirmModal from 'components/common/ConfirmModal';
 import styles from './myPage.module.scss';
+import darkStyles from './myPageDark.module.scss';
 
 import { useAppDispatch, useAppSelector } from 'hooks/useRedux';
 import { logOut } from 'reducers/user';
 import { logout, deleteUser } from 'actions/user';
 import { openConfirmModal, closeConfirmModal } from 'reducers/modal';
 import { offline } from 'actions/access';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 const myPageMenu = [
   {
@@ -83,6 +86,14 @@ function MyPage() {
     dispatch(closeConfirmModal());
   };
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <>
       {modalType === 'logout' && isConfirmModalOpen && (
@@ -120,7 +131,7 @@ function MyPage() {
             [{course}/{generation}] {username}
           </div>
           <button
-            className={styles.deleteUserBtn}
+            className={selectedStyles.deleteUserBtn}
             onClick={onClickDeleteUserButton}
           >
             회원 탈퇴
@@ -138,7 +149,10 @@ function MyPage() {
           ))}
         </div>
         <div className={styles.userAccessBtnContainer}>
-          <button className={styles.logoutBtn} onClick={onClickLogoutButton}>
+          <button
+            className={selectedStyles.logoutBtn}
+            onClick={onClickLogoutButton}
+          >
             로그아웃
           </button>
         </div>

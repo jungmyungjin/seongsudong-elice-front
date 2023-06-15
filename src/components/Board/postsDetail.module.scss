@@ -1,21 +1,21 @@
 .postDetail {
   .title {
     p {
-        margin: 30px 10px 20px 30px;
-        font-size: 30px;
+      margin: 30px 10px 20px 30px;
+      font-size: 23px;
     }
-}
+  }
 
   .postInfo {
     p {
       margin-left: 30px;
-      color: #CAC4D0;
+      color: #cac4d0;
     }
   }
 
   .description {
     p {
-      margin: 90px 27px 20px 20px;
+      margin: 90px 27px 20px 30px;
       font-size: 20px;
     }
   }
@@ -24,8 +24,8 @@
     width: 100%;
     padding-bottom: 5px;
     margin: 20px auto 0 auto;
-    box-shadow: inset 0px -1px 0px #E1E2E4;
-    
+    box-shadow: inset 0px -1px 0px #e1e2e4;
+
     p {
       margin: 100px 0 15px 20px;
     }
@@ -38,23 +38,25 @@
     text-align: center;
 
     .updateBtn {
-        width: 45px;
-        height: 30px;
-        background-color: #682BE0;
-        font-size: 15px;
-        color: white;
-        border-radius: 4px;
-        margin-right: 15px;
+      width: 45px;
+      height: 30px;
+      background-color: #682be0;
+      border: 2px solid #aa8dff;
+      font-size: 15px;
+      color: white;
+      border-radius: 4px;
+      margin-right: 15px;
     }
 
     .deleteBtn {
-        margin-right: 20px;
-        width: 45px;
-        height: 30px;
-        background-color: #682BE0;
-        font-size: 15px;
-        color: white;
-        border-radius: 4px;
+      margin-right: 20px;
+      width: 45px;
+      height: 30px;
+      background-color: #682be0;
+      border: 2px solid #aa8dff;
+      font-size: 15px;
+      color: white;
+      border-radius: 4px;
     }
   }
 }
@@ -64,10 +66,9 @@
     display: flex;
     position: relative; // position 속성 추가
     margin: 20px;
-    border: 1px solid white;
-    box-shadow: inset 0px -1px 0px #E1E2E4;
+    box-shadow: inset 0px -1px 0px #e1e2e4;
     padding-bottom: 10px;
-    
+
     .commentSet {
       position: relative; // position 속성 추가
       display: flex;
@@ -85,10 +86,10 @@
         button {
           width: 33px;
           height: 30px;
-          background-color: #682BE0;
+          background-color: #682be0;
           font-size: 13px;
           color: white;
-          border-radius: 13px;
+          border-radius: 5px;
         }
 
         .commentDeleteBtn {
@@ -108,7 +109,7 @@
     p {
       margin-top: 5px;
       font-size: 18px;
-      color: #868181;
+      color: inherit;
     }
 
     input {
@@ -126,9 +127,7 @@
       color: #b4b0b0;
     }
   }
-
 }
-
 
 .imgPosition {
   margin-top: 100px;
@@ -143,10 +142,9 @@
 }
 
 .commentProfileImage {
-  width: 50px;  // 원하는 이미지의 크기로 조절하세요.
+  width: 50px; // 원하는 이미지의 크기로 조절하세요.
   height: 50px; // 원하는 이미지의 크기로 조절하세요.
   border-radius: 50%;
-  border: 2px solid black;
   margin-right: 10px; // 필요한 경우 마진을 추가하세요.
 }
 
@@ -177,11 +175,11 @@
       margin-top: 10px;
       width: 45px;
       height: 30px;
-      background-color: #682BE0;
+      background-color: #682be0;
+
       font-size: 15px;
       color: white;
       border-radius: 4px;
-      
     }
   }
 }

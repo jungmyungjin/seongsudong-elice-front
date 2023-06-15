@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Loading from '../common/Loading';
 
 import { useAppDispatch } from 'hooks/useRedux';
@@ -6,7 +6,10 @@ import { openChatModal } from 'reducers/modal';
 import { setChatRoomDetail } from 'reducers/chat';
 
 import styles from './chatList.module.scss';
+import darkStyles from './chatListDark.module.scss';
 import { calculateChatDate } from 'utils/calculateChatDate';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 function ChatList() {
   const [chatList, setChatList] = useState<any>(null);
@@ -39,18 +42,26 @@ function ChatList() {
     getChatList();
   }, []);
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
-    <ol className={styles.chatList}>
+    <ol className={selectedStyles.chatList}>
       {chatList === null ? (
         <Loading />
       ) : (
         chatList.map((item: any) => (
           <li
             key={item.room_id}
-            className={styles.chatItem}
+            className={selectedStyles.chatItem}
             onClick={() => handleChatModalOpen(item.room_id)}
           >
-            <div className={styles.chatInfo}>
+            <div className={selectedStyles.chatInfo}>
               <span>
                 [{item.generation}] {item.name}
               </span>
@@ -58,7 +69,7 @@ function ChatList() {
               <span>{calculateChatDate(item.sentAt)}</span>
             </div>
 
-            <div className={styles.chat}>{item.message}</div>
+            <div className={selectedStyles.chat}>{item.message}</div>
           </li>
         ))
       )}
