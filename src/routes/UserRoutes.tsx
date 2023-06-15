@@ -9,8 +9,6 @@ const UserRoutes = () => {
   const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
 
   if (!loggedIn) {
-    alert('로그인 유저만 접근 가능합니다.');
-
     return <Navigate to='/login' />;
   }
 
