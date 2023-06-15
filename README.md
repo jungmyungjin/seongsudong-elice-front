@@ -285,9 +285,8 @@ src
 
 ### 🔥시켜줘, 엘리스 명예소방관🔥
 
-<p align="center">
-  <img src="/public/images/img%20copy.jpg" width="948" height="475">
-</p>
+<img src="/public/images/img%20copy.jpg" width="948" height="550" align="center">
+
 
 
 | **이름** | **역할** |
