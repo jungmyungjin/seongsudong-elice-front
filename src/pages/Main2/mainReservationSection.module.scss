@@ -2,17 +2,11 @@
 
 .MainReservationSection {
   width: 100%;
-  height: 100%;
+  height: 136px;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
-  margin-top: 10px;
-  &:hover .ReservationButton {
-    background-color: rgba($color: #000000, $alpha: 0.05);
-    transition: transform 0.2s ease-in;
-    transform: scale(1.01);
-  }
 }
 
 .ReservationButton {
@@ -20,7 +14,7 @@
   height: 130px;
   background-color: white;
   background-image: url('../../../public/images/seongsudong_elice_banner.png');
-  background-size: contain;
+  background-size: 350px;
   background-repeat: no-repeat;
   position: relative;
   box-shadow: 0rem 0.4rem 0.4rem rgba($color: #000000, $alpha: 0.25);

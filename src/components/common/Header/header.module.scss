@@ -1,18 +1,18 @@
 @import '../../../styles/colors';
 
-header {
-  // background-color: white;
-  background-color: inherit;
+.LayoutNav {
+  background-color: #ffffff;
+  padding: 15px;
+  height: 80px;
+  width: 720px;
   display: flex;
   align-items: center;
-  height: 80px;
-  box-shadow: 0rem 0rem 0.7rem #00000029;
-}
-
-.LayoutNav {
-  padding: 15px;
-  display: flex;
   justify-content: space-between;
+  box-shadow: 0rem 0rem 0.7rem #00000029;
+  position: fixed;
+  top: 0px;
+  z-index: 1;
+
   img {
     height: 40px;
     cursor: pointer;

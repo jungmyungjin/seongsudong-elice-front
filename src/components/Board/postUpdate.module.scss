@@ -1,10 +1,15 @@
 .updateBtn {
   height: 60px;
   margin: 25px auto 0 auto;
-  padding: 0 40px 0 15px;
+  padding: 0 40px 0 10px;
   display: flex;
   justify-content: space-between;
   background-color: #e2e1ff;
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
 
   p {
     font-size: 20px;
@@ -29,4 +34,9 @@
 .uploadIcon {
   padding-top: 15px;
   padding-left: 30px;
+  svg {
+    width: 30px;
+    height: 30px;
+    stroke: white;
+  }
 }

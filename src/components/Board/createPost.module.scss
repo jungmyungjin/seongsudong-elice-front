@@ -6,19 +6,24 @@
   background-color: #e2e1ff;
 
   button {
-    margin: 10px 0 10px 15px;
+    margin: 10px 0 10px 10px;
     font-size: 20px;
   }
 
   .clearBtn {
     font-size: 20px;
   }
+
+  svg {
+    width: 30px;
+    height: 30px;
+  }
 }
 
 .titleInput {
   width: 100%;
   border: 1px solid white;
-  box-shadow: inset 0px -1px 0px #e1e2e4;
+  border-bottom: 1px solid #adadad;
   padding: 15px 0 100px 15px;
   font-size: 20px;
   &::placeholder {
@@ -29,6 +34,7 @@
 .bodyInput {
   width: 100%;
   border: 1px solid white;
+  border-bottom: 1px solid #adadad;
   padding: 15px 0 200px 15px;
   font-size: 20px;
   &::placeholder {
@@ -49,4 +55,8 @@
 .fileUpload {
   padding-top: 15px;
   padding-left: 30px;
+  svg {
+    width: 30px;
+    height: 30px;
+  }
 }
