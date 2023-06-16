@@ -522,12 +522,6 @@ const SeatLayout: React.FC = () => {
           }}
         />
       )}
-      <SubmitModal
-        onClick={() => {
-          setClickedSubmit(false);
-          fetchData(reservationInfo.time);
-        }}
-      />
       {isReservationFail && (
         <AlertModal
           modalMessage1='좌석 예약에 실패하였습니다.🥹'
