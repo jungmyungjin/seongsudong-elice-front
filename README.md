@@ -104,7 +104,7 @@
 #### 구경하고 싶다면 아이콘 클릭!!
 ##### [<img src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=Figma&logoColor=white">](https://www.figma.com/file/UsjJ6jb7183EYkwycY9BGW/%EC%84%B1%EC%88%98%EB%8F%99-%EC%97%98%EB%A6%AC%EC%8A%A4?type=design&node-id=11%3A1428&t=xfZgTkdHcgXADYNf-1) - 초반 기획시 빠른 레이아웃을 잡기 위해 사용
 
-##### [<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">]()) - API 명세서, API DOCS등 활용  
+##### [<img src="https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=Notion&logoColor=white">] - API 명세서, API DOCS등 활용  
 
 ##### <img src="https://img.shields.io/badge/Discord-5865F2?style=for-the-badge&logo=Discord&logoColor=white"> - 팀원간 커뮤니케이션 및 매일 아침 스크럼 진행
 
