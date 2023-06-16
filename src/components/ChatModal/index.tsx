@@ -193,9 +193,9 @@ function ChatModal() {
                 )}
               </>
             )}
-            <div ref={scrollContainerRef} />
           </div>
         </div>
+        <div ref={scrollContainerRef} />
         <div className={styles.chatInputContainer}>
           <ChatInput inputRef={inputRef} handleClick={handleSend} />
         </div>
