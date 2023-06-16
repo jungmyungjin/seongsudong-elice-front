@@ -29,7 +29,9 @@ const UserRoutes = () => {
           process.env.REACT_APP_BACKEND_ADDRESS + '/members/logout';
         dispatch(logOut());
         dispatch(closeMenu());
-        await offLineDispatch(offline(email)).unwrap();
+        if (email) {
+          await offLineDispatch(offline(email)).unwrap();
+        }
         await axios.delete(apiLogout, {
           withCredentials: true,
         });
@@ -39,7 +41,9 @@ const UserRoutes = () => {
       console.log('Login Denied Error:', error);
       dispatch(logOut());
       dispatch(closeMenu());
-      await offLineDispatch(offline(email)).unwrap();
+      if (email) {
+        await offLineDispatch(offline(email)).unwrap();
+      }
     }
   };
   handleLogoutClick();
