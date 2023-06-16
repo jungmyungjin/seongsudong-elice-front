@@ -115,9 +115,10 @@
 <br><br>
 
 ### 🪄 **기술 명세서**
-#### 기술명세서 자세히 보고 싶다면 사진 클릭 😀
+
 <h align="center">[<img src="/public/images/functionSpecification.png" width="1030" height="700">](https://rki0.notion.site/6e044ebd12d54f1c8ce2391085b46b8c)</h>
-<br><br>
+#### 기술명세서 자세히 보고 싶다면 사진 클릭 😀
+<br><br><br>
 
 ### 🧬 **ERD(Entity Relationship Diagram)**
 <h align="center"><img src="/public/images/ERD.png" width="1148" height="675"></h>
