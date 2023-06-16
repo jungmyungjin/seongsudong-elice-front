@@ -83,7 +83,7 @@ function MyReservationPage() {
             }`}
             onClick={() => setShowUpcomingReservations(true)}
           >
-            잡힌 예약
+            다가오는 예약
           </button>
           <button
             className={`${selectedStyles.reservationTypeBtn} ${
