@@ -47,9 +47,7 @@ function ChatModal() {
 
   /****************************** 자동 스트롤 *******************************/
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, []);
+
   useEffect(() => {
     scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatList]);
