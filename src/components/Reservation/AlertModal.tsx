@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { ReactComponent as AlertCircle } from 'assets/AlertCircle.svg';
 import styles from './alertModal.module.scss';
+import darkStyles from './alertModalDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 interface AlertModalProps {
   modalMessage1: string;
@@ -13,11 +16,19 @@ const AlertModal: React.FC<AlertModalProps> = ({
   modalMessage2,
   onClick,
 }) => {
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <section onClick={onClick} className={styles.backdrop}>
       <div className={styles.modalContainer}>
         <div className={styles.overlay}>
-          <header className={styles.modalTop}>
+          <header className={selectedStyles.modalTop}>
             <div className={styles.modalTitle}>
               <AlertCircle />
             </div>
