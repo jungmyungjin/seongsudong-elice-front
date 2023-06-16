@@ -47,7 +47,7 @@
 
   .managerZone {
     width: 450px;
-    height: 35px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,6 +56,9 @@
     font-size: 20px;
     letter-spacing: 2px;
     color: black;
+    background-color: $DARK_MODEㅡBRIGHT_GRAY;
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
   }
 }
 
