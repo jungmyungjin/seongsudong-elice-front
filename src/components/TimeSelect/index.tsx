@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import styles from './timeSelect.module.scss';
+import darkStyles from './timeSelectDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 interface TimeSelectInterface {
   checkedLabel: string;
@@ -8,14 +11,22 @@ interface TimeSelectInterface {
 }
 
 function TimeSelect(props: TimeSelectInterface) {
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div className={styles.timeDiv}>
       <label>시간 선택</label>
 
-      <div className={styles.timeSelectDiv}>
+      <div className={selectedStyles.timeSelectDiv}>
         <label
           className={`${styles.timeOption} ${
-            props.checkedLabel === 'time1014' ? styles.checkedLabel : ''
+            props.checkedLabel === 'time1014' ? selectedStyles.checkedLabel : ''
           }`}
           htmlFor='time1014'
           onClick={props.checkHandler}
@@ -26,7 +37,7 @@ function TimeSelect(props: TimeSelectInterface) {
 
         <label
           className={`${styles.timeOption} ${
-            props.checkedLabel === 'time1418' ? styles.checkedLabel : ''
+            props.checkedLabel === 'time1418' ? selectedStyles.checkedLabel : ''
           }`}
           htmlFor='time1418'
           onClick={props.checkHandler}
@@ -37,7 +48,7 @@ function TimeSelect(props: TimeSelectInterface) {
 
         <label
           className={`${styles.timeOption} ${
-            props.checkedLabel === 'time1822' ? styles.checkedLabel : ''
+            props.checkedLabel === 'time1822' ? selectedStyles.checkedLabel : ''
           }`}
           htmlFor='time1822'
           onClick={props.checkHandler}

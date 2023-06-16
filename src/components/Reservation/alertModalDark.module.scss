@@ -1,0 +1,23 @@
+@import '/src/styles/colors';
+
+.modalTop {
+  width: 100%;
+  height: 40px;
+  background-color: $MAIN_PURPLE;
+  position: relative;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+
+  display: flex;
+  flex-direction: row;
+
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+  .modalTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+  }
+}

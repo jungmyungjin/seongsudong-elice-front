@@ -367,26 +367,26 @@ const SeatLayout: React.FC = () => {
     const [isReservationFail, setIsReservationFail] = useState(false);
     const [isVisiterNameInput, setIsVisiterNameInput] = useState(false);
     const [inputValue, setInputValue] = useState('');
-    // const [meetingRoomNumber, setMeetingRoomNumber] = useState('');
-    let meetingRoomNumber = '';
+    const [meetingRoomNumber, setMeetingRoomNumber] = useState('');
+    // let meetingRoomNumber = '';
     let typeList: string[] = [];
     if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
       typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
     } else if (canReservationSeat.includes('A')) {
       typeList = ['미팅룸A (최대 6인)'];
       // setMeetingRoomNumber('A');
-      meetingRoomNumber = 'A';
+      setMeetingRoomNumber('A');
     } else if (canReservationSeat.includes('B')) {
       typeList = ['미팅룸B (최대 10인)'];
       // setMeetingRoomNumber('B');
-      meetingRoomNumber = 'B';
+      setMeetingRoomNumber('B');
     } else {
       typeList = [];
     }
 
     const handleMeetingRoomType = (value: string) => {
       // setMeetingRoomNumber(value.charAt(3));
-      meetingRoomNumber = value.charAt(3);
+      setMeetingRoomNumber(value.charAt(3));
       console.log(meetingRoomNumber);
     };
 
@@ -522,6 +522,12 @@ const SeatLayout: React.FC = () => {
           }}
         />
       )}
+      <SubmitModal
+        onClick={() => {
+          setClickedSubmit(false);
+          fetchData(reservationInfo.time);
+        }}
+      />
       {isReservationFail && (
         <AlertModal
           modalMessage1='좌석 예약에 실패하였습니다.🥹'
