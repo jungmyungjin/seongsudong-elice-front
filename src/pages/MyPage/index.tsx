@@ -37,7 +37,7 @@ function MyPage() {
   const { username, course, generation, email } = useAppSelector(
     state => state.user,
   );
-  const { logoutDone, logoutError, deleteUserDone, deleteUserError } =
+  const { logoutDone, logoutError, deleteUserDone, deleteUserError, isAdmin } =
     useAppSelector(state => state.user);
 
   const dispatch = useAppDispatch();
@@ -127,9 +127,20 @@ function MyPage() {
           <div className={styles.headerImage}>
             <img src='/images/rabbit_profile.png' alt='profile' />
           </div>
-          <div className={styles.myName}>
-            [{course}/{generation}] {username}
-          </div>
+
+          {isAdmin && (
+            <>
+              <div className={styles.myName}>{username}</div>
+            </>
+          )}
+          {!isAdmin && (
+            <>
+              <div className={styles.myName}>
+                [{course}/{generation}] {username}
+              </div>
+            </>
+          )}
+
           <button
             className={selectedStyles.deleteUserBtn}
             onClick={onClickDeleteUserButton}

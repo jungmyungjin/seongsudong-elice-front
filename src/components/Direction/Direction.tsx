@@ -57,7 +57,6 @@ const EliceDirection: React.FC = () => {
 
     // 스크립트 읽기 완료 후 카카오맵 설정
     myScript.then(() => {
-      console.log('script loaded!!!');
       const kakao = (window as any)['kakao'];
       kakao.maps.load(() => {
         const mapContainer = document.getElementById('map');

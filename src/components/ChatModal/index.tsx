@@ -27,7 +27,6 @@ import { io } from 'socket.io-client';
 
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
-  const [inputValue, setInputValue] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useAppDispatch();
@@ -48,6 +47,7 @@ function ChatModal() {
 
   /****************************** 자동 스트롤 *******************************/
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatList]);
@@ -80,24 +80,14 @@ function ChatModal() {
   }, [addChat, setOnlineEmailList]);
 
   /************************** 채팅 보내기 관련 함수 *****************************/
-  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value);
-  }
+  const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  function handleSend() {
-    if (inputValue.trim().length === 0) {
+  function handleSend(value: string) {
+    if (value.trim().length === 0) {
       return;
     }
-    sendMessage(inputValue);
+    sendMessage(value);
     sendOnline();
-    setInputValue('');
-  }
-
-  function handleEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSend();
-    }
   }
 
   /***************************************************************************/
@@ -201,16 +191,11 @@ function ChatModal() {
                 )}
               </>
             )}
-            <div ref={scrollContainerRef} />
           </div>
+          <div ref={scrollContainerRef} />
         </div>
         <div className={styles.chatInputContainer}>
-          <ChatInput
-            inputValue={inputValue}
-            handleInputChange={handleInputChange}
-            handleClick={handleSend}
-            handleEnter={handleEnter}
-          />
+          <ChatInput inputRef={inputRef} handleClick={handleSend} />
         </div>
       </div>
     </FullModal>

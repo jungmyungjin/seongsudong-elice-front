@@ -25,6 +25,7 @@ const LoggedInProfile = (): React.ReactElement => {
   const username = useSelector((state: RootState) => state.user.username);
   const course = useSelector((state: RootState) => state.user.course);
   const generation = useSelector((state: RootState) => state.user.generation);
+  const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
   const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
     navigate('/myPage');
     dispatch(closeMenu());
@@ -34,10 +35,21 @@ const LoggedInProfile = (): React.ReactElement => {
     <button className={styles.Profile} onClick={handleClick}>
       <div className={styles.ProfileImage}></div>
 
-      <div className={styles.ProfileInfo}>
-        <span>{`[${course}/${generation}]`}</span>
-        <span>{username}</span>
-      </div>
+      {isAdmin && (
+        <>
+          <div className={styles.ProfileInfo}>
+            <span>{username}</span>
+          </div>
+        </>
+      )}
+      {!isAdmin && (
+        <>
+          <div className={styles.ProfileInfo}>
+            <span>{`[${course}/${generation}]`}</span>
+            <span>{username}</span>
+          </div>
+        </>
+      )}
     </button>
   );
 };
