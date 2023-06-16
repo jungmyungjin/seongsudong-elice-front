@@ -17,7 +17,7 @@
 
 <br>
 
-[<img src="public/images/banner.png">](https://web-2-project-team06-fire-front.vercel.app)
+[<img src="public/images/banner.png">](https://www.firefighter.today)
 #### 🔍 배너 클릭해서 사이트 구경하기!
 
 <br/><br/><br/>
