@@ -17,7 +17,8 @@
 
 <br>
 
-### [😀 엘리스 명예 소방관 페이지 구경하러 가기 😀](https://web-2-project-team06-fire-front.vercel.app)
+[<img src="public/images/banner.png">](https://www.firefighter.today)
+#### 🔍 배너 클릭해서 사이트 구경하기!
 
 <br/><br/><br/>
 
@@ -110,7 +111,7 @@
 
 ##### <img src="https://img.shields.io/badge/Gitlab-FC6D26?style=for-the-badge&logo=Gitlab&logoColor=white"> - Code Repository, Trouble Shooting 내역 기제
 
-##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> - API 테스트 진행
+##### <img src="https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white"> - API 테스트 진행
 
 <br><br>
 
