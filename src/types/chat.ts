@@ -18,10 +18,8 @@ export interface IChatMessage {
 }
 
 export interface IChatInput {
-  inputValue: string;
-  handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
-  handleClick: () => void;
-  handleEnter: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  inputRef: React.RefObject<HTMLTextAreaElement>;
+  handleClick: (value: string) => void;
 }
 
 export interface IChatRoom {
