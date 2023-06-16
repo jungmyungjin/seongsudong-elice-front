@@ -15,55 +15,14 @@ import {
   getNearestAvailableTime,
   isPassedTime,
   getCurrentDate,
+  afterTenPmGetNextDate,
+  checkBeforeTenPm,
+  isWeekdayAndFriBeforeTenPm,
 } from '../../utils/getDate';
 import AlertModal from './AlertModal';
 
 import { ReactComponent as Check } from '../../assets/Check.svg';
 import styles from './reservationOptions.module.scss';
-
-function after22GetNextDate(): string {
-  const currentDate = new Date();
-  const currentHour = currentDate.getHours();
-
-  // 현재 시간이 오후 10시 이후인지 확인
-  if (currentHour >= 22) {
-    // 다음날의 날짜 계산
-    const nextDate = new Date();
-    nextDate.setDate(currentDate.getDate() + 1);
-
-    // 날짜를 '2023-06-16' 형식으로 포맷팅
-    const formattedDate = nextDate.toISOString().split('T')[0];
-    return formattedDate;
-  }
-
-  // 현재 시간이 오후 10시 이전이라면 현재 날짜 반환
-  return currentDate.toISOString().split('T')[0];
-}
-
-function checkIsAfter22(): boolean {
-  const currentDate = new Date();
-  const currentHour = currentDate.getHours();
-
-  // 현재 시간이 오후 10시 이후인지 확인
-  if (currentHour >= 22) {
-    return true;
-  }
-
-  return false;
-}
-
-function isWeekendAfterSix(): boolean {
-  const currentDate = new Date();
-  const currentDay = currentDate.getDay();
-  const currentHour = currentDate.getHours();
-
-  // 현재 요일이 일요일(0) 또는 토요일(6)이고, 현재 시간이 오후 6시 이후인지 확인
-  if ((currentDay === 0 || currentDay === 6) && currentHour >= 18) {
-    return true;
-  }
-
-  return false;
-}
 
 const DateOptions: React.FC = () => {
   const SelectDate: React.FC<SelectDateProps> = ({
@@ -119,14 +78,11 @@ const DateOptions: React.FC = () => {
     };
 
     let checkDate: string = '';
-    if (!isWeekendAfterSix()) {
-      checkDate = getCurrentDate();
-    } else {
-      checkDate = after22GetNextDate();
-    }
+    isWeekdayAndFriBeforeTenPm()
+      ? (checkDate = getCurrentDate())
+      : (checkDate = afterTenPmGetNextDate());
 
     const [selectedCheckbox, setSelectedCheckbox] = useState(checkDate);
-    // const [selectedCheckbox, setSelectedCheckbox] = useState('2023-06-13');
 
     const handleSelectedDateChange = (
       e: React.ChangeEvent<HTMLInputElement>,
@@ -140,18 +96,33 @@ const DateOptions: React.FC = () => {
       const clickedDate = new Date(weekDates[index]);
       currentDate.setHours(0, 0, 0, 0);
       clickedDate.setHours(0, 0, 0, 0);
+      const realClickedDate = new Date(weekDates[index]);
+      realClickedDate.setDate(realClickedDate.getDate() + 1);
 
-      if (clickedDate > currentDate && !checkIsAfter22()) {
+      if (clickedDate > currentDate) {
         updateReservation({
-          reservation_date: notIncludeDay[index],
+          reservation_date: selectedDate,
         });
-        console.log(reservationInfo.reservation_date);
-      } else if (clickedDate < currentDate && checkIsAfter22()) {
-        console.log('안되니');
+      } else if (
+        isSameDay(realClickedDate.toISOString().split('T')[0]) &&
+        checkBeforeTenPm()
+      ) {
+        updateReservation({
+          reservation_date: realClickedDate.toISOString().split('T')[0],
+        });
+      } else if (
+        isSameDay(realClickedDate.toISOString().split('T')[0]) &&
+        !checkBeforeTenPm()
+      ) {
+        setIsPastDate(true);
       } else {
         setIsPastDate(true);
       }
     };
+
+    useEffect(() => {
+      setSelectedCheckbox(getCurrentDate());
+    }, []);
 
     useEffect(() => {
       setSelectedCheckbox(reservationInfo.reservation_date);
@@ -261,23 +232,7 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
       updatedClickedState[getTimeIndex()] = true;
       setIsClicked(updatedClickedState);
     }
-    const selectedTimes = typeList.filter((_, index) => isClicked[index]);
-    const time = selectedTimes.join(', ');
-    updateReservation({ time: time });
   }, [isClicked]);
-
-  useEffect(() => {
-    // 초기 렌더링 시 reservationInfo.time과 동일한 항목을 선택한 상태로 설정
-    const initialSelectedIndex = typeList.findIndex(
-      time => time === reservationInfo.time,
-    );
-    if (initialSelectedIndex !== -1) {
-      const updatedClickedState = typeList.map(
-        (_, index) => index === initialSelectedIndex,
-      );
-      setIsClicked(updatedClickedState);
-    }
-  }, []);
 
   useEffect(() => {
     if (isSameDay(reservationInfo.reservation_date)) {
@@ -303,7 +258,7 @@ const TimeSelector: React.FC<MultiSelectorProps> = ({ typeList }) => {
     updatedClickedState[index] = !updatedClickedState[index];
 
     function checkIsPassedTime() {
-      if (time === getCurrentDate()) {
+      if (reservationInfo.reservation_date === getCurrentDate()) {
         setIsPastTime(true);
         updatedClickedState[index] = !updatedClickedState[index];
         setIsClicked(updatedClickedState);
@@ -387,11 +342,11 @@ const ReservationOptions: React.FC = () => {
     updateReservation({ time: time });
 
     function checkIsPassedTime() {
-      updateReservation({ time: getNearestAvailableTime() });
-      setSelectedType(getNearestAvailableTime());
-      reservationInfo.reservation_date !== getCurrentDate()
-        ? setIsPastTime(true)
-        : setSelectedType(time);
+      if (reservationInfo.reservation_date === getCurrentDate()) {
+        updateReservation({ time: getNearestAvailableTime() });
+        setSelectedType(getNearestAvailableTime());
+        setIsPastTime(true);
+      }
     }
 
     isPassedTime(endTime, reservationInfo.reservation_date, checkIsPassedTime);

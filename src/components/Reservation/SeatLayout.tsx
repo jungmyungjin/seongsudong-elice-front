@@ -36,10 +36,6 @@ interface ResponseDataType {
   seat_number: string;
 }
 
-interface CustomAxiosRequestConfig<T> extends AxiosRequestConfig {
-  credentials?: 'include';
-}
-
 const SeatLayout: React.FC = () => {
   const [canReservationSeat, setCanReservationSeat] = useState<string[]>([]);
   const [checkReservation, setCheckReservation] = useState<string>('');
@@ -370,25 +366,28 @@ const SeatLayout: React.FC = () => {
   function ClickMeetingRoom() {
     const [isReservationFail, setIsReservationFail] = useState(false);
     const [isVisiterNameInput, setIsVisiterNameInput] = useState(false);
-    let meetingRoomNumber: string = '';
+    const [inputValue, setInputValue] = useState('');
+    // const [meetingRoomNumber, setMeetingRoomNumber] = useState('');
+    let meetingRoomNumber = '';
     let typeList: string[] = [];
     if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
       typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
-      meetingRoomNumber = 'A';
     } else if (canReservationSeat.includes('A')) {
       typeList = ['미팅룸A (최대 6인)'];
+      // setMeetingRoomNumber('A');
       meetingRoomNumber = 'A';
     } else if (canReservationSeat.includes('B')) {
       typeList = ['미팅룸B (최대 10인)'];
+      // setMeetingRoomNumber('B');
       meetingRoomNumber = 'B';
     } else {
       typeList = [];
     }
 
-    const [inputValue, setInputValue] = useState('');
-
     const handleMeetingRoomType = (value: string) => {
+      // setMeetingRoomNumber(value.charAt(3));
       meetingRoomNumber = value.charAt(3);
+      console.log(meetingRoomNumber);
     };
 
     const handleClickSubmit = async () => {
@@ -406,6 +405,7 @@ const SeatLayout: React.FC = () => {
           seat_number: meetingRoomNumber,
           visitors: inputValue,
         });
+        console.log(reservationInfo);
       } catch (error) {
         setIsReservationFail(true);
         console.error(error);

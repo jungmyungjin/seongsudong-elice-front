@@ -138,12 +138,16 @@
 
 .managerZone {
   width: 450px;
-  height: 35px;
+  height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
   transform: translateY(-144px);
   border-top: 2px solid #7573b9;
+  border-bottom: 2px solid #7573b9;
   font-size: 20px;
   letter-spacing: 2px;
+  background-color: #f7f3ff;
+  border-bottom-left-radius: 7px;
+  border-bottom-right-radius: 7px;
 }
