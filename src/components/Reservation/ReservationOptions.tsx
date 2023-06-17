@@ -96,8 +96,8 @@ const DateOptions: React.FC = () => {
       const clickedDate = new Date(weekDates[index]);
       currentDate.setHours(0, 0, 0, 0);
       clickedDate.setHours(0, 0, 0, 0);
-      // const realClickedDate = new Date(weekDates[index]);
-      // realClickedDate.setDate(realClickedDate.getDate() + 1);
+      const realClickedDate = new Date(weekDates[index]);
+      realClickedDate.setDate(realClickedDate.getDate() + 1);
 
       if (clickedDate > currentDate) {
         setSelectedCheckbox(selectedDate);
