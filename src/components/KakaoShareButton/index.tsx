@@ -11,10 +11,15 @@ import { RootState } from 'store/configureStore';
 
 const { Kakao } = window;
 
-function KakaoShareButton() {
+interface props {
+  type?: string;
+}
+
+function KakaoShareButton({ type }: props) {
   const myReservationDetail = useAppSelector(
     state => state.myReservation.myReservationDetail,
   );
+  const reservationInfo = useSelector((state: RootState) => state.reservation);
 
   const returnReservationTime = (start_time: string, end_time: string) => {
     const startTime = `${start_time.slice(0, 5)}`;
@@ -36,6 +41,13 @@ function KakaoShareButton() {
     visitors,
   };
 
+  const buttonContents2 = {
+    date: reservationInfo.reservation_date.replace(/\-/g, '.'),
+    time: reservationInfo.time,
+    seat: `${reservationInfo.seat_type} ${reservationInfo.seat_number}번`,
+    visitors: reservationInfo.visitors,
+  };
+
   useEffect(() => {
     if (!Kakao.isInitialized()) {
       Kakao.init(process.env.REACT_APP_KAKAO_KEY);
@@ -52,16 +64,29 @@ function KakaoShareButton() {
 
   return (
     <>
-      <button
-        type='submit'
-        className={selectedStyles.kakaoButton}
-        onClick={() => shareKakao(buttonContents)}
-      >
-        <div className={selectedStyles.KakaoShareText}>
-          <KakaoIcon />
-          <p>카카오톡 공유하기</p>
-        </div>
-      </button>
+      {type === 'successReserve' ? (
+        <button
+          type='submit'
+          className={selectedStyles.kakaoButton}
+          onClick={() => shareKakao(buttonContents2)}
+        >
+          <div className={selectedStyles.KakaoShareText}>
+            <KakaoIcon />
+            <p>카카오톡 공유하기</p>
+          </div>
+        </button>
+      ) : (
+        <button
+          type='submit'
+          className={selectedStyles.kakaoButton}
+          onClick={() => shareKakao(buttonContents)}
+        >
+          <div className={selectedStyles.KakaoShareText}>
+            <KakaoIcon />
+            <p>카카오톡 공유하기</p>
+          </div>
+        </button>
+      )}
     </>
   );
 }
