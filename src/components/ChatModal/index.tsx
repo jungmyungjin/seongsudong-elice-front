@@ -50,7 +50,7 @@ function ChatModal() {
 
   useEffect(() => {
     scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chatList]);
+  }, [chatList, enterChatRoom]);
 
   /***********************************************************************/
 
@@ -191,8 +191,8 @@ function ChatModal() {
                 )}
               </>
             )}
+            <div ref={scrollContainerRef} />
           </div>
-          <div ref={scrollContainerRef} />
         </div>
         <div className={styles.chatInputContainer}>
           <ChatInput inputRef={inputRef} handleClick={handleSend} />
