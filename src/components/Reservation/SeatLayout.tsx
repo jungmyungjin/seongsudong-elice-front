@@ -367,25 +367,52 @@ const SeatLayout: React.FC = () => {
     const [isReservationFail, setIsReservationFail] = useState(false);
     const [isVisiterNameInput, setIsVisiterNameInput] = useState(false);
     const [inputValue, setInputValue] = useState('');
+    // const [meetingRoomNumber, setMeetingRoomNumber] = useState('');
+    // // let meetingRoomNumber = '';
+    // let typeList: string[] = [];
+    // if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
+    //   typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
+    // } else if (canReservationSeat.includes('A')) {
+    //   typeList = ['미팅룸A (최대 6인)'];
+    //   // setMeetingRoomNumber('A');
+    //   setMeetingRoomNumber('A');
+    // } else if (canReservationSeat.includes('B')) {
+    //   typeList = ['미팅룸B (최대 10인)'];
+    //   // setMeetingRoomNumber('B');
+    //   setMeetingRoomNumber('B');
+    // } else {
+    //   typeList = [];
+    // }
+
+    // const handleMeetingRoomType = (value: string) => {
+    //   // setMeetingRoomNumber(value.charAt(3));
+    //   setMeetingRoomNumber(value.charAt(3));
+    //   console.log(meetingRoomNumber);
+    // };
+
     const [meetingRoomNumber, setMeetingRoomNumber] = useState('');
-    // let meetingRoomNumber = '';
-    let typeList: string[] = [];
-    if (canReservationSeat.includes('A') && canReservationSeat.includes('B')) {
-      typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
-    } else if (canReservationSeat.includes('A')) {
-      typeList = ['미팅룸A (최대 6인)'];
-      // setMeetingRoomNumber('A');
-      setMeetingRoomNumber('A');
-    } else if (canReservationSeat.includes('B')) {
-      typeList = ['미팅룸B (최대 10인)'];
-      // setMeetingRoomNumber('B');
-      setMeetingRoomNumber('B');
-    } else {
-      typeList = [];
-    }
+    const [typeList, setTypeList] = useState<string[]>([]);
+
+    useEffect(() => {
+      let typeList: string[] = [];
+      if (
+        canReservationSeat.includes('A') &&
+        canReservationSeat.includes('B')
+      ) {
+        typeList = ['미팅룸A (최대 6인)', '미팅룸B (최대 10인)'];
+      } else if (canReservationSeat.includes('A')) {
+        typeList = ['미팅룸A (최대 6인)'];
+        setMeetingRoomNumber('A');
+      } else if (canReservationSeat.includes('B')) {
+        typeList = ['미팅룸B (최대 10인)'];
+        setMeetingRoomNumber('B');
+      } else {
+        typeList = [];
+      }
+      setTypeList(typeList);
+    }, [canReservationSeat]);
 
     const handleMeetingRoomType = (value: string) => {
-      // setMeetingRoomNumber(value.charAt(3));
       setMeetingRoomNumber(value.charAt(3));
       console.log(meetingRoomNumber);
     };
