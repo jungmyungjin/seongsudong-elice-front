@@ -100,20 +100,16 @@ const DateOptions: React.FC = () => {
       // realClickedDate.setDate(realClickedDate.getDate() + 1);
 
       if (clickedDate > currentDate) {
+        setSelectedCheckbox(selectedDate);
         updateReservation({
           reservation_date: selectedDate,
         });
-      } else if (
-        isSameDay(clickedDate.toISOString().split('T')[0]) &&
-        checkBeforeTenPm()
-      ) {
+      } else if (isSameDay(selectedDate) && checkBeforeTenPm()) {
+        setSelectedCheckbox(selectedDate);
         updateReservation({
-          reservation_date: clickedDate.toISOString().split('T')[0],
+          reservation_date: selectedDate,
         });
-      } else if (
-        isSameDay(clickedDate.toISOString().split('T')[0]) &&
-        !checkBeforeTenPm()
-      ) {
+      } else if (isSameDay(selectedDate) && !checkBeforeTenPm()) {
         setIsPastDate(true);
       } else {
         setIsPastDate(true);
