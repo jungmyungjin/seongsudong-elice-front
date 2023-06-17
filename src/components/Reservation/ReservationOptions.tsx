@@ -96,22 +96,22 @@ const DateOptions: React.FC = () => {
       const clickedDate = new Date(weekDates[index]);
       currentDate.setHours(0, 0, 0, 0);
       clickedDate.setHours(0, 0, 0, 0);
-      const realClickedDate = new Date(weekDates[index]);
-      realClickedDate.setDate(realClickedDate.getDate() + 1);
+      // const realClickedDate = new Date(weekDates[index]);
+      // realClickedDate.setDate(realClickedDate.getDate() + 1);
 
       if (clickedDate > currentDate) {
         updateReservation({
           reservation_date: selectedDate,
         });
       } else if (
-        isSameDay(realClickedDate.toISOString().split('T')[0]) &&
+        isSameDay(clickedDate.toISOString().split('T')[0]) &&
         checkBeforeTenPm()
       ) {
         updateReservation({
-          reservation_date: realClickedDate.toISOString().split('T')[0],
+          reservation_date: clickedDate.toISOString().split('T')[0],
         });
       } else if (
-        isSameDay(realClickedDate.toISOString().split('T')[0]) &&
+        isSameDay(clickedDate.toISOString().split('T')[0]) &&
         !checkBeforeTenPm()
       ) {
         setIsPastDate(true);
