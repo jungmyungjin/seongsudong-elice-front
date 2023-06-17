@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { RootState } from '../../store/configureStore';
 
-import KakaoShareButton from 'components/KakaoShareButton';
+// import KakaoShareButton from 'components/KakaoShareButton';
 import { ReactComponent as X } from 'assets/X.svg';
 
 import styles from './submitModal.module.scss';
@@ -24,9 +24,9 @@ const SubmitModal = ({ onClick }: { onClick: () => void }) => {
             <div>{reservationInfo.time}</div>
             <div>{`${reservationInfo.seat_type} ${reservationInfo.seat_number}번`}</div>
             <div>예약이 완료되었습니다!</div>
-            <div className={styles.KakaoShareButton}>
+            {/* <div className={styles.KakaoShareButton}>
               <KakaoShareButton />
-            </div>
+            </div> */}
             <button
               className={styles.checkReservationButton}
               onClick={() => navigate('/mypage/myreservation')}
