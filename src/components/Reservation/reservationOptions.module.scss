@@ -1,25 +1,34 @@
-.currentDate {
-  margin-top: 1rem;
-  font-size: 1.5rem;
-}
+@import 'src/styles/mixins';
 
+.dateContainer {
+  margin: 10px 0;
+
+  .currentDate {
+    margin-top: 1rem;
+    font-size: 27px;
+  }
+}
 .date {
   display: flex;
   justify-content: space-between;
-  margin-top: 0.5rem;
+  margin-top: 10px;
+  time {
+    font-size: 24px;
+  }
 }
 
 .checkbox {
   display: flex;
-  padding: 1rem;
+  padding: 0.5rem 1.4rem 1.5rem 1.4rem;
   flex-direction: row;
   justify-content: space-between;
+  cursor: pointer;
 
-  & > .checkboxInput {
+  .checkboxInput {
     display: none;
   }
 
-  & > .checkboxLabel {
+  .checkboxLabel {
     height: 30px;
     width: 30px;
     border: 2px solid #9c9c9c;
@@ -27,7 +36,7 @@
     cursor: pointer;
   }
 
-  & > input:checked + .checkboxLabel {
+  input:checked + .checkboxLabel {
     background-color: #524fa1;
     border: 2px solid #524fa1;
   }
@@ -37,8 +46,10 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  font-size: 1.3rem;
+  font-weight: bold;
 
-  & > label {
+  label {
     background-color: #f0f1f3;
     border: 2px solid #9c9c9c;
     border-radius: 8px;
@@ -52,12 +63,12 @@
     justify-content: center;
   }
 
-  & > label:not(:last-child) {
-    margin-right: 0.5rem;
-    margin-bottom: 0.7rem;
+  label:not(:last-child) {
+    margin-right: 1rem;
+    margin-bottom: 0.9rem;
   }
 
-  & > label.checkedType {
+  label.checkedType {
     background-color: #524fa1;
     border: 2px solid #524fa1;
     color: #e2e1ff;
@@ -72,6 +83,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  font-size: 1.3rem;
+  font-weight: bold;
 
   & > * {
     background-color: #f0f1f3;
@@ -83,13 +96,13 @@
     font: inherit;
     cursor: pointer;
   }
-  
+
   & > *:not(:last-child) {
-    margin-right: 0.5rem;
+    margin-right: 1rem;
     margin-bottom: 0.7rem;
   }
 
-  & > .checkedType {
+  .checkedType {
     background-color: #e2e1ff;
     border: 2px solid #524fa1;
     color: #524fa1;
@@ -100,4 +113,18 @@
   background-color: #e2e1ff;
   border: 2px solid #524fa1;
   color: #524fa1;
+}
+
+@include mobile {
+  .date > time {
+    font-size: 15px;
+  }
+
+  .typeSelector > label {
+    font-size: 15px;
+  }
+
+  .TimeSelector > * {
+    font-size: 15px;
+  }
 }

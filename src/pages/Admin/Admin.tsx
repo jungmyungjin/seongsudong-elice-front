@@ -6,23 +6,16 @@ import styles from './Admin.module.scss';
 const menuArr = [
   {
     id: 1,
-    to: 'chat',
-    icon: 'chat',
-    title: '레이서 문의 관리',
-    right: true,
-  },
-  {
-    id: 2,
     to: 'notice',
     icon: 'notice',
     title: '공지사항 관리',
     right: true,
   },
   {
-    id: 3,
+    id: 2,
     to: 'booking',
     icon: 'booking',
-    title: '예약 관리',
+    title: '좌석/예약 관리',
     right: true,
   },
 ];

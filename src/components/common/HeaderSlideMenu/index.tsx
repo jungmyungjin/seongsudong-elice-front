@@ -1,6 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styles from './HeaderSlideMenu.module.scss';
+import darkStyles from './headerSlideMenuDark.module.scss';
 import Profile from './Profile';
+import axios from 'axios';
+
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from 'store/configureStore';
@@ -36,47 +39,50 @@ const HeaderSlideMenu = (): React.ReactElement => {
     }
   }, [isOpen, dispatch, isVisible]);
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div
       ref={ref}
-      className={`${styles.SlideMenu} ${
-        isVisible ? styles.open : styles.close
+      className={`${selectedStyles.SlideMenu} ${
+        isVisible ? selectedStyles.open : selectedStyles.close
       }`}
     >
       <Profile />
       <ul>
-        {/* 관리자만 보여줘야 함, 일단 테스트 하기 쉽게 ture  */}
-        {isAdmin ||
-          (true && (
+        {isAdmin === true ? (
+          <li>
+            <button onClick={() => handleClick('/admin')}>
+              <span>관리자페이지</span>{' '}
+            </button>
+          </li>
+        ) : null}
+
+        {isLoggedIn === true ? (
+          <>
             <li>
-              <button onClick={() => handleClick('/admin')}>
-                <span>관리자페이지</span>{' '}
+              <button onClick={() => handleClick('/mypage')}>
+                <span>마이페이지</span>
               </button>
             </li>
-          ))}
-
-        {/* 로그인/관리자 기능인 경우 후에 보여줘야 함, 일단 테스트 하기 쉽게 ture */}
-        {isLoggedIn ||
-          isAdmin ||
-          (true && (
-            <>
-              <li>
-                <button onClick={() => handleClick('/mypage')}>
-                  <span>마이페이지</span>
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleClick('/reservation')}>
-                  <span>예약하기</span>
-                </button>
-              </li>
-              <li>
-                <button onClick={() => handleClick('/post/free')}>
-                  <span>게시판</span>
-                </button>
-              </li>
-            </>
-          ))}
+          </>
+        ) : null}
+        <li>
+          <button onClick={() => handleClick('/reservation')}>
+            <span>예약하기</span>
+          </button>
+        </li>
+        <li>
+          <button onClick={() => handleClick('/post/free')}>
+            <span>게시판</span>
+          </button>
+        </li>
         <li>
           <button onClick={() => handleClick('/direction')}>
             <span>찾아오시는 길</span>

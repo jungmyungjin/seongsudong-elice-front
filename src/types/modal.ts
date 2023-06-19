@@ -3,6 +3,7 @@ export interface ModalState {
   isChatModalOpen: boolean;
   isMyRevervationModalOpen: boolean;
   isChatListModalOpen: boolean;
+  isSendInputModalOpen: boolean;
 }
 
 /**

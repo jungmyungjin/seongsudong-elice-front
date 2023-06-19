@@ -1,10 +1,13 @@
-import React, { useState, MouseEvent, useEffect } from 'react';
+import React, { useState, MouseEvent, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import styles from './signUp.module.scss';
+import darkStyles from './signUpDark.module.scss';
 import { useNavigate, useLocation } from 'react-router-dom';
 import SignUpSelectBtn from 'components/SignUpSelectBtn';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
-const api = process.env.REACT_APP_BACKEND_ADDRESS + '/api/members/register';
+const api = process.env.REACT_APP_BACKEND_ADDRESS + '/members/register';
 
 const SignUp = (): React.ReactElement => {
   const navigate = useNavigate();
@@ -14,10 +17,18 @@ const SignUp = (): React.ReactElement => {
   const [name, setName] = useState('');
   const [course, setCourse] = useState('');
   const [classNumber, setClassNumber] = useState('');
+  const [email, setEmail] = useState('');
 
-  if (token === '') {
-    alert('토큰이 없습니다.');
-  }
+  const { state } = useLocation();
+
+  useEffect(() => {
+    if (!state?.email) {
+      navigate('/');
+      alert('잘못된 접근입니다.');
+    } else {
+      setEmail(state.email);
+    }
+  }, [state]);
 
   const courseInfo: { [key: string]: string[] } = {
     SW: [...Array(6).keys()].map(i => i + 1 + ''),
@@ -40,13 +51,10 @@ const SignUp = (): React.ReactElement => {
       token: token, // id_token(credential)
       name: name, // 이름
       generation: `${course}/${classNumber}`, // 기수
+      email,
     };
     try {
-      const res = await axios.post(api, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.post(api, data);
 
       if (res.status === 201) {
         navigate('/');
@@ -61,15 +69,23 @@ const SignUp = (): React.ReactElement => {
     }
   };
 
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div className={styles.signUpLayout}>
       <div className={styles.greeting}>
-        <div className={styles.title}>환영합니다!</div>
+        <div className={selectedStyles.title}>환영합니다!</div>
         <div className={styles.subTitle}>기본 회원 정보를 입력해주세요.</div>
       </div>
 
       <form onSubmit={handleSubmit} className={styles.inputField}>
-        <div className={styles.nameField}>
+        <div className={selectedStyles.nameField}>
           <span>이름</span>
           <input
             name='name'
@@ -77,7 +93,7 @@ const SignUp = (): React.ReactElement => {
             onChange={e => setName(e.target.value)}
           />
         </div>
-        <div className={styles.courseField}>
+        <div className={selectedStyles.courseField}>
           <div>
             <SignUpSelectBtn
               buttonName='과정'

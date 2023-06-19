@@ -39,37 +39,12 @@ function SeatOption(props: SeatOptionInterface) {
       <label>좌석 선택</label>
 
       <div className={styles.selectDiv}>
-        {/* <select
-          value={props.zoneOption}
-          onChange={props.zoneChangeHandler}
-          className={styles.select}
-        >
-          <option value='default'>-공간 선택-</option>
-
-          {zoneArr.map((zone, index) => (
-            <option value={zone} key={index}>
-              {zone}
-            </option>
-          ))}
-
-          {zoneArr.map((data, index) => (
-            <option value={data.zoneValue} key={index}>
-              {data.zoneName}
-            </option>
-          ))}
-        </select> */}
-
         <div className={styles.zoneDiv}>
           <ZoneOption
             zoneOption={props.zoneOption}
             changeHandler={props.zoneChangeHandler}
           />
         </div>
-
-        {/* <ZoneOption
-          zoneOption={props.zoneOption}
-          changeHandler={props.zoneChangeHandler}
-        /> */}
 
         <input
           type='text'

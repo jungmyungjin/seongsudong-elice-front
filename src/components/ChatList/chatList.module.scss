@@ -8,6 +8,10 @@
   padding: 5px;
   transition: all 500ms;
 
+  &:not(:last-child) {
+    margin-bottom: 15px;
+  }
+
   &:hover {
     cursor: pointer;
     background-color: #faf4ff;

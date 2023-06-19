@@ -1,10 +1,13 @@
-import React, { useRef } from 'react';
+import React, { useMemo } from 'react';
 import { ReactComponent as AlertCircle } from 'assets/AlertCircle.svg';
 import styles from './alertModal.module.scss';
+import darkStyles from './alertModalDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 interface AlertModalProps {
   modalMessage1: string;
-  modalMessage2: string;
+  modalMessage2?: string;
   onClick: () => void;
 }
 
@@ -13,23 +16,23 @@ const AlertModal: React.FC<AlertModalProps> = ({
   modalMessage2,
   onClick,
 }) => {
-  const [ModalClose, setModalClose] = React.useState(false);
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
 
-  const modalRef = useRef<HTMLDivElement>(null);
-
-  const onClickBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current === e.target && ModalClose) setModalClose(true);
-  };
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
 
   return (
-    <div ref={modalRef} onClick={onClickBackdrop} className={styles.backdrop}>
+    <section onClick={onClick} className={styles.backdrop}>
       <div className={styles.modalContainer}>
         <div className={styles.overlay}>
-          <div className={styles.modalTop}>
+          <header className={selectedStyles.modalTop}>
             <div className={styles.modalTitle}>
               <AlertCircle />
             </div>
-          </div>
+          </header>
           <div className={styles.modalContent}>
             <p>{modalMessage1}</p>
             <p>{modalMessage2}</p>
@@ -37,7 +40,7 @@ const AlertModal: React.FC<AlertModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

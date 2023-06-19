@@ -4,6 +4,7 @@
   align-items: center;
   margin-top: 1rem;
   margin-bottom: 5px;
+  background-color: inherit;
 
   button {
     font-size: 20px;
@@ -15,7 +16,7 @@
     display: flex;
     padding: 0;
   }
-  
+
   li {
     cursor: pointer;
     // margin: 0 0.25rem;
@@ -27,13 +28,10 @@
     border-radius: 5px;
     min-width: 22px;
     height: 22px;
-  
+
     &.active {
-      background-color: #524FA0;
-      color: #F9FAFC;
+      background-color: #524fa0;
+      color: #f9fafc;
     }
   }
 }
-
-
-

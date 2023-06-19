@@ -9,19 +9,20 @@
   }
 }
 
-.modalContainer {
-  animation: fadeIn 0.3s ease-in-out;
-  z-index: 1000;
-}
-
 .backdrop {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.35);
+  height: 100% !important;
+  background-color: rgba(0, 0, 0, 0.35) !important;
+  border-radius: 0 !important;
   z-index: 999;
+}
+
+.modalContainer {
+  animation: fadeIn 0.3s ease-in-out;
+  z-index: 1000;
 }
 
 .overlay {
@@ -65,14 +66,19 @@
 .overlay > .modalContent {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
+  // justify-content: space-around;
   align-items: center;
+  // align-content: space-evenly;
   padding: 30px 0;
+  color: black;
+  font-size: 1.3rem;
 
-  & > p:nth-child(2) {
+  p:nth-child(2) {
     padding: 10px 0;
   }
 
-  & > button {
+  button {
     color: black;
     background-color: $BRIGHT_PURPLE;
     border: 2px solid $MAIN_PURPLE;
@@ -82,8 +88,7 @@
 
     width: 20%;
     height: 35px;
-    font-size: 15px;
-    font-weight: bold;
+    font-size: 1.3rem;
     transition: all 0.5s;
 
     &:hover {

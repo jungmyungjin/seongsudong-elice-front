@@ -1,3 +1,7 @@
+* {
+  border: 1pd solid red;
+}
+
 .SlideMenu {
   position: absolute;
   height: 100%;
@@ -21,9 +25,13 @@
     border-bottom: #e4e4e4 solid;
   }
   span {
-    font-family: 'EliceDigitalBaeum-Bd';
     font-size: medium;
-    font-weight: 100;
+    margin-bottom: 10px;
+  }
+  ul > li > button {
+    width: 100%;
+    height: 100%;
+    text-align: left;
   }
 }
 

@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
 import { getDate } from 'utils/getTime';
 import styles from './bookingTable.module.scss';
+import darkStyles from './bookingTableDark.module.scss';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store/configureStore';
 
 interface BookingTableInterface {
   tableData: any;
@@ -10,12 +13,20 @@ interface BookingTableInterface {
 }
 
 function BookingTable(props: BookingTableInterface) {
+  const isDarkMode = useSelector(
+    (state: RootState) => state.checkMode.isDarkMode,
+  );
+
+  const selectedStyles = useMemo(() => {
+    return isDarkMode ? darkStyles : styles;
+  }, [isDarkMode]);
+
   return (
     <div>
       {props.tableData.length === 0 && <p>예약 정보가 없습니다.</p>}
 
       {props.tableData.length !== 0 && (
-        <table className={styles.table}>
+        <table className={selectedStyles.table}>
           <thead className={styles.thead}>
             <tr>
               <th>시간</th>
@@ -33,7 +44,7 @@ function BookingTable(props: BookingTableInterface) {
                 <td>
                   {data.seat_type}-{data.seat_number}
                 </td>
-                <td>{data.member_name}</td>
+                <td>{data.name}</td>
                 {props.currentHour && props.goodbyeHandler && (
                   <td>
                     {data.reservation_date === getDate() &&

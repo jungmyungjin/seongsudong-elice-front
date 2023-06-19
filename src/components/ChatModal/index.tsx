@@ -5,173 +5,197 @@ import FullModal from '../common/FullModal';
 import AdminProfile from './AdminProfile';
 import ChatInput from './ChatInput';
 import ChatMessage from './ChatMessage';
+import Loading from '../common/Loading';
+
+import useOnlineStatus from 'hooks/useOnlineStatus';
 
 import {
   addChat,
-  setChatRoomDetail,
   setChatRoomDetailChatList,
+  setOnlineEmailList,
 } from 'reducers/chat';
-import { online } from 'actions/access';
 
-import { convertDate } from 'utils/convertDate';
+import { IChatMessage, emailList } from 'types/chat';
+import {
+  getCustomDateString,
+  getPrevDateString,
+  stringToTime,
+} from 'utils/convertDate';
 import styles from './chatModal.module.scss';
 
-/* 소켓 객체 */
 import { io } from 'socket.io-client';
 
 function ChatModal() {
   const [modalTitle, setModalTitle] = useState<string>('');
-  // const {isAdmin} = useAppSelector(state => state.user); // 임의 -> 로그인 성공 후 전역으로 isAdmin 저장 성공 시 주석 해제
-  const [isAdmin, setIsAdmin] = useState<boolean>(true); // 임의 ~> 추후 로그인하고 res값으로 받은 admin boolean값 전역에 저장해주세요
-  const [isOnline, setIsOnline] = useState<boolean>(true); // 임의 ~> 채팅 페이지에 머물러 있을 때 vs 로그인 했을 때 vs 사이트 창에 머물러 있을 때  기준 정해야함
-  const [inputValue, setInputValue] = useState<string>('');
-  const [date, setDate] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useAppDispatch();
   const { chatList } = useAppSelector(state => state.chat.chatRoomDetail);
   const chatRoomDetail = useAppSelector(state => state.chat.chatRoomDetail);
 
-  /** 자동 스크롤 */
+  const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
+    reconnection: false,
+    path: '/socket.io/',
+    transports: ['websocket'],
+  });
+
+  /****************** 소켓 위해 지정한 관리자 이메일 *****************/
+  const adminEmail = 'elliseusobanggwan@gmail.com';
+  const userEmail = useAppSelector(state => state.user.email);
+  const isOnline = useOnlineStatus(userEmail);
+  /***********************************************************************/
+
+  /****************************** 자동 스트롤 *******************************/
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  /** socket선언은 꼭꼭 사용하는 컴포넌트 내에서 선언해야 인식을 한다. */
 
   useEffect(() => {
-    if (scrollContainerRef.current && chatList) {
-      scrollContainerRef.current.scrollTop =
-        scrollContainerRef.current.scrollHeight;
-    }
-  }, [chatList]);
+    scrollContainerRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [chatList, enterChatRoom]);
 
-  /** 소켓 연결 */
+  /***********************************************************************/
+
+  /********* 채팅방 첫 입성시 어드민 상태, 날짜, 소켓 연결, 해당방의 채팅 리스트 *********/
   useEffect(() => {
-    dispatch(setChatRoomDetailChatList(chatList));
-    const socket = io(`${process.env.REACT_APP_SOCKET_ENDPOINT}`, {
-      path: '/socket.io',
-      transports: ['websocket'],
-    });
-    socket.on('connect', () => {
-      console.log('소켓 연결 성공');
-      const userEmail = 'test3@example.com';
-      const email = userEmail;
-      const message = 'hi';
-      // let interval = 2000;
-
-      // setTimeout(() => {
-      //   socket.emit('checkChatRoom', email, message);
-      // }, interval);
-
-      // socket.on('messages', messages => {
-      //   console.log('messages:', messages, 'messages길이: ', messages.length);
-      // });
-    });
-  }, []);
-
-  /** 채팅 각 하나의 시간 */
-  const nowDate = convertDate(new Date());
-  const time = `${nowDate.split(' ')[4]} ${nowDate.split(' ')[5]}`; // 오전 1:11
-
-  function handleInputChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
-    setInputValue(e.target.value);
-  }
-
-  /** 채팅방 첫 입성시 위에 제목, 날짜 결정 */
-  useEffect(() => {
-    console.log('채팅방 입장:', chatRoomDetail);
-    setDate(convertDate(new Date()));
-    /** 전역으로 관리되는 유저 정보 가져와서 분기 실행 */
-    if (isAdmin) setModalTitle(chatRoomDetail.memberName);
+    if (userEmail === adminEmail)
+      setModalTitle(`[${chatRoomDetail.generation}] ${chatRoomDetail.name}`);
     else setModalTitle('1:1 문의 채팅방');
-  }, [chatRoomDetail, isAdmin, chatList]);
 
-  /** 임의로 보내는 것 -> socket 연결되면 지워라 */
-  useEffect(() => {
-    let count = 0;
-    const interval = setInterval(() => {
-      const newOtherChat = {
-        chatFromMe: false,
-        chatMessage: '무엇을 도와드릴까욧?',
-        fromName: '성수동 소방관',
-        isOnline: true,
-        sentTime: time,
-      };
-      const newAnotherChat = {
-        chatFromMe: false,
-        chatMessage: `프로그래밍존 팀플석에서 물이 새요. 살려주세요.`,
-        fromName: chatRoomDetail.memberName,
-        isOnline: true,
-        sentTime: time,
-      };
-
-      if (isAdmin) {
-        dispatch(
-          addChat({
-            chatMessage: newAnotherChat,
-          }),
-        );
-      } else {
-        dispatch(addChat({ chatMessage: newOtherChat }));
-      }
-      count++;
-
-      if (count === 5) {
-        clearInterval(interval);
-      }
-    }, 3000);
+    enterChatRoom();
 
     return () => {
-      clearInterval(interval);
+      socket.off('enterChatRoom');
+      socket.off('AllMessages');
     };
-  }, []);
+  }, [chatRoomDetail.email, userEmail, adminEmail, dispatch]);
+  /***********************************************************************/
 
-  function handleSend() {
-    if (inputValue.trim().length === 0) {
+  useEffect(() => {
+    onMessage();
+    getOnline();
+    return () => {
+      socket.off('message');
+      socket.off('latestMessage');
+      socket.off('onlineStatus');
+    };
+  }, [addChat, setOnlineEmailList]);
+
+  /************************** 채팅 보내기 관련 함수 *****************************/
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  function handleSend(value: string) {
+    if (value.trim().length === 0) {
       return;
     }
-
-    const newMyChat = {
-      chatFromMe: true,
-      chatMessage: inputValue,
-      sentTime: time,
-    };
-
-    dispatch(addChat({ chatMessage: newMyChat }));
-
-    setInputValue('');
+    sendMessage(value);
+    sendOnline();
   }
 
-  function handleEnter(e: React.KeyboardEvent<HTMLTextAreaElement>) {
-    if (e.key === 'Enter') {
-      e.preventDefault();
-      handleSend();
+  /***************************************************************************/
+
+  /***************************** 소켓 관련 함수 코드임 ***************************/
+
+  function enterChatRoom() {
+    if (userEmail === adminEmail) {
+      socket.emit('enterChatRoom', chatRoomDetail.email);
+    } else {
+      socket.emit('enterChatRoom', userEmail);
+    }
+    socket.on('AllMessages', data => {
+      dispatch(setChatRoomDetailChatList(data));
+      setIsLoading(false);
+      if (!data) {
+        setIsLoading(false);
+        socket.emit('createChatRoom', userEmail);
+      }
+    });
+  }
+
+  function sendMessage(message: string) {
+    if (userEmail === adminEmail) {
+      socket.emit('message', chatRoomDetail.email, adminEmail, message);
+    } else {
+      socket.emit('message', userEmail, userEmail, message);
     }
   }
+
+  function onMessage() {
+    socket.on('latestMessage', (data: IChatMessage[]) => {
+      console.log('latestMessage: ', data);
+      const newChatMessage = {
+        sender_email: data[0].sender_email,
+        name: data[0].name,
+        generation: data[0].generation,
+        message: data[0].message,
+        sentAt: data[0].sentAt,
+      };
+      dispatch(addChat({ chatMessage: newChatMessage }));
+    });
+  }
+
+  function sendOnline() {
+    if (userEmail === adminEmail) {
+      socket.emit('isOnlineStatus', chatRoomDetail.email, adminEmail);
+    } else {
+      socket.emit('isOnlineStatus', userEmail, adminEmail);
+    }
+  }
+
+  function getOnline() {
+    socket.on('onlineStatus', (data: emailList[]) => {
+      dispatch(setOnlineEmailList(data));
+    });
+  }
+
+  /***********************************************************************/
 
   return (
     <FullModal title={modalTitle} modalType='chat'>
       <div className={styles.chatModalContainer}>
-        <div className={styles.scrollContainer} ref={scrollContainerRef}>
-          {!isAdmin && <AdminProfile isOnline={isOnline} />}
-          <div className={styles.nowDate}>{date}</div>
+        <div className={styles.scrollContainer}>
+          {userEmail !== adminEmail && <AdminProfile isOnline={isOnline} />}
+
           <div className={styles.chatListContainer}>
-            {chatList?.map((msg, i) => (
-              <ChatMessage
-                key={i}
-                chatFromMe={msg.chatFromMe}
-                chatMessage={msg.chatMessage}
-                fromName={msg.fromName}
-                isOnline={msg.isOnline}
-                sentTime={msg.sentTime}
-              />
-            ))}
+            {isLoading ? (
+              <div className={styles.loadingContainer}>
+                <Loading />
+              </div>
+            ) : (
+              <>
+                {chatList ? (
+                  chatList.map((msg, i) => {
+                    const currentDate = getPrevDateString(msg.sentAt);
+                    const formattedDate =
+                      i === 0 ||
+                      currentDate !== getPrevDateString(chatList[i - 1]?.sentAt)
+                        ? getCustomDateString(msg.sentAt)
+                        : '';
+
+                    return (
+                      <div key={i}>
+                        {formattedDate && (
+                          <div className={styles.nowDate}>{formattedDate}</div>
+                        )}
+                        <ChatMessage
+                          key={i}
+                          sender_email={msg.sender_email}
+                          name={msg.name}
+                          generation={msg.generation}
+                          message={msg.message}
+                          sentAt={stringToTime(msg.sentAt)}
+                        />
+                      </div>
+                    );
+                  })
+                ) : (
+                  <div></div>
+                )}
+              </>
+            )}
+            <div ref={scrollContainerRef} />
           </div>
         </div>
         <div className={styles.chatInputContainer}>
-          <ChatInput
-            inputValue={inputValue}
-            handleInputChange={handleInputChange}
-            handleClick={handleSend}
-            handleEnter={handleEnter}
-          />
+          <ChatInput inputRef={inputRef} handleClick={handleSend} />
         </div>
       </div>
     </FullModal>

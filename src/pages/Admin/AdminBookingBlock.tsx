@@ -20,6 +20,9 @@ function AdminBookingBlock() {
 
   const isAdmin = useSelector((state: RootState) => state.user.isAdmin);
   const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  const email = useSelector((state: RootState) => state.user.email);
+  const generation = useSelector((state: RootState) => state.user.course);
+  const name = useSelector((state: RootState) => state.user.username);
 
   const dateChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDate(e.target.value);
@@ -104,7 +107,7 @@ function AdminBookingBlock() {
       return true;
     }
 
-    if (zoneState === '단체석') {
+    if (zoneState === '팀플석') {
       if (
         start < groupStart1 ||
         (start > groupEnd1 && start < groupdStart2) ||
@@ -196,13 +199,13 @@ function AdminBookingBlock() {
   };
 
   const blockHandler = async () => {
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     // 날짜 선택 필요
     if (date === '') {
@@ -253,10 +256,9 @@ function AdminBookingBlock() {
       const response = await Promise.all(
         seatArr.map((seat: number | string) => {
           const data = {
-            // member_generation: '관리자',
-            member_generation: 'SW4기',
-            member_name: '엄윤주',
-            member_email: 'yunzoo0915@gmail.com',
+            member_generation: generation,
+            member_name: name,
+            member_email: email,
             reservation_date: date,
             start_time: startTime,
             end_time: endTime,
@@ -273,6 +275,7 @@ function AdminBookingBlock() {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify(data),
+              credentials: 'include',
             },
           );
         }),
@@ -286,7 +289,31 @@ function AdminBookingBlock() {
         }),
       );
 
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
+        {
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error('예약 조회 중 에러가 발생했습니다.');
+      }
+
+      const data = await res.json();
+
+      const dataSortedBySeatNumber = data.reservations.sort(
+        (a: any, b: any) => parseInt(a.seat_number) - parseInt(b.seat_number),
+      );
+
+      setBookingData(dataSortedBySeatNumber);
+
       alert('예약 제한이 완료되었습니다.');
+
+      setZoneState('');
+      setSeatStartNumber('');
+      setSeatEndNumber('');
+      setCheckedLabel('');
     } catch (err) {
       console.log(err);
     }
@@ -297,18 +324,21 @@ function AdminBookingBlock() {
       return;
     }
 
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     const getReservationData = async () => {
       try {
         const response = await fetch(
           `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
+          {
+            credentials: 'include',
+          },
         );
 
         if (!response.ok) {
@@ -317,7 +347,11 @@ function AdminBookingBlock() {
 
         const data = await response.json();
 
-        setBookingData(data.reservations);
+        const dataSortedBySeatNumber = data.reservations.sort(
+          (a: any, b: any) => parseInt(a.seat_number) - parseInt(b.seat_number),
+        );
+
+        setBookingData(dataSortedBySeatNumber);
       } catch (err) {
         console.log(err);
       }
@@ -358,13 +392,13 @@ function AdminBookingBlock() {
   }, [bookingData]);
 
   const cancelHandler = async () => {
-    // if (!loggedIn) {
-    //   return alert('로그인이 필요한 기능입니다.');
-    // }
+    if (!loggedIn) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
 
-    // if (!isAdmin) {
-    //   return alert('관리자 권한이 없습니다.');
-    // }
+    if (!isAdmin) {
+      return alert('관리자 권한이 없습니다.');
+    }
 
     // 날짜 선택 필요
     if (date === '') {
@@ -409,20 +443,72 @@ function AdminBookingBlock() {
       seatArr = getSeatRange(seatStartNumber, seatEndNumber);
     }
 
-    // try {
-    //   const response = await Promise.all(
-    //     seatArr.map((seat: number | string) => {
-    //       return fetch(
-    //         `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/delete-reservation/${}`,
-    //         {
-    //           method: 'DELETE',
-    //         },
-    //       );
-    //     }),
-    //   );
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    const [startTime, endTime] = getTimeOfReservation();
+
+    let filtering: any[] = [];
+
+    seatArr.map(seat => {
+      const filteredData = bookingData.filter(
+        (data: any) =>
+          data.reservation_date === date &&
+          data.start_time === startTime &&
+          data.end_time === endTime &&
+          data.seat_type === zoneState &&
+          parseInt(data.seat_number) === seat,
+      );
+
+      filtering.push(...filteredData);
+    });
+
+    try {
+      const response = await Promise.all(
+        filtering.map(reservation => {
+          return fetch(
+            `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/delete-reservation/${reservation.reservation_id}`,
+            {
+              method: 'DELETE',
+              credentials: 'include',
+            },
+          );
+        }),
+      );
+
+      await Promise.all(
+        response.map(async res => {
+          if (!res.ok) {
+            throw new Error('좌석 해제 중 에러가 발생했습니다.');
+          }
+        }),
+      );
+
+      const res = await fetch(
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/admin/reservations/${date}`,
+        {
+          credentials: 'include',
+        },
+      );
+
+      if (!res.ok) {
+        throw new Error('예약 조회 중 에러가 발생했습니다.');
+      }
+
+      const data = await res.json();
+
+      const dataSortedBySeatNumber = data.reservations.sort(
+        (a: any, b: any) => parseInt(a.seat_number) - parseInt(b.seat_number),
+      );
+
+      setBookingData(dataSortedBySeatNumber);
+
+      alert('좌석이 해제되었습니다.');
+
+      setZoneState('');
+      setSeatStartNumber('');
+      setSeatEndNumber('');
+      setCheckedLabel('');
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

@@ -6,6 +6,10 @@
   height: 140px;
   display: flex;
   flex-direction: column;
+
+  span {
+    background-color: inherit;
+  }
 }
 
 .ButtonBar {
@@ -13,12 +17,17 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 10px;
+  button {
+    padding: 0px 10px;
+    height: 2.5rem;
+    width: 4rem;
+  }
   .ButtonX {
-    height: 20px;
+    height: 1.5rem;
   }
   .ButtonLogout {
-    height: 18px;
+    margin-left: auto;
+    height: 1.5rem;
   }
 }
 
@@ -47,8 +56,8 @@
     margin: 4px;
     color: white;
     font-weight: bold;
-    font-size: x-large;
-    margin: -2px 0;
+    font-size: 20px;
+    margin: 1px 0;
   }
 }
 

@@ -21,9 +21,10 @@ function AdminNotice() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/posts?category=공지게시판`,
+        `${process.env.REACT_APP_BACKEND_ADDRESS}/posts?category=공지게시판`,
         {
           method: 'GET',
+          credentials: 'include',
         },
       );
 
@@ -45,7 +46,11 @@ function AdminNotice() {
       />
 
       <div className={styles.btnDiv}>
-        <Link to='/post/free/create' className={styles.addBtn}>
+        <Link
+          to='/post/free/create'
+          className={styles.addBtn}
+          state={{ selectedTab: '공지' }}
+        >
           추가
         </Link>
       </div>
