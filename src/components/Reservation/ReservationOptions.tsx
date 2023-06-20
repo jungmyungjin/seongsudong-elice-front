@@ -23,6 +23,7 @@ import AlertModal from './AlertModal';
 
 import { ReactComponent as Check } from '../../assets/Check.svg';
 import styles from './reservationOptions.module.scss';
+import moment from 'moment';
 
 const DateOptions: React.FC = () => {
   const SelectDate: React.FC<SelectDateProps> = ({
@@ -92,14 +93,10 @@ const DateOptions: React.FC = () => {
       const notIncludeDay = weekDates.map(date => date.split('(')[0]);
       const index = notIncludeDay.indexOf(selectedDate);
       // 오늘 날짜와 선택한 날짜를 비교하여 이전 날짜인 경우에만 alert 메시지를 띄웁니다.
-      const currentDate = new Date();
-      const clickedDate = new Date(weekDates[index]);
-      currentDate.setHours(0, 0, 0, 0);
-      clickedDate.setHours(0, 0, 0, 0);
-      const realClickedDate = new Date(weekDates[index]);
-      realClickedDate.setDate(realClickedDate.getDate() + 1);
+      const currentDate = moment().startOf('day');
+      const clickedDate = moment(weekDates[index], 'YYYY-MM-DD').startOf('day');
 
-      if (clickedDate > currentDate) {
+      if (clickedDate.isAfter(currentDate)) {
         setSelectedCheckbox(selectedDate);
         updateReservation({
           reservation_date: selectedDate,
